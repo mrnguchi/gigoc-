@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  --bg-main: #f8fafc;
+  --bg-soft: #f1f5f9;
+
+  --primary: #1e4a95;
+  --primary-soft: #eaf2ff;
+
+  --text-main: #2d4162;
+  --text-soft: #54595f;
+
+  --border-soft: #e2e8f0;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.companies-marquee-track {
+  animation: companies-marquee 24s linear infinite;
+}
+
+.companies-marquee:hover .companies-marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes companies-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-50% - 0.5rem));
+  }
+}
