@@ -57,9 +57,7 @@ export default function CompaniesCarousel() {
           <h2 className="mt-3 text-3xl font-semibold text-white sm:text-4xl">
             Trusted by many companies
           </h2>
-          <p className="mt-4 max-w-md text-base leading-7 text-white/70">
-            A flexible partner strip is ready here for the brands, names, and logos you want to showcase later.
-          </p>
+          
         </div>
 
         <div
