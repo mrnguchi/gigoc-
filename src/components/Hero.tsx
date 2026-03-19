@@ -266,7 +266,7 @@ export default function Hero() {
             <div id="hero-actions" className="mt-8 flex flex-col gap-4 sm:flex-row">
               <Link
                 href="#contact-section"
-                className="rounded-full px-7 py-4 text-sm font-semibold text-white transition hover:-translate-y-0.5"
+                className="rounded-full text-center px-7 py-4 text-sm font-semibold text-white transition hover:-translate-y-0.5"
                 style={{
                   background: 'linear-gradient(135deg, #7c3aed 0%, #2563eb 100%)',
                   boxShadow: '0 18px 35px rgba(37, 99, 235, 0.28)',
