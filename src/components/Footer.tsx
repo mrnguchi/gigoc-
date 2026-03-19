@@ -55,7 +55,7 @@ export default function Footer() {
         <div className="grid gap-10 md:grid-cols-2 xl:grid-cols-4">
           <div>
             <Link href="#home" className="inline-flex items-center">
-              <Image src="/gigoc-footer.png" alt="GiGOC logo" width={110} height={32} />
+              <Image src="/gigoc-footer.png" alt="GiGOC logo" width={150} height={52} />
             </Link>
             <p className="mt-5 max-w-xs text-sm leading-7 text-white/70">
               GiGOC brings together creative, commercial, and operational divisions to build modern businesses and lasting value.

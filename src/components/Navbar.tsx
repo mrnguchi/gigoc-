@@ -100,8 +100,8 @@ export default function Navbar() {
             <Image
                 src="/g-logo.png"
                 alt="Gebah Investment Group Of Companies logo"
-                width={100}
-                height={120}
+                width={120}
+                height={150}
                 priority
               />
           </Link>
@@ -163,7 +163,7 @@ export default function Navbar() {
               href="#contact-section"
               className="rounded-full px-6 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5"
               style={{
-                background: 'linear-gradient(135deg, #7c3aed 0%, #2563eb 100%)',
+                background: 'linear-gradient(135deg, #1e4a95 0%, #2563eb 100%)',
                 boxShadow: '0 18px 30px rgba(37, 99, 235, 0.24)',
               }}
             >

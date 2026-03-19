@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import CompaniesCarousel from '@/components/CompaniesCarousel';
@@ -127,25 +127,86 @@ function DivisionIcon({ icon }: { icon: Division['icon'] }) {
 
 export default function Hero() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const sliderRef = useRef<HTMLDivElement | null>(null);
+  const slideRefs = useRef<Array<HTMLButtonElement | null>>([]);
+
+  const scrollToSlide = useCallback((index: number, behavior: ScrollBehavior = 'smooth') => {
+    const normalizedIndex = (index + divisions.length) % divisions.length;
+    const slide = slideRefs.current[normalizedIndex];
+
+    if (!slide) return;
+
+    slide.scrollIntoView({ behavior, block: 'nearest', inline: 'center' });
+    setCurrentIndex(normalizedIndex);
+  }, []);
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      scrollToSlide(0, 'auto');
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [scrollToSlide]);
 
   useEffect(() => {
     const interval = window.setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % divisions.length);
+      scrollToSlide(currentIndex + 1);
     }, 5000);
 
     return () => window.clearInterval(interval);
-  }, []);
+  }, [currentIndex, scrollToSlide]);
 
   const moveTo = (index: number) => {
-    setCurrentIndex((index + divisions.length) % divisions.length);
+    scrollToSlide(index);
   };
 
-  const visibleCards = [
-    { division: divisions[(currentIndex - 1 + divisions.length) % divisions.length], position: 'left' as const, index: currentIndex - 1 },
-    { division: divisions[currentIndex], position: 'center' as const, index: currentIndex },
-    { division: divisions[(currentIndex + 1) % divisions.length], position: 'right' as const, index: currentIndex + 1 },
-  ];
+  useEffect(() => {
+    const slider = sliderRef.current;
+
+    if (!slider) return;
+
+    const updateCurrentSlide = () => {
+      const viewportCenter = slider.scrollLeft + slider.clientWidth / 2;
+      let closestIndex = 0;
+      let closestDistance = Number.POSITIVE_INFINITY;
+
+      slideRefs.current.forEach((slide, index) => {
+        if (!slide) return;
+
+        const slideCenter = slide.offsetLeft + slide.clientWidth / 2;
+        const distance = Math.abs(slideCenter - viewportCenter);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = index;
+        }
+      });
+
+      setCurrentIndex((previousIndex) => (previousIndex === closestIndex ? previousIndex : closestIndex));
+    };
+
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (ticking) return;
+
+      ticking = true;
+
+      window.requestAnimationFrame(() => {
+        updateCurrentSlide();
+        ticking = false;
+      });
+    };
+
+    updateCurrentSlide();
+    slider.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', updateCurrentSlide);
+
+    return () => {
+      slider.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', updateCurrentSlide);
+    };
+  }, []);
 
   return (
     <section
@@ -225,19 +286,7 @@ export default function Hero() {
 
           <div
             id="hero-divisions"
-            className="relative min-h-[420px] overflow-hidden px-2 lg:min-h-[540px] lg:px-0"
-            onTouchStart={(event) => setTouchStartX(event.changedTouches[0]?.clientX ?? null)}
-            onTouchEnd={(event) => {
-              if (touchStartX === null) return;
-
-              const delta = event.changedTouches[0].clientX - touchStartX;
-
-              if (Math.abs(delta) > 48) {
-                moveTo(delta > 0 ? currentIndex - 1 : currentIndex + 1);
-              }
-
-              setTouchStartX(null);
-            }}
+            className="relative min-h-[430px] lg:min-h-[540px]"
           >
             <div
               className="absolute left-1/2 top-3 z-30 w-fit -translate-x-1/2 rounded-full border px-4 py-2 text-center text-xs font-semibold tracking-[0.24em] text-white/80 uppercase sm:right-0 sm:left-auto sm:translate-x-0"
@@ -249,59 +298,69 @@ export default function Hero() {
               Our Division
             </div>
 
-            {visibleCards.map(({ division, position, index }) => {
-              const isCenter = position === 'center';
-              const positionClassNames = {
-                left:
-                  'left-0 top-24 z-10 w-[84%] max-w-none -translate-x-[18%] scale-[0.9] opacity-55 sm:left-0 sm:w-full sm:max-w-[320px] sm:translate-x-0 sm:scale-[0.92] sm:opacity-60 lg:left-2 lg:top-32',
-                center:
-                  'left-1/2 top-[4.5rem] z-20 w-[88%] max-w-none -translate-x-1/2 scale-100 opacity-100 sm:w-full sm:max-w-[320px] lg:top-24',
-                right:
-                  'right-0 top-24 z-10 w-[84%] max-w-none translate-x-[18%] scale-[0.9] opacity-55 sm:right-0 sm:w-full sm:max-w-[320px] sm:translate-x-0 sm:scale-[0.88] sm:opacity-50 lg:right-2 lg:top-32',
-              };
+            <div className="mx-auto w-full max-w-[22rem] pt-20 sm:max-w-[27rem] lg:ml-auto lg:mr-0 lg:max-w-[28rem] lg:pt-24">
+              <div
+                ref={sliderRef}
+                className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-3 pt-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:gap-5"
+                aria-label="Company divisions slider"
+              >
+                <div className="w-[calc(50%-125px)] shrink-0 sm:w-[calc(50%-160px)]" aria-hidden="true" />
 
-              const visibleIndex = ((index % divisions.length) + divisions.length) % divisions.length;
+                {divisions.map((division, index) => {
+                  const isActive = index === currentIndex;
 
-              return (
-                <button
-                  key={`${division.slug}-${position}`}
-                  type="button"
-                  onClick={() => moveTo(index)}
-                  className={`absolute bg-[#081224] rounded-[2rem] border p-6 text-left shadow-2xl transition duration-500 sm:p-7 ${positionClassNames[position]}`}
-                  style={{
-                    background: isCenter
-                      ? 'linear-gradient(180deg, rgba(30, 41, 59, 0.92) 0%, rgba(15, 23, 42, 0.98) 100%)'
-                      : 'linear-gradient(180deg, rgba(30, 41, 59, 0.72) 0%, rgba(15, 23, 42, 0.88) 100%)',
-                    borderColor: isCenter ? 'rgba(96, 165, 250, 0.42)' : 'rgba(255, 255, 255, 0.08)',
-                    boxShadow: isCenter ? '0 30px 60px rgba(15, 23, 42, 0.5)' : '0 18px 30px rgba(15, 23, 42, 0.35)',
-                  }}
-                  aria-pressed={isCenter}
-                >
-                  <div className="flex items-center justify-between">
-                    <div
-                      className="flex h-12 w-12 items-center justify-center rounded-2xl text-white"
-                      style={{ background: 'linear-gradient(135deg, rgba(124,58,237,0.95) 0%, rgba(37,99,235,0.95) 100%)' }}
+                  return (
+                    <button
+                      key={division.slug}
+                      ref={(element) => {
+                        slideRefs.current[index] = element;
+                      }}
+                      type="button"
+                      onClick={() => moveTo(index)}
+                      className="w-[250px] shrink-0 snap-center text-left sm:w-[320px]"
+                      aria-pressed={isActive}
                     >
-                      <DivisionIcon icon={division.icon} />
-                    </div>
-                    <span className="text-xs font-semibold tracking-[0.22em] text-white/60 uppercase">
-                      {String(visibleIndex + 1).padStart(2, '0')}
-                    </span>
-                  </div>
+                      <article
+                        className={`h-full min-h-[315px] rounded-[2rem] border p-6 transition duration-500 sm:min-h-[340px] sm:p-7 ${
+                          isActive ? 'scale-100 opacity-100' : 'scale-[0.96] opacity-70'
+                        }`}
+                        style={{
+                          background: isActive
+                            ? 'linear-gradient(180deg, rgba(30, 41, 59, 0.94) 0%, rgba(15, 23, 42, 0.99) 100%)'
+                            : 'linear-gradient(180deg, rgba(30, 41, 59, 0.78) 0%, rgba(15, 23, 42, 0.9) 100%)',
+                          borderColor: isActive ? 'rgba(96, 165, 250, 0.42)' : 'rgba(255, 255, 255, 0.1)',
+                          boxShadow: isActive ? '0 30px 60px rgba(15, 23, 42, 0.45)' : '0 18px 30px rgba(15, 23, 42, 0.28)',
+                        }}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div
+                            className="flex h-12 w-12 items-center justify-center rounded-2xl text-white"
+                            style={{ background: 'linear-gradient(135deg, rgba(124,58,237,0.95) 0%, rgba(37,99,235,0.95) 100%)' }}
+                          >
+                            <DivisionIcon icon={division.icon} />
+                          </div>
+                          <span className="text-xs font-semibold tracking-[0.22em] text-white/60 uppercase">
+                            {String(index + 1).padStart(2, '0')}
+                          </span>
+                        </div>
 
-                  <h3 className="mt-8 text-2xl font-semibold text-white">{division.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-white/70">{division.description}</p>
+                        <h3 className="mt-8 text-2xl font-semibold text-white">{division.title}</h3>
+                        <p className="mt-3 text-sm leading-6 text-white/70">{division.description}</p>
 
-                  <div className="mt-8 flex items-center justify-between text-sm font-medium text-white/90">
-                    <span>Click to Open</span>
-                    <span>↗</span>
-                  </div>
-                </button>
-              );
-            })}
+                        <div className="mt-8 flex items-center justify-between text-sm font-medium text-white/90">
+                          <span>Click to Open</span>
+                          <span>↗</span>
+                        </div>
+                      </article>
+                    </button>
+                  );
+                })}
 
-            <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between gap-4">
-              <div className="flex gap-2">
+                <div className="w-[calc(50%-125px)] shrink-0 sm:w-[calc(50%-160px)]" aria-hidden="true" />
+              </div>
+
+              <div className="mt-6 flex flex-col items-center gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-3 backdrop-blur-sm">
                 {divisions.map((division, index) => (
                   <button
                     key={division.slug}
@@ -309,33 +368,40 @@ export default function Hero() {
                     onClick={() => moveTo(index)}
                     className="h-2.5 rounded-full transition-all"
                     style={{
-                      width: index === currentIndex ? 28 : 10,
+                      width: index === currentIndex ? 30 : 10,
                       backgroundColor: index === currentIndex ? '#60a5fa' : 'rgba(255, 255, 255, 0.24)',
                     }}
                     aria-label={`Show ${division.title}`}
                   />
                 ))}
-              </div>
+                </div>
 
-              <div className="flex gap-3">
-                <button
-                  type="button"
-                  onClick={() => moveTo(currentIndex - 1)}
-                  className="flex h-12 w-12 items-center justify-center rounded-full border text-white transition hover:bg-white/10"
-                  style={{ borderColor: 'rgba(255, 255, 255, 0.15)' }}
-                  aria-label="Previous division"
-                >
-                  ←
-                </button>
-                <button
-                  type="button"
-                  onClick={() => moveTo(currentIndex + 1)}
-                  className="flex h-12 w-12 items-center justify-center rounded-full border text-white transition hover:bg-white/10"
-                  style={{ borderColor: 'rgba(255, 255, 255, 0.15)' }}
-                  aria-label="Next division"
-                >
-                  →
-                </button>
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={() => moveTo(currentIndex - 1)}
+                    className="flex h-12 w-12 items-center justify-center rounded-full text-white transition hover:-translate-y-0.5"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(124,58,237,0.95) 0%, rgba(37,99,235,0.95) 100%)',
+                      boxShadow: '0 16px 28px rgba(37, 99, 235, 0.22)',
+                    }}
+                    aria-label="Previous division"
+                  >
+                    ←
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => moveTo(currentIndex + 1)}
+                    className="flex h-12 w-12 items-center justify-center rounded-full text-white transition hover:-translate-y-0.5"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(124,58,237,0.95) 0%, rgba(37,99,235,0.95) 100%)',
+                      boxShadow: '0 16px 28px rgba(37, 99, 235, 0.22)',
+                    }}
+                    aria-label="Next division"
+                  >
+                    →
+                  </button>
+                </div>
               </div>
             </div>
           </div>
