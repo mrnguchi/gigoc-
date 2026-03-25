@@ -1,3 +1,6 @@
+import Link from 'next/link';
+import { companyContact } from '@/data/contact';
+
 export default function ContactSection() {
   return (
     <section id="contact-section" className="scroll-mt-32 bg-[var(--bg-main)] px-5 pb-20 pt-4 sm:px-6 lg:px-10 lg:pb-24">
@@ -15,6 +18,20 @@ export default function ContactSection() {
           <p className="mt-4 text-sm leading-7 sm:text-base" style={{ color: 'var(--text-soft)' }}>
             We work across multiple industries, so whether your project is creative, commercial, or operational, we are ready to help you move it forward.
           </p>
+
+          <div className="mt-6 space-y-2 text-sm leading-7 sm:text-base" style={{ color: 'var(--text-soft)' }}>
+            <p>{companyContact.address}</p>
+            <p>
+              <Link href={`mailto:${companyContact.email}`} className="font-medium transition hover:text-[var(--primary)]">
+                {companyContact.email}
+              </Link>
+            </p>
+            <p>
+              <Link href={`tel:${companyContact.phoneHref}`} className="font-medium transition hover:text-[var(--primary)]">
+                {companyContact.phoneDisplay}
+              </Link>
+            </p>
+          </div>
         </div>
 
         <form className="space-y-5" style={{ borderColor: 'rgba(148, 163, 184, 0.16)' }}>

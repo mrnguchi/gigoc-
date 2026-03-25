@@ -4,10 +4,11 @@ import Link from 'next/link';
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa6';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import { companyContact } from '@/data/contact';
 import { newsSectionData } from '@/data/news';
 
 const teamMembers = [
-  { name: 'Bill Gebah', role: 'Chief Executive Officer', info: 'Leads the group vision and long-term strategy.', image: '/unnamed.jpg' },
+  { name: 'Bill B. Gebah', role: 'Chief Executive Officer', info: 'Leads the group vision and long-term strategy.', image: '/unnamed.jpg' },
   { name: 'Fogam Fabrice', role: 'General Manager', info: 'Oversees performance, coordination, and execution across divisions.', image: '/fogam.jpg' },
   { name: 'Motoma Harry', role: 'Operation Manager', info: 'Drives day-to-day systems, and cross-team workflow.', image: '/gigoc-house.jpg' },
   { name: 'Nguchi N.', role: 'IT Engineer', info: 'Supports digital systems, infrastructure, and technical innovation.', image: '/nguchi.jpg' },
@@ -22,10 +23,10 @@ const companyStats = [
 ];
 
 const faqs = [
-  { question: 'Where are we located?', answer: 'We are located in Limbe.', defaultOpen: true },
+  { question: 'Where are we located?', answer: `We are located in ${companyContact.address}.`, defaultOpen: true },
   { question: 'What services does GiGOC provide?', answer: 'GiGOC brings together creative, commercial, and operational businesses across modelling, real estate, manufacturing, logistics, entertainment, general commerce, and tech-driven innovation.' },
   { question: 'Do you support partnerships and collaborations?', answer: 'Yes. We welcome conversations around partnerships, investments, strategic collaborations, and project opportunities across our business divisions.' },
-  { question: 'How can I contact your team?', answer: 'You can reach us through the contact section on the home page, by email at hello@gigoc.org, or by phone for direct enquiries.' },
+  { question: 'How can I contact your team?', answer: `You can reach us through the contact section on the home page, by email at ${companyContact.email}, or by phone on ${companyContact.phoneDisplay}.` },
   { question: 'Do you handle custom project requests?', answer: 'Yes. Depending on the division, our team can review tailored requests and recommend the best structure, service, or collaboration path.' },
 ];
 
@@ -137,9 +138,9 @@ export default function AboutPage() {
                 className="group overflow-hidden rounded-[1.5rem] border bg-white shadow-[0_18px_40px_rgba(15,23,42,0.06)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_28px_56px_rgba(15,23,42,0.12)]"
                 style={{ borderColor: 'rgba(148, 163, 184, 0.16)' }}
               >
-                <div className="relative h-90 overflow-hidden">
-                  <Image src={member.image} alt={member.name} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 33vw" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/35 via-transparent to-transparent" />
+                <div className="relative h-90 rounded-2xl overflow-hidden">
+                  <Image src={member.image} alt={member.name} fill className="object-cover   transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 33vw" />
+                  <div className="absolute  inset-0 bg-gradient-to-t from-slate-950/35 via-transparent to-transparent" />
                   <div className="absolute bottom-4 left-4">
                     <SocialIconRow />
                   </div>
@@ -307,7 +308,7 @@ export default function AboutPage() {
                       24/7 Service
                     </p>
                     <p className="text-sm" style={{ color: 'var(--text-soft)' }}>
-                      +237 600 000 000
+                      {companyContact.phoneDisplay}
                     </p>
                   </div>
                 </div>

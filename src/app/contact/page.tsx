@@ -4,29 +4,29 @@ import Link from 'next/link';
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaPinterestP, FaXTwitter } from 'react-icons/fa6';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import { companyContact } from '@/data/contact';
 
 const contactDetails = [
   {
     title: 'Address',
     icon: MapPin,
-    lines: ['Limbe, South West Region', 'Cameroon'],
+    lines: companyContact.addressLines,
   },
   {
     title: 'Contact',
     icon: PhoneCall,
-    lines: ['Phone: +237 600 000 000', 'Email: hello@gigoc.org'],
+    lines: [`Phone: ${companyContact.phoneDisplay}`, `Email: ${companyContact.email}`],
   },
   {
     title: 'Open Time',
     icon: Clock3,
-    lines: ['Monday - Friday', '09:00 - 20:00'],
+    lines: ['Monday - Friday', '09:00 am - 05:00 pm'],
   },
 ];
 
 const socialLinks = [
   { label: 'Facebook', href: '#', icon: FaFacebookF },
   { label: 'X', href: '#', icon: FaXTwitter },
-  { label: 'Pinterest', href: '#', icon: FaPinterestP },
   { label: 'Instagram', href: '#', icon: FaInstagram },
   { label: 'LinkedIn', href: '#', icon: FaLinkedinIn },
 ];
@@ -110,26 +110,26 @@ export default function ContactPage() {
                   <p>Talk to us about projects, partnerships, investments, or operational support.</p>
                   <p>
                     Email us at{' '}
-                    <Link href="mailto:hello@gigoc.org" className="font-medium text-white transition hover:text-blue-200">
-                      hello@gigoc.org
+                    <Link href={`mailto:${companyContact.email}`} className="font-medium text-white transition hover:text-blue-200">
+                      {companyContact.email}
                     </Link>
                     {' '}or call{' '}
-                    <Link href="tel:+237600000000" className="font-medium text-white transition hover:text-blue-200">
-                      +237 600 000 000
+                    <Link href={`tel:${companyContact.phoneHref}`} className="font-medium text-white transition hover:text-blue-200">
+                      {companyContact.phoneDisplay}
                     </Link>
                     .
                   </p>
                 </div>
                 <div className="mt-7 flex flex-wrap gap-3">
                   <Link
-                    href="mailto:hello@gigoc.org"
+                    href={`mailto:${companyContact.email}`}
                     className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-[#1e4a95] transition hover:-translate-y-0.5"
                   >
                     <Mail className="h-4 w-4" strokeWidth={2.2} />
                     Email Us
                   </Link>
                   <Link
-                    href="tel:+237600000000"
+                    href={`tel:${companyContact.phoneHref}`}
                     className="inline-flex items-center gap-2 rounded-full border px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
                     style={{ borderColor: 'rgba(255, 255, 255, 0.16)' }}
                   >
@@ -291,7 +291,7 @@ export default function ContactPage() {
                 <button
                   type="submit"
                   className="inline-flex rounded-full px-7 py-3 text-sm font-semibold text-white shadow-[0_18px_35px_rgba(37,99,235,0.22)] transition hover:-translate-y-0.5"
-                  style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #2563eb 100%)' }}
+                  style={{ background: 'linear-gradient(135deg, #1e4a95 0%, #2563eb 100%)' }}
                 >
                   Send Message
                 </button>

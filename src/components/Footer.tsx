@@ -1,20 +1,26 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { companyContact } from '@/data/contact';
 
 type SocialPlatform = 'facebook' | 'instagram' | 'linkedin';
 
 const companyLinks = [
   { label: 'Home', href: '/#home' },
   { label: 'About Us', href: '/about' },
-  { label: 'Projects', href: '#' },
+  { label: 'GiGOC News', href: '/news' },
   { label: 'Contact', href: '/contact' },
 ];
 
 const divisionLinks = [
-  { label: 'Modelling', href: '/#hero-divisions' },
-  { label: 'Real Estate', href: '/#hero-divisions' },
-  { label: 'Manufacturing', href: '/#hero-divisions' },
-  { label: 'Tech & Innovation', href: '/#hero-divisions' },
+  { label: 'Modelling', href: '/#' },
+  { label: 'Real Estate', href: '/#' },
+  { label: 'Manufacturing', href: '/#' },
+  { label: 'Tech & Innovation', href: '/#' },
+  { label: 'Music & Entertainment', href: '/#' },
+  { label: 'GiGOC Rentals', href: '/#' },
+  { label: 'Logistics', href: '/#' },
+  { label: 'General Commerce', href: '/#' },
+
 ];
 
 const socialLinks = [
@@ -99,15 +105,15 @@ export default function Footer() {
           <div>
             <h3 className="text-sm font-semibold tracking-[0.2em] uppercase text-white/55">Contact Info</h3>
             <div className="mt-5 space-y-4 text-sm leading-7 text-white/70">
-              <p>Limbe, Cameroon</p>
+              <p>{companyContact.address}</p>
               <p>
-                <Link href="mailto:hello@gigoc.org" className="transition hover:text-white">
-                  hello@gigoc.org
+                <Link href={`mailto:${companyContact.email}`} className="transition hover:text-white">
+                  {companyContact.email}
                 </Link>
               </p>
               <p>
-                <Link href="tel:+237600000000" className="transition hover:text-white">
-                  +237 600 000 000
+                <Link href={`tel:${companyContact.phoneHref}`} className="transition hover:text-white">
+                  {companyContact.phoneDisplay}
                 </Link>
               </p>
             </div>
