@@ -9,7 +9,7 @@ type Division = {
   slug: string;
   title: string;
   description: string;
-  icon: 'modelling' | 'realEstate' | 'manufacturing' | 'Car Rentals' | 'music' | 'commerce' | 'tech';
+  icon: 'modelling' | 'realEstate' | 'manufacturing' | 'GiGOC Rentals' | 'music' | 'commerce' | 'tech' | 'logistics';
 };
 
 const stats = [
@@ -20,28 +20,16 @@ const stats = [
 
 const divisions: Division[] = [
   {
-    slug: 'modelling',
-    title: 'Modelling',
-    description: 'Creative direction, talent development, and visual campaigns that elevate brands.',
-    icon: 'modelling',
-  },
-  {
     slug: 'real-estate',
     title: 'Real Estate',
     description: 'Property development, investment opportunities, and spaces built for lasting value.',
     icon: 'realEstate',
   },
   {
-    slug: 'manufacturing',
-    title: 'Manufacturing',
-    description: 'Scalable production solutions focused on quality, consistency, and market readiness.',
-    icon: 'manufacturing',
-  },
-  {
-    slug: 'Car Rentals',
-    title: 'Car Rentals',
+    slug: 'GiGOC Rentals',
+    title: 'GiGOC Rentals',
     description: 'Reliable and luxury cars for rent, providing mobility solutions with comfort and style.',
-    icon: 'Car Rentals',
+    icon: 'GiGOC Rentals',
   },
   {
     slug: 'music-entertainment',
@@ -49,6 +37,21 @@ const divisions: Division[] = [
     description: 'Production, promotion, and audience experiences that turn creativity into impact.',
     icon: 'music',
   },
+  {
+    slug: 'modelling',
+    title: 'Modelling',
+    description: 'Creative direction, talent development, and visual campaigns that elevate brands.',
+    icon: 'modelling',
+  },
+  
+  {
+    slug: 'manufacturing',
+    title: 'Manufacturing',
+    description: 'Scalable production solutions focused on quality, consistency, and market readiness.',
+    icon: 'manufacturing',
+  },
+  
+  
   {
     slug: 'general-commerce',
     title: 'General Commerce',
@@ -60,6 +63,12 @@ const divisions: Division[] = [
     title: 'Tech & Innovation',
     description: 'Digital products, automation, and innovation systems that power modern growth.',
     icon: 'tech',
+  },
+  {
+    slug: 'logistics',
+    title: 'Logistics',
+    description: 'Efficient and reliable logistics solutions that connect supply chains, optimize operations, and ensure timely delivery.',
+    icon: 'logistics',
   },
 ];
 
@@ -89,7 +98,7 @@ function DivisionIcon({ icon }: { icon: Division['icon'] }) {
           <path d="M7 20v-4M12 20v-3M17 20v-5" />
         </svg>
       );
-    case 'Car Rentals':
+    case 'GiGOC Rentals':
       return (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={iconClassName}>
           <path d="M3 7h11v8H3z" />
@@ -148,13 +157,13 @@ export default function Hero() {
     return () => window.cancelAnimationFrame(frame);
   }, [scrollToSlide]);
 
-  useEffect(() => {
-    const interval = window.setInterval(() => {
-      scrollToSlide(currentIndex + 1);
-    }, 5000);
+  // useEffect(() => {
+  //   const interval = window.setInterval(() => {
+  //     scrollToSlide(currentIndex + 1);
+  //   }, 5000);
 
-    return () => window.clearInterval(interval);
-  }, [currentIndex, scrollToSlide]);
+  //   return () => window.clearInterval(interval);
+  // }, [currentIndex, scrollToSlide]);
 
   const moveTo = (index: number) => {
     scrollToSlide(index);
@@ -216,14 +225,14 @@ export default function Hero() {
     >
       <div className="absolute inset-0">
         <Image
-          src="/hero-bg2.jpg"
+          src="/hero-00.png"
           alt="Gebah Investment Group hero background"
           fill
           priority
           className="object-cover object-center"
         />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(124,58,237,0.24),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(37,99,235,0.22),transparent_30%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(15,23,42,0.88)_0%,rgba(15,23,42,0.76)_46%,rgba(15,23,42,0.64)_100%)]" />
+        {/* <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(124,58,237,0.24),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(37,99,235,0.22),transparent_30%)]" /> */}
+        <div className="absolute inset-0 bg-black/50" />
       </div>
 
       <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col px-4 pb-8 pt-28 sm:px-6 lg:px-8 lg:pb-10 lg:pt-32">
@@ -295,10 +304,10 @@ export default function Hero() {
                 borderColor: 'rgba(255, 255, 255, 0.12)',
               }}
             >
-              Our Division
+              Our Businesses
             </div>
 
-            <div className="mx-auto w-full max-w-[22rem] pt-20 sm:max-w-[27rem] lg:ml-auto lg:mr-0 lg:max-w-[28rem] lg:pt-24">
+            <div className="mx-auto w-full max-w-[22rem] pt-20 sm:max-w-[30rem] lg:ml-auto lg:mr-0 lg:max-w-[32rem] lg:pt-24">
               <div
                 ref={sliderRef}
                 className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-3 pt-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:gap-5"
@@ -408,7 +417,7 @@ export default function Hero() {
         </div>
 
         <div className="pb-2 pt-4 sm:pt-6">
-          <CompaniesCarousel />
+          {/* <CompaniesCarousel /> */}
         </div>
       </div>
     </section>

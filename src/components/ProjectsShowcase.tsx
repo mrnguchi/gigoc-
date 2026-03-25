@@ -66,9 +66,9 @@ function badgeStyles(status: ProjectStatus) {
 
 export default function ProjectsShowcase() {
   return (
-    <section className="bg-white px-5 py-18 sm:px-6 lg:px-10">
+    <section className="bg-white px-5 -mt-12 py-18 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-7xl">
-        <div className="max-w-2xl">
+        <div className="max-w-2xl text-center mx-auto">
           <p className="text-sm font-semibold tracking-[0.22em] uppercase" style={{ color: 'var(--primary)' }}>
             -- Our projects -- 
           </p>

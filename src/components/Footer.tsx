@@ -4,17 +4,17 @@ import Link from 'next/link';
 type SocialPlatform = 'facebook' | 'instagram' | 'linkedin';
 
 const companyLinks = [
-  { label: 'Home', href: '#home' },
-  { label: 'About Us', href: '#' },
+  { label: 'Home', href: '/#home' },
+  { label: 'About Us', href: '/about' },
   { label: 'Projects', href: '#' },
-  { label: 'Contact', href: '#contact-section' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 const divisionLinks = [
-  { label: 'Modelling', href: '#hero-divisions' },
-  { label: 'Real Estate', href: '#hero-divisions' },
-  { label: 'Manufacturing', href: '#hero-divisions' },
-  { label: 'Tech & Innovation', href: '#hero-divisions' },
+  { label: 'Modelling', href: '/#hero-divisions' },
+  { label: 'Real Estate', href: '/#hero-divisions' },
+  { label: 'Manufacturing', href: '/#hero-divisions' },
+  { label: 'Tech & Innovation', href: '/#hero-divisions' },
 ];
 
 const socialLinks = [
@@ -54,8 +54,8 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl rounded-[2rem] border border-white/10 bg-white/5 px-6 py-10 backdrop-blur-sm sm:px-8 lg:px-10">
         <div className="grid gap-10 md:grid-cols-2 xl:grid-cols-4">
           <div>
-            <Link href="#home" className="inline-flex items-center">
-              <Image src="/gigoc-footer.png" alt="GiGOC logo" width={150} height={52} />
+            <Link href="/#home" className="inline-flex items-center">
+              <Image src="/gigoc-footer.png" alt="GiGOC logo" width={180} height={60} />
             </Link>
             <p className="mt-5 max-w-xs text-sm leading-7 text-white/70">
               GiGOC brings together creative, commercial, and operational divisions to build modern businesses and lasting value.
@@ -99,7 +99,7 @@ export default function Footer() {
           <div>
             <h3 className="text-sm font-semibold tracking-[0.2em] uppercase text-white/55">Contact Info</h3>
             <div className="mt-5 space-y-4 text-sm leading-7 text-white/70">
-              <p>Douala, Cameroon</p>
+              <p>Limbe, Cameroon</p>
               <p>
                 <Link href="mailto:hello@gigoc.org" className="transition hover:text-white">
                   hello@gigoc.org

@@ -3,29 +3,85 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { ChevronDown } from 'lucide-react';
 
 const divisions = [
-  'Modelling',
   'Real Estate',
   'Manufacturing',
-  'Logistics',
   'Music & Entertainment',
-  'General Commerce',
+  'GiGOC Rentals',
+  'Logistics',
   'Tech & Innovation',
+  'General Commerce',
+  'Modelling',
 ];
 
+function isActivePath(pathname: string, href: string) {
+  if (!href || href === '#') {
+    return false;
+  }
+
+  if (href.startsWith('/#')) {
+    return pathname === '/';
+  }
+
+  if (href === '/') {
+    return pathname === '/';
+  }
+
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export default function Navbar() {
+  const pathname = usePathname();
   const navLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'About Us', href: '#' },
-    { name: 'Blog', href: '#' },
-    { name: 'Contact', href: '#' },
+    { name: 'Investor Relations', href: '#' },
+    { name: 'About Us', href: '/about' },
+    { name: 'GiGOC News', href: '/news' },
+    { name: 'Contact', href: '/contact' },
   ];
 
   const [isDivisionsOpen, setIsDivisionsOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileDivisionsOpen, setIsMobileDivisionsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const divisionsMenuRef = useRef<HTMLDivElement | null>(null);
+
+  const navTextClassName = isScrolled ? 'text-[#1e4a95] hover:text-[#2563eb]' : 'text-white/90 hover:text-white';
+  const homeHref = '/#home';
+
+  const getDesktopLinkClassName = (href: string) => {
+    const isActive = isActivePath(pathname, href);
+
+    return `rounded-full px-3 py-2 text-sm transition ${
+      isActive
+        ? isScrolled
+          ? 'bg-[#1e4a95]/10 font-semibold text-[#1e4a95]'
+          : 'bg-white/12 font-semibold text-white'
+        : `font-medium ${navTextClassName}`
+    }`;
+  };
+
+  const getMobileLinkClassName = (href: string) => {
+    const isActive = isActivePath(pathname, href);
+
+    return `rounded-2xl px-4 py-3 text-sm transition ${
+      isActive ? 'bg-white/12 font-semibold text-white' : 'text-white/90 hover:bg-white/6'
+    }`;
+  };
+
+  const desktopDivisionsClassName = `flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium transition ${
+    isDivisionsOpen
+      ? isScrolled
+        ? 'bg-[#1e4a95]/10 text-[#1e4a95]'
+        : 'bg-white/12 text-white'
+      : navTextClassName
+  }`;
+
+  const mobileDivisionsClassName = `flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left text-sm font-semibold transition ${
+    isMobileDivisionsOpen ? 'bg-white/12 text-white' : 'text-white'
+  }`;
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
@@ -77,6 +133,19 @@ export default function Navbar() {
     };
   }, [isMobileMenuOpen]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
     <header className="fixed inset-x-0 top-0 z-50">
       {isMobileMenuOpen ? (
@@ -88,40 +157,43 @@ export default function Navbar() {
         />
       ) : null}
 
-      <div className="relative z-50 px-4 pt-4 sm:px-6 lg:px-8">
+      <div className="relative z-[60] px-4 pt-4 sm:px-6 lg:px-8">
         <nav
-          className="mx-auto flex max-w-7xl items-center justify-between rounded-[1.75rem] border px-4 py-3 shadow-2xl backdrop-blur-xl sm:px-6"
+          className={`relative z-50 mx-auto flex max-w-7xl items-center justify-between px-4 py-3 transition-all duration-300 sm:px-6 ${
+            isScrolled ? 'rounded-[1.75rem] border shadow-[0_18px_45px_rgba(15,23,42,0.12)]' : ''
+          }`}
           style={{
-            backgroundColor: 'rgba(225, 228, 235, 0.72)',
-            borderColor: 'rgba(255, 255, 255, 0.12)',
+            backgroundColor: isScrolled ? 'rgba(255, 255, 255, 0.96)' : 'transparent',
+            borderColor: isScrolled ? 'rgba(148, 163, 184, 0.22)' : 'transparent',
+            backdropFilter: isScrolled ? 'blur(18px)' : 'none',
           }}
         >
-          <Link href="#home" className="flex items-center gap-3">
+          <Link href="/#home" className="flex items-center gap-3">
             <Image
-                src="/g-logo.png"
-                alt="Gebah Investment Group Of Companies logo"
-                width={120}
-                height={150}
-                priority
-              />
+              src={isScrolled ? '/gigoc-blue.png' : '/gigoc-white.png'}
+              alt="Gebah Investment Group Of Companies logo"
+              width={120}
+              height={150}
+              priority
+            />
           </Link>
 
           <div className="hidden items-center gap-7 lg:flex">
-            <Link href="#home" className="text-sm font-medium text-white/90 transition hover:text-white">
+            <Link href={homeHref} className={getDesktopLinkClassName(homeHref)}>
               Home
             </Link>
 
             <div ref={divisionsMenuRef} className="relative">
               <button
                 type="button"
-                className="flex items-center gap-2 text-sm font-medium text-white/90 transition hover:text-white"
+                className={desktopDivisionsClassName}
                 onClick={() => setIsDivisionsOpen((open) => !open)}
                 aria-expanded={isDivisionsOpen}
                 aria-haspopup="menu"
               >
-                Divisions
+                Our Businesses
                 <span className={`text-xs transition-transform ${isDivisionsOpen ? 'rotate-180' : ''}`}>
-                  ▾
+                  <ChevronDown size={14} />
                 </span>
               </button>
 
@@ -136,7 +208,7 @@ export default function Navbar() {
                   {divisions.map((division) => (
                     <Link
                       key={division}
-                      href="#hero-divisions"
+                      href="/#hero-divisions"
                       className="block rounded-2xl px-4 py-3 text-sm text-white/80 transition hover:bg-white/10 hover:text-white"
                       onClick={() => setIsDivisionsOpen(false)}
                     >
@@ -151,7 +223,7 @@ export default function Navbar() {
               <Link
                 key={link.name}
                 href={link.href}
-                className="text-sm font-medium text-white/90 transition hover:text-white"
+                className={getDesktopLinkClassName(link.href)}
               >
                 {link.name}
               </Link>
@@ -160,8 +232,8 @@ export default function Navbar() {
 
           <div className="hidden lg:block">
             <Link
-              href="#contact-section"
-              className="rounded-full px-6 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5"
+              href="/contact"
+              className="rounded-full text-center px-6 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5"
               style={{
                 background: 'linear-gradient(135deg, #1e4a95 0%, #2563eb 100%)',
                 boxShadow: '0 18px 30px rgba(37, 99, 235, 0.24)',
@@ -172,22 +244,24 @@ export default function Navbar() {
           </div>
 
           <button
-            type="button"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border text-white lg:hidden"
-            style={{
-              backgroundColor: 'rgba(255, 255, 255, 0.06)',
-              borderColor: 'rgba(255, 255, 255, 0.12)',
-            }}
-            onClick={toggleMobileMenu}
-            aria-expanded={isMobileMenuOpen}
-            aria-label="Toggle navigation menu"
-          >
-            <span className="text-lg">☰</span>
-          </button>
+              type="button"
+              className={`inline-flex h-11 w-11 items-center justify-center rounded-2xl border transition-colors lg:hidden ${
+                isScrolled ? 'text-[#1e4a95]' : 'text-white'
+              }`}
+              style={{
+                backgroundColor: isScrolled ? 'rgba(30, 74, 149, 0.06)' : 'rgba(255, 255, 255, 0.06)',
+                borderColor: isScrolled ? 'rgba(30, 74, 149, 0.18)' : 'rgba(255, 255, 255, 0.12)',
+              }}
+              onClick={toggleMobileMenu}
+              aria-expanded={isMobileMenuOpen}
+              aria-label="Toggle navigation menu"
+            >
+              <span className="text-lg">{isMobileMenuOpen ? '✕' : '☰'}</span>
+            </button>
         </nav>
 
         {isMobileMenuOpen ? (
-          <div className="fixed inset-x-0 top-0 z-50 px-4 pb-4 pt-24 sm:px-6 lg:hidden">
+          <div className="fixed inset-x-0 top-0 z-40 px-4 pb-4 pt-24 sm:px-6 lg:hidden">
             <div
               className="mx-auto max-w-7xl overflow-hidden rounded-[1.5rem] border shadow-2xl backdrop-blur-xl"
               style={{
@@ -200,18 +274,18 @@ export default function Navbar() {
             >
               <div className="max-h-[calc(100vh-7rem)] overflow-y-auto p-4">
                 <div className="flex flex-col gap-2">
-                  <Link href="#home" className="rounded-2xl px-4 py-3 text-success" onClick={closeMobileMenu}>
+                  <Link href={homeHref} className={getMobileLinkClassName(homeHref)} onClick={closeMobileMenu}>
                     Home
                   </Link>
 
                   <div className="rounded-2xl border" style={{ borderColor: 'rgba(255, 255, 255, 0.1)' }}>
                     <button
                       type="button"
-                      className="flex w-full items-center justify-between px-4 py-3 text-left text-sm font-semibold text-white"
+                      className={mobileDivisionsClassName}
                       onClick={() => setIsMobileDivisionsOpen((open) => !open)}
                       aria-expanded={isMobileDivisionsOpen}
                     >
-                      <span>Divisions</span>
+                      <span>Our Businesses</span>
                       <span className={`text-xs transition-transform ${isMobileDivisionsOpen ? 'rotate-180' : ''}`}>
                         ▾
                       </span>
@@ -222,7 +296,7 @@ export default function Navbar() {
                         {divisions.map((division) => (
                           <Link
                             key={division}
-                            href="#hero-divisions"
+                            href="/#hero-divisions"
                             className="rounded-2xl px-3 py-2 text-sm text-white/75 transition hover:bg-white/10 hover:text-white"
                             onClick={closeMobileMenu}
                           >
@@ -237,7 +311,7 @@ export default function Navbar() {
                     <Link
                       key={link.name}
                       href={link.href}
-                      className="rounded-2xl px-4 py-3 text-white/90"
+                      className={getMobileLinkClassName(link.href)}
                       onClick={closeMobileMenu}
                     >
                       {link.name}
@@ -245,7 +319,7 @@ export default function Navbar() {
                   ))}
 
                   <Link
-                    href="#contact-section"
+                    href="/contact"
                     className="mt-2 rounded-full px-6 py-3 text-sm font-semibold text-white"
                     onClick={closeMobileMenu}
                     style={{ background: 'linear-gradient(135deg, #1e4a95 0%, #2563eb 100%)' }}

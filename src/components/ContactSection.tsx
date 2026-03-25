@@ -1,10 +1,10 @@
 export default function ContactSection() {
   return (
     <section id="contact-section" className="scroll-mt-32 bg-[var(--bg-main)] px-5 pb-20 pt-4 sm:px-6 lg:px-10 lg:pb-24">
-      <div className="mx-auto grid max-w-7xl items-start gap-10 rounded-[2rem] border bg-white px-6 py-8 shadow-[0_20px_70px_rgba(15,23,42,0.08)] sm:px-8 sm:py-10 lg:grid-cols-[1.05fr_0.95fr] lg:px-10">
+      <div className="mx-auto grid max-w-7xl items-start gap-10 rounded-[2rem] border bg-white md:mt-10 px-6 py-8 shadow-[0_20px_70px_rgba(15,23,42,0.08)] sm:px-8 sm:py-10 lg:grid-cols-[1.05fr_0.95fr] lg:px-10">
         <div className="lg:pl-6">
           <p className="text-sm font-semibold tracking-[0.22em] uppercase" style={{ color: 'var(--primary)' }}>
-            Contact us
+            -- Contact us --
           </p>
           <h2 className="mt-3 text-3xl font-semibold leading-tight sm:text-4xl" style={{ color: 'var(--text-main)' }}>
             Let’s talk about your next project
