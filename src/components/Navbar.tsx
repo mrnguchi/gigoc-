@@ -7,14 +7,14 @@ import { usePathname } from 'next/navigation';
 import { ChevronDown } from 'lucide-react';
 
 const divisions = [
-  'Real Estate',
-  'Manufacturing',
-  'Music & Entertainment',
-  'GiGOC Rentals',
-  'Logistics',
-  'Tech & Innovation',
-  'General Commerce',
-  'Modelling',
+  { label: 'Music & Entertainment', href: '/music&entertainment' },
+  { label: 'GiGOC Rentals', href: '/gigoc_rentals' },
+  { label: 'Tech & Innovation', href: '/tech&innovation' },
+  { label: 'Logistics', href: '/#hero-divisions' },
+  { label: 'General Commerce', href: '/#hero-divisions' },
+  { label: 'Modelling', href: '/#hero-divisions' },
+  { label: 'Real Estate', href: '/#hero-divisions' },
+  { label: 'Manufacturing', href: '/#hero-divisions' },
 ];
 
 function isActivePath(pathname: string, href: string) {
@@ -207,12 +207,12 @@ export default function Navbar() {
                 >
                   {divisions.map((division) => (
                     <Link
-                      key={division}
-                      href="/#hero-divisions"
+                      key={division.label}
+                      href={division.href}
                       className="block rounded-2xl px-4 py-3 text-sm text-white/80 transition hover:bg-white/10 hover:text-white"
                       onClick={() => setIsDivisionsOpen(false)}
                     >
-                      {division}
+                      {division.label}
                     </Link>
                   ))}
                 </div>
@@ -295,12 +295,12 @@ export default function Navbar() {
                       <div className="grid gap-2 px-3 pb-3 sm:grid-cols-2">
                         {divisions.map((division) => (
                           <Link
-                            key={division}
-                            href="/#hero-divisions"
+                            key={division.label}
+                            href={division.href}
                             className="rounded-2xl px-3 py-2 text-sm text-white/75 transition hover:bg-white/10 hover:text-white"
                             onClick={closeMobileMenu}
                           >
-                            {division}
+                            {division.label}
                           </Link>
                         ))}
                       </div>

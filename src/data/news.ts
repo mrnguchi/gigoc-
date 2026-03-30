@@ -36,7 +36,7 @@ const featuredNewsArticle: NewsDetailArticle = {
   excerpt:
     'Get ready for an electrifying night as Asake performs live in Cameroon. Experience high-energy music, a vibrant crowd, and world-class entertainment powered by GiGOC’s vision to deliver unforgettable moments.',
   details: [
-    { icon: 'calendar', info: 'Saturday, 12 April 2026' },
+    { icon: 'calendar', info: 'December 2026' },
     { icon: 'location', info: 'Palais des Sports, Yaoundé, Cameroon' },
     { icon: 'time', info: 'Doors open at 7:00 PM' },
   ],

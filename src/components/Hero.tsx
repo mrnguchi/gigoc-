@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import CompaniesCarousel from '@/components/CompaniesCarousel';
 
 type Division = {
@@ -10,6 +11,7 @@ type Division = {
   title: string;
   description: string;
   icon: 'modelling' | 'realEstate' | 'manufacturing' | 'GiGOC Rentals' | 'music' | 'commerce' | 'tech' | 'logistics';
+  href: string;
 };
 
 const stats = [
@@ -24,24 +26,28 @@ const divisions: Division[] = [
     title: 'Real Estate',
     description: 'Property development, investment opportunities, and spaces built for lasting value.',
     icon: 'realEstate',
+    href: '/#hero-divisions',
   },
   {
     slug: 'GiGOC Rentals',
     title: 'GiGOC Rentals',
     description: 'Reliable and luxury cars for rent, providing mobility solutions with comfort and style.',
     icon: 'GiGOC Rentals',
+    href: '/gigoc_rentals',
   },
   {
     slug: 'music-entertainment',
     title: 'Music & Entertainment',
     description: 'Production, promotion, and audience experiences that turn creativity into impact.',
     icon: 'music',
+    href: '/music&entertainment',
   },
   {
     slug: 'modelling',
     title: 'Modelling',
     description: 'Creative direction, talent development, and visual campaigns that elevate brands.',
     icon: 'modelling',
+    href: '/#hero-divisions',
   },
   
   {
@@ -49,6 +55,7 @@ const divisions: Division[] = [
     title: 'Manufacturing',
     description: 'Scalable production solutions focused on quality, consistency, and market readiness.',
     icon: 'manufacturing',
+    href: '/#hero-divisions',
   },
   
   
@@ -57,18 +64,21 @@ const divisions: Division[] = [
     title: 'General Commerce',
     description: 'Trading and commercial solutions that connect products, markets, and people.',
     icon: 'commerce',
+    href: '/#hero-divisions',
   },
   {
     slug: 'tech-innovation',
     title: 'Tech & Innovation',
     description: 'Digital products, automation, and innovation systems that power modern growth.',
     icon: 'tech',
+    href: '/#hero-divisions',
   },
   {
     slug: 'logistics',
     title: 'Logistics',
     description: 'Efficient and reliable logistics solutions that connect supply chains, optimize operations, and ensure timely delivery.',
     icon: 'logistics',
+    href: '/#hero-divisions',
   },
 ];
 
@@ -135,6 +145,7 @@ function DivisionIcon({ icon }: { icon: Division['icon'] }) {
 }
 
 export default function Hero() {
+  const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
   const sliderRef = useRef<HTMLDivElement | null>(null);
   const slideRefs = useRef<Array<HTMLButtonElement | null>>([]);
@@ -167,6 +178,17 @@ export default function Hero() {
 
   const moveTo = (index: number) => {
     scrollToSlide(index);
+  };
+
+  const handleDivisionAction = (division: Division, index: number) => {
+    if (index !== currentIndex) {
+      moveTo(index);
+      return;
+    }
+
+    if (division.href && division.href !== '#') {
+      router.push(division.href);
+    }
   };
 
   useEffect(() => {
@@ -325,7 +347,7 @@ export default function Hero() {
                         slideRefs.current[index] = element;
                       }}
                       type="button"
-                      onClick={() => moveTo(index)}
+                      onClick={() => handleDivisionAction(division, index)}
                       className="w-[250px] shrink-0 snap-center text-left sm:w-[320px]"
                       aria-pressed={isActive}
                     >

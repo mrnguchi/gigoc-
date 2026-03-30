@@ -15,8 +15,8 @@ type Business = {
 // This is the content powering the business cards.
 const businesses: Business[] = [
   { title: 'Real Estate', icon: Home, href: '#', summary: 'Property development and real estate opportunities focused on quality assets and long-term value.' },
-  { title: 'Music & Entertainment', icon: Music, href: '#', summary: 'Experiences, production, and promotion that turn creative ideas into meaningful audience impact.' },
-  { title: 'Car Rentals', icon: CarFront, href: '#', summary: 'Reliable and executive vehicle rental solutions tailored for convenience, comfort, and flexibility.' },
+  { title: 'Music & Entertainment', icon: Music, href: '/music&entertainment', summary: 'Experiences, production, and promotion that turn creative ideas into meaningful audience impact.' },
+  { title: 'Car Rentals', icon: CarFront, href: '/gigoc_rentals', summary: 'Reliable and executive vehicle rental solutions tailored for convenience, comfort, and flexibility.' },
   { title: 'General Commerce', icon: ShoppingBag, href: '#', summary: 'Commercial solutions that connect supply, demand, and market opportunities across industries.' },
   { title: 'Modelling', icon: Sparkles, href: '#', summary: 'Talent development, visual direction, and brand campaigns designed to build a stronger presence.' },
   { title: 'Manufacturing', icon: Factory, href: '#', summary: 'Scalable production systems built to support operational efficiency, quality control, and growth.' },

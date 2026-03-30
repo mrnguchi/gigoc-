@@ -8,11 +8,11 @@ import { companyContact } from '@/data/contact';
 import { newsSectionData } from '@/data/news';
 
 const teamMembers = [
-  { name: 'Bill B. Gebah', role: 'Chief Executive Officer', info: 'Leads the group vision and long-term strategy.', image: '/unnamed.jpg' },
+  { name: 'Bill B. Gebah', role: 'Chief Executive Officer', info: 'Leads the group vision and long-term strategy.', image: '/GOC.jpg' },
   { name: 'Fogam Fabrice', role: 'General Manager', info: 'Oversees performance, coordination, and execution across divisions.', image: '/fogam.jpg' },
-  { name: 'Motoma Harry', role: 'Operation Manager', info: 'Drives day-to-day systems, and cross-team workflow.', image: '/gigoc-house.jpg' },
+  { name: 'Motoma Harry', role: 'Operation Manager', info: 'Drives day-to-day systems, and cross-team workflow.', image: '/motoma.jpg' },
   { name: 'Nguchi N.', role: 'IT Engineer', info: 'Supports digital systems, infrastructure, and technical innovation.', image: '/nguchi.jpg' },
-  { name: 'Ruth B. Ngane', role: 'Secretary', info: 'Handles communication flow, scheduling, and office coordination.', image: '/unnamed.jpg' },
+  { name: 'Miss Blandine', role: 'Secretary', info: 'Handles communication flow, scheduling, and office coordination.', image: '/Blandine.jpg' },
 ];
 
 const companyStats = [

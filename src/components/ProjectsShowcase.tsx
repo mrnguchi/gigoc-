@@ -27,7 +27,7 @@ const projects: Project[] = [
     description: 'A music tour project designed to bring top-tier entertainment experiences to fans across Cameroon, showcasing the best of live performances.',
     image: '/asake.jpg',
     status: 'Ongoing',
-    href: '#',
+    href: '/music&entertainment',
   },
   {
     title: 'GiGOC Rentals',
@@ -35,7 +35,7 @@ const projects: Project[] = [
     description: 'A car rental service project offering a fleet of reliable and luxury vehicles, providing mobility solutions with comfort and style.',
     image: '/gigoc-rentals.png',
     status: 'Ongoing',
-    href: '#',
+    href: '/gigoc_rentals',
   },
 ];
 

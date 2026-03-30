@@ -16,8 +16,8 @@ const divisionLinks = [
   { label: 'Real Estate', href: '/#' },
   { label: 'Manufacturing', href: '/#' },
   { label: 'Tech & Innovation', href: '/#' },
-  { label: 'Music & Entertainment', href: '/#' },
-  { label: 'GiGOC Rentals', href: '/#' },
+  { label: 'Music & Entertainment', href: '/music&entertainment' },
+  { label: 'GiGOC Rentals', href: '/gigoc_rentals' },
   { label: 'Logistics', href: '/#' },
   { label: 'General Commerce', href: '/#' },
 
