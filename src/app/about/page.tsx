@@ -7,12 +7,68 @@ import Navbar from '@/components/Navbar';
 import { companyContact } from '@/data/contact';
 import { newsSectionData } from '@/data/news';
 
+type TeamSocialLinks = Partial<{
+  facebook: string;
+  instagram: string;
+  linkedin: string;
+}>;
+
 const teamMembers = [
-  { name: 'Bill B. Gebah', role: 'Chief Executive Officer', info: 'Leads the group vision and long-term strategy.', image: '/GOC.jpg' },
-  { name: 'Fogam Fabrice', role: 'General Manager', info: 'Oversees performance, coordination, and execution across divisions.', image: '/fogam.jpg' },
-  { name: 'Motoma Harry', role: 'Operation Manager', info: 'Drives day-to-day systems, and cross-team workflow.', image: '/motoma.jpg' },
-  { name: 'Nguchi N.', role: 'IT Engineer', info: 'Supports digital systems, infrastructure, and technical innovation.', image: '/nguchi.jpg' },
-  { name: 'Miss Blandine', role: 'Secretary', info: 'Handles communication flow, scheduling, and office coordination.', image: '/Blandine.jpg' },
+  {
+    name: 'Bill B. Gebah',
+    role: 'Chief Executive Officer',
+    info: 'Leads the group vision and long-term strategy.',
+    image: '/GOC.jpg',
+    socialLinks: {
+      linkedin: '#',
+      instagram: 'https://www.instagram.com/rasbalotelli?igsh=bjBmb2p5NnR4Y2dr&utm_source=qr',
+      facebook: '#',
+    },
+  },
+  {
+    name: 'Fogam Fabrice',
+    role: 'General Manager',
+    info: 'Oversees performance, coordination, and execution across divisions.',
+    image: '/fogam.jpg',
+    socialLinks: {
+      instagram: '#',
+      facebook: '#',
+      linkedin: '#',
+    },
+  },
+  {
+    name: 'Motoma Harry',
+    role: 'Operation Manager',
+    info: 'Drives day-to-day systems, and cross-team workflow.',
+    image: '/motoma.jpg',
+    socialLinks: {
+      facebook: '#',
+      instagram: '#',
+      linkedin: '#',
+    },
+  },
+  {
+    name: 'Nguchi N.',
+    role: 'IT Engineer',
+    info: 'Supports digital systems, infrastructure, and technical innovation.',
+    image: '/nguchi.jpg',
+    socialLinks: {
+      linkedin: '#',
+      instagram: '#',
+      facebook: '#',
+    },
+  },
+  {
+    name: 'Miss Blandine',
+    role: 'Secretary',
+    info: 'Handles communication flow, scheduling, and office coordination.',
+    image: '/Blandine.jpg',
+    socialLinks: {
+      facebook: '#',
+      instagram: '#',
+      linkedin: '#',
+    },
+  },
 ];
 
 const companyStats = [
@@ -34,22 +90,23 @@ const primaryNewsImage = newsSectionData.slides[0]?.image ?? newsSectionData.ima
 const newsDate = newsSectionData.article.details.find((detail) => detail.icon === 'calendar')?.info;
 const newsLocation = newsSectionData.article.details.find((detail) => detail.icon === 'location')?.info;
 
-function SocialIconRow() {
-  const links = [
-    { label: 'Facebook', icon: FaFacebookF, href: '#' },
-    { label: 'Instagram', icon: FaInstagram, href: '#' },
-    { label: 'LinkedIn', icon: FaLinkedinIn, href: '#' },
-  ];
+function SocialIconRow({ links }: { links: TeamSocialLinks }) {
+  const socialItems = [
+    { key: 'facebook' as const, label: 'Facebook', icon: FaFacebookF },
+    { key: 'instagram' as const, label: 'Instagram', icon: FaInstagram },
+    { key: 'linkedin' as const, label: 'LinkedIn', icon: FaLinkedinIn },
+  ].filter((item) => Boolean(links[item.key]));
 
   return (
     <div className="flex items-center gap-2">
-      {links.map((item) => {
+      {socialItems.map((item) => {
         const Icon = item.icon;
+        const href = links[item.key] ?? '#';
 
         return (
           <Link
             key={item.label}
-            href={item.href}
+            href={href}
             aria-label={item.label}
             className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/55 bg-white/92 text-[#1e4a95] shadow-sm transition hover:-translate-y-0.5"
           >
@@ -142,7 +199,7 @@ export default function AboutPage() {
                   <Image src={member.image} alt={member.name} fill className="object-cover   transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 33vw" />
                   <div className="absolute  inset-0 bg-gradient-to-t from-slate-950/35 via-transparent to-transparent" />
                   <div className="absolute bottom-4 left-4">
-                    <SocialIconRow />
+                    <SocialIconRow links={member.socialLinks} />
                   </div>
                 </div>
                 <div className="px-5 py-5">

@@ -63,11 +63,17 @@ export default function MusicEntertainmentPage() {
 
         <div className="relative mx-auto grid max-w-7xl gap-12 px-5 pb-16 pt-6 md:grid-cols-[1.02fr_0.98fr] md:items-center md:px-4 md:py-18">
           <div className="flex flex-col gap-5">
-            <p className="text-sm font-semibold text-center  md:text-left tracking-[0.22em] uppercase text-white/70">
-              - GiGOC Music & Entertainment -
-            </p>
+           <div
+              className="inline-flex w-fit items-center self-center rounded-full border px-4 py-2 text-xs -mt-8 font-semibold tracking-[0.22em] uppercase text-white/80 md:self-start"
+              style={{
+                backgroundColor: 'rgba(255, 255, 255, 0.06)',
+                borderColor: 'rgba(255, 255, 255, 0.12)',
+              }}
+            >
+              GiGOC Music & Entertainment
+            </div>
 
-            <h1 className="max-w-[15ch] text-4xl text-center  md:text-left font-semibold leading-[1.02] text-white sm:max-w-[14ch] sm:text-4xl md:max-w-[15ch] md:text-5xl">
+            <h1 className=" text-4xl text-center  md:text-left font-semibold leading-[1.02] text-white  sm:text-4xl  md:text-5xl">
               We build unforgettable talent and entertainment experiences
             </h1>
 
@@ -406,7 +412,7 @@ export default function MusicEntertainmentPage() {
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-sm font-semibold tracking-[0.22em] uppercase" style={{ color: 'var(--primary)' }}>
-              -- Artist Q&amp;A --
+              -- FAQs --
             </p>
             <h2 className="mt-3 text-3xl font-semibold sm:text-4xl" style={{ color: 'var(--text-main)' }}>
               Questions artists usually ask before signing with management
@@ -467,7 +473,7 @@ export default function MusicEntertainmentPage() {
                       Management Desk
                     </p>
                     <p className="mt-1 text-lg font-semibold" style={{ color: 'var(--text-main)' }}>
-                      Artist Support Line
+                      GiGOC Support Line
                     </p>
                     <p className="text-sm" style={{ color: 'var(--text-soft)' }}>
                       {companyContact.phoneDisplay}
