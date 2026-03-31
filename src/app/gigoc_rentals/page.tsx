@@ -35,28 +35,28 @@ const carCategories = [
     badge: 'Economy',
     badgeClassName: 'border-white/16 bg-white/12 text-white',
     image: '/car1.jpg',
-    description: 'Practical and budget-friendly cars designed for everyday movement, errands, and city commutes.',
+    description: 'Practical and budget-friendly cars for everyday movement.',
   },
   {
     title: 'Executive Sedans',
     badge: 'Executive',
     badgeClassName: 'border-black/20 bg-[rgba(15,23,42,0.72)] text-white',
     image: '/bmw3-s.jpg',
-    description: 'Comfortable and polished vehicles for professionals, corporate use, and airport pickups.',
+    description: 'Comfortable and polished vehicles for professionals.',
   },
   {
     title: 'SUVs & Family Mobility',
     badge: 'Family',
     badgeClassName: 'border-[rgba(255,255,255,0.22)] bg-[linear-gradient(135deg,rgba(30,74,149,0.92),rgba(37,99,235,0.88))] text-white',
     image: '/gle-23.jpg',
-    description: 'Spacious rides for group movement, family travel, and customers who want more room and road presence.',
+    description: 'Spacious rides for group movement.',
   },
   {
     title: 'Utility & Pickup Options',
     badge: 'Utility',
     badgeClassName: 'border-[rgba(255,215,140,0.35)] bg-[linear-gradient(135deg,rgba(176,124,33,0.95),rgba(244,196,83,0.92))] text-[#fff8e6]',
     image: '/ford-ranger.jpg',
-    description: 'Vehicles suited for heavier movement, project support, logistics-related transport, and flexible business use.',
+    description: 'Vehicles suited for logistics-related transport.',
   },
 ];
 
