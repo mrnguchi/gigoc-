@@ -1,9 +1,10 @@
 import { Clock3, Mail, MapPin, PhoneCall } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaFacebookF, FaInstagram, FaLinkedinIn, FaPinterestP, FaXTwitter } from 'react-icons/fa6';
+import { FaFacebookF, FaInstagram, FaLinkedinIn, FaXTwitter } from 'react-icons/fa6';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import ContactForm from '@/components/forms/ContactForm';
 import { companyContact } from '@/data/contact';
 
 const contactDetails = [
@@ -209,93 +210,7 @@ export default function ContactPage() {
                 </h2>
               </div>
 
-              <form className="mt-8 space-y-5">
-                <div className="grid gap-5 sm:grid-cols-2">
-                  <label className="block">
-                    <span className="mb-2 block text-sm font-medium" style={{ color: 'var(--text-main)' }}>
-                      Your Name *
-                    </span>
-                    <input
-                      type="text"
-                      name="name"
-                      placeholder="E.g. John Doe"
-                      className="w-full rounded-2xl border px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:shadow-[0_0_0_4px_rgba(59,130,246,0.08)]"
-                      style={{ borderColor: 'rgba(148, 163, 184, 0.22)', color: 'var(--text-main)' }}
-                    />
-                  </label>
-
-                  <label className="block">
-                    <span className="mb-2 block text-sm font-medium" style={{ color: 'var(--text-main)' }}>
-                      Email *
-                    </span>
-                    <input
-                      type="email"
-                      name="email"
-                      placeholder="example@gmail.com"
-                      className="w-full rounded-2xl border px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:shadow-[0_0_0_4px_rgba(59,130,246,0.08)]"
-                      style={{ borderColor: 'rgba(148, 163, 184, 0.22)', color: 'var(--text-main)' }}
-                    />
-                  </label>
-                </div>
-
-                <div className="grid gap-5 sm:grid-cols-2">
-                  <label className="block">
-                    <span className="mb-2 block text-sm font-medium" style={{ color: 'var(--text-main)' }}>
-                      Phone *
-                    </span>
-                    <input
-                      type="tel"
-                      name="phone"
-                      placeholder="Enter Phone Number"
-                      className="w-full rounded-2xl border px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:shadow-[0_0_0_4px_rgba(59,130,246,0.08)]"
-                      style={{ borderColor: 'rgba(148, 163, 184, 0.22)', color: 'var(--text-main)' }}
-                    />
-                  </label>
-
-                  <label className="block">
-                    <span className="mb-2 block text-sm font-medium" style={{ color: 'var(--text-main)' }}>
-                      Service *
-                    </span>
-                    <select
-                      name="service"
-                      defaultValue=""
-                      className="w-full rounded-2xl border bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:shadow-[0_0_0_4px_rgba(59,130,246,0.08)]"
-                      style={{ borderColor: 'rgba(148, 163, 184, 0.22)', color: 'var(--text-main)' }}
-                    >
-                      <option value="" disabled>
-                        Select Services
-                      </option>
-                      <option value="real-estate">Real Estate</option>
-                      <option value="logistics">Logistics</option>
-                      <option value="manufacturing">Manufacturing</option>
-                      <option value="entertainment">Music & Entertainment</option>
-                      <option value="technology">Tech & Innovation</option>
-                      <option value="general">General Enquiry</option>
-                    </select>
-                  </label>
-                </div>
-
-                <label className="block">
-                  <span className="mb-2 block text-sm font-medium" style={{ color: 'var(--text-main)' }}>
-                    Your Message *
-                  </span>
-                  <textarea
-                    name="message"
-                    rows={6}
-                    placeholder="Enter here..."
-                    className="w-full rounded-[1.5rem] border px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:shadow-[0_0_0_4px_rgba(59,130,246,0.08)]"
-                    style={{ borderColor: 'rgba(148, 163, 184, 0.22)', color: 'var(--text-main)' }}
-                  />
-                </label>
-
-                <button
-                  type="submit"
-                  className="inline-flex rounded-full px-7 py-3 text-sm font-semibold text-white shadow-[0_18px_35px_rgba(37,99,235,0.22)] transition hover:-translate-y-0.5"
-                  style={{ background: 'linear-gradient(135deg, #1e4a95 0%, #2563eb 100%)' }}
-                >
-                  Send Message
-                </button>
-              </form>
+              <ContactForm variant="contact-page" />
             </div>
           </div>
         </div>

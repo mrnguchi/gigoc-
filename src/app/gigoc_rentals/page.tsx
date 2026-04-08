@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { AppWindow, ArrowRight, BriefcaseBusiness, CarFront, CheckCircle2, MapPinned, ShieldCheck, TimerReset, UserRoundPlus, WalletCards } from 'lucide-react';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import NewsletterForm from '@/components/forms/NewsletterForm';
 
 const benefits = [
   {
@@ -445,20 +446,7 @@ export default function GigocRentalsPage() {
                 Subscribe and be the first to discover new cars, exclusive deals, and rental tips from GiGOC Rentals.
               </p>
 
-              <div className="mt-1 flex flex-row items-center rounded-full bg-white pr-1">
-                <svg className="ml-3 h-4 w-4 shrink-0 stroke-[var(--text-soft)]" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="4" width="20" height="16" rx="2" />
-                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                </svg>
-                <input
-                  type="email"
-                  placeholder="Enter your email address"
-                  className="flex-1 bg-transparent px-3 py-2.5 text-sm text-[var(--text-main)] outline-none placeholder:text-[var(--text-soft)]"
-                />
-                <button className="shrink-0 rounded-full bg-[var(--primary)] px-4 py-2 text-xs font-semibold text-white transition hover:opacity-90 sm:px-5 sm:text-sm">
-                  Subscribe
-                </button>
-              </div>
+              <NewsletterForm />
 
               <p className="text-xs text-white/50">You can unsubscribe at any time. No spam, ever.</p>
             </div>

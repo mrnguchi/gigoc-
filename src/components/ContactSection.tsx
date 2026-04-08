@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { companyContact } from '@/data/contact';
+import ContactForm from '@/components/forms/ContactForm';
 
 export default function ContactSection() {
   return (
@@ -34,82 +35,7 @@ export default function ContactSection() {
           </div>
         </div>
 
-        <form className="space-y-5" style={{ borderColor: 'rgba(148, 163, 184, 0.16)' }}>
-          <div className="grid gap-5 sm:grid-cols-2">
-            <label className="block">
-              <span className="mb-2 block text-sm font-medium" style={{ color: 'var(--text-main)' }}>
-                Name
-              </span>
-              <input
-                type="text"
-                name="name"
-                placeholder="Your full name"
-                className="w-full rounded-2xl border px-4 py-3 text-sm outline-none transition focus:border-blue-500"
-                style={{ borderColor: 'rgba(148, 163, 184, 0.22)', color: 'var(--text-main)' }}
-              />
-            </label>
-            <label className="block">
-              <span className="mb-2 block text-sm font-medium" style={{ color: 'var(--text-main)' }}>
-                Email
-              </span>
-              <input
-                type="email"
-                name="email"
-                placeholder="you@example.com"
-                className="w-full rounded-2xl border px-4 py-3 text-sm outline-none transition focus:border-blue-500"
-                style={{ borderColor: 'rgba(148, 163, 184, 0.22)', color: 'var(--text-main)' }}
-              />
-            </label>
-          </div>
-
-          <div className="grid gap-5 sm:grid-cols-2">
-            <label className="block">
-              <span className="mb-2 block text-sm font-medium" style={{ color: 'var(--text-main)' }}>
-                Phone Number
-              </span>
-              <input
-                type="tel"
-                name="phone"
-                placeholder="+237 6XX XXX XXX"
-                className="w-full rounded-2xl border px-4 py-3 text-sm outline-none transition focus:border-blue-500"
-                style={{ borderColor: 'rgba(148, 163, 184, 0.22)', color: 'var(--text-main)' }}
-              />
-            </label>
-            <label className="block">
-              <span className="mb-2 block text-sm font-medium" style={{ color: 'var(--text-main)' }}>
-                Address
-              </span>
-              <input
-                type="text"
-                name="address"
-                placeholder="Your address"
-                className="w-full rounded-2xl border px-4 py-3 text-sm outline-none transition focus:border-blue-500"
-                style={{ borderColor: 'rgba(148, 163, 184, 0.22)', color: 'var(--text-main)' }}
-              />
-            </label>
-          </div>
-
-          <label className="block">
-            <span className="mb-2 block text-sm font-medium" style={{ color: 'var(--text-main)' }}>
-              Message
-            </span>
-            <textarea
-              name="message"
-              rows={5}
-              placeholder="Tell us a bit about your project"
-              className="w-full rounded-[1.5rem] border px-4 py-3 text-sm outline-none transition focus:border-blue-500"
-              style={{ borderColor: 'rgba(148, 163, 184, 0.22)', color: 'var(--text-main)' }}
-            />
-          </label>
-
-          <button
-            type="submit"
-            className="rounded-full px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:-translate-y-0.5"
-            style={{ background: 'linear-gradient(135deg, #1e4a95 0%, #2563eb 100%)' }}
-          >
-            Send Message
-          </button>
-        </form>
+        <ContactForm variant="homepage" />
       </div>
     </section>
   );
