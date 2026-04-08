@@ -25,7 +25,7 @@ const BRAND_COLORS = {
 const siteUrl = process.env.SITE_URL?.replace(/\/$/, '') || 'https://gigoc.org';
 const contactInbox = process.env.CONTACT_TO_EMAIL || process.env.SMTP_USER || companyContact.email;
 const fromName = process.env.EMAIL_FROM_NAME || 'GiGOC';
-const logoUrl = process.env.EMAIL_LOGO_URL || `${siteUrl}/gigoc-blue.png`;
+const logoUrl = process.env.EMAIL_LOGO_URL || `${siteUrl}/gigoc-white.png`;
 
 let transporter: nodemailer.Transporter | null = null;
 
@@ -133,9 +133,9 @@ function buildEmailShell({
           <div style="margin-bottom: 20px;">
             <img src="${escapeHtml(logoUrl)}" alt="GiGOC" width="140" style="display: block; max-width: 140px; height: auto;" />
           </div>
-          <p style="margin: 0 0 12px; font-size: 12px; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(255,255,255,0.72);">${escapeHtml(eyebrow)}</p>
-          <h1 style="margin: 0; font-size: 30px; line-height: 1.15; font-weight: 700;">${escapeHtml(title)}</h1>
-          <p style="margin: 14px 0 0; max-width: 520px; font-size: 15px; line-height: 1.7; color: rgba(255,255,255,0.84);">${escapeHtml(intro)}</p>
+          <p style="margin: 0 0 12px; font-size: 12px; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase; color: #ffffff;">${escapeHtml(eyebrow)}</p>
+          <h1 style="margin: 0; font-size: 30px; line-height: 1.15; font-weight: 700; color: #ffffff;">${escapeHtml(title)}</h1>
+          <p style="margin: 14px 0 0; max-width: 520px; font-size: 15px; line-height: 1.7; color: #ffffff;">${escapeHtml(intro)}</p>
         </div>
 
         <div style="padding: 30px 32px;">
