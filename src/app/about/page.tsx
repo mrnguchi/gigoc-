@@ -38,7 +38,7 @@ const teamMembers = [
   },
   {
     name: 'Motoma Harry',
-    role: 'Operation Manager',
+    role: 'Operations Manager',
     info: 'Drives day-to-day systems, and cross-team workflow.',
     image: '/motoma.jpg',
     socialLinks: {
