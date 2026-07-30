@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import NewsletterForm from '@/components/forms/NewsletterForm';
 import { companyContact } from '@/data/contact';
 
 type SocialPlatform = 'facebook' | 'instagram' | 'linkedin';
@@ -14,7 +15,7 @@ const companyLinks = [
 const divisionLinks = [
   { label: 'Modelling', href: '/#' },
   { label: 'Real Estate', href: '/#' },
-  { label: 'Manufacturing', href: '/#' },
+  { label: 'Manufacturing', href: '/manufacturing' },
   { label: 'Tech & Innovation', href: '/#' },
   { label: 'Music & Entertainment', href: '/music&entertainment' },
   { label: 'GiGOC Rentals', href: '/gigoc_rentals' },
@@ -116,6 +117,21 @@ export default function Footer() {
                   {companyContact.phoneDisplay}
                 </Link>
               </p>
+            </div>
+
+            <div
+              id="footer-newsletter"
+              aria-label="Newsletter subscription"
+              className="-mx-3 mt-7 scroll-mt-8 rounded-2xl px-3 py-3"
+            >
+              <p className="mb-4 max-w-xs text-sm leading-6 text-white/65">
+                Receive occasional GIGOC news and project updates.
+              </p>
+              <NewsletterForm
+                variant="stacked"
+                buttonLabel="Subscribe"
+                inputId="footer-newsletter-email"
+              />
             </div>
           </div>
         </div>

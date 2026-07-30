@@ -4,18 +4,17 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import CompaniesCarousel from '@/components/CompaniesCarousel';
 
 type Division = {
   slug: string;
   title: string;
   description: string;
-  icon: 'modelling' | 'realEstate' | 'manufacturing' | 'GiGOC Rentals' | 'music' | 'commerce' | 'tech' | 'logistics';
+  icon: string;
   href: string;
 };
 
 const stats = [
-  { value: '07', label: 'Core Divisions' },
+  { value: '08', label: 'Core Divisions' },
   { value: '03', label: 'Delivered Projects' },
   { value: '100%', label: 'Growth Potential' },
 ];
@@ -25,124 +24,63 @@ const divisions: Division[] = [
     slug: 'real-estate',
     title: 'Real Estate',
     description: 'Property development, investment opportunities, and spaces built for lasting value.',
-    icon: 'realEstate',
+    icon: '/real estate.png',
     href: '/#hero-divisions',
   },
   {
     slug: 'GiGOC Rentals',
     title: 'GiGOC Rentals',
     description: 'Reliable and luxury cars for rent, providing mobility solutions with comfort and style.',
-    icon: 'GiGOC Rentals',
+    icon: '/car-rental.png',
     href: '/gigoc_rentals',
+  },
+  {
+    slug: 'gigoc-biomass',
+    title: 'GIGOC Biomass',
+    description:
+      'Developing biomass wood-pellet production from suitable wood-processing residues in Limbe, Cameroon.',
+    icon: '/renewable-energy.png',
+    href: '/manufacturing',
   },
   {
     slug: 'music-entertainment',
     title: 'Music & Entertainment',
     description: 'Production, promotion, and audience experiences that turn creativity into impact.',
-    icon: 'music',
+    icon: '/music and entertainment.png',
     href: '/music&entertainment',
   },
   {
     slug: 'modelling',
     title: 'Modelling',
     description: 'Creative direction, talent development, and visual campaigns that elevate brands.',
-    icon: 'modelling',
+    icon: '/modelling.png',
     href: '/#hero-divisions',
   },
   
-  {
-    slug: 'manufacturing',
-    title: 'Manufacturing',
-    description: 'Scalable production solutions focused on quality, consistency, and market readiness.',
-    icon: 'manufacturing',
-    href: '/#hero-divisions',
-  },
   
   
   {
     slug: 'general-commerce',
     title: 'General Commerce',
     description: 'Trading and commercial solutions that connect products, markets, and people.',
-    icon: 'commerce',
+    icon: '/general commerce.png',
     href: '/#hero-divisions',
   },
   {
     slug: 'tech-innovation',
     title: 'Tech & Innovation',
     description: 'Digital products, automation, and innovation systems that power modern growth.',
-    icon: 'tech',
+    icon: '/tech and innovation.png',
     href: '/#hero-divisions',
   },
   {
     slug: 'logistics',
     title: 'Logistics',
     description: 'Efficient and reliable logistics solutions that connect supply chains, optimize operations, and ensure timely delivery.',
-    icon: 'logistics',
+    icon: '/logistics.png',
     href: '/#hero-divisions',
   },
 ];
-
-function DivisionIcon({ icon }: { icon: Division['icon'] }) {
-  const iconClassName = 'h-5 w-5';
-
-  switch (icon) {
-    case 'modelling':
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={iconClassName}>
-          <path d="M12 3l1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6L12 3Z" />
-          <path d="M18.5 14l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2Z" />
-        </svg>
-      );
-    case 'realEstate':
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={iconClassName}>
-          <path d="m3 11 9-7 9 7" />
-          <path d="M5 10v10h14V10" />
-          <path d="M10 20v-5h4v5" />
-        </svg>
-      );
-    case 'manufacturing':
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={iconClassName}>
-          <path d="M3 20V9l6 3V9l6 3V5l6 3v12H3Z" />
-          <path d="M7 20v-4M12 20v-3M17 20v-5" />
-        </svg>
-      );
-    case 'GiGOC Rentals':
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={iconClassName}>
-          <path d="M3 7h11v8H3z" />
-          <path d="M14 10h3l3 3v2h-6z" />
-          <circle cx="7" cy="17" r="2" />
-          <circle cx="17" cy="17" r="2" />
-        </svg>
-      );
-    case 'music':
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={iconClassName}>
-          <path d="M9 18V7l10-2v11" />
-          <circle cx="6" cy="18" r="3" />
-          <circle cx="16" cy="16" r="3" />
-        </svg>
-      );
-    case 'commerce':
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={iconClassName}>
-          <path d="M6 7h12l-1 12H7L6 7Z" />
-          <path d="M9 7a3 3 0 0 1 6 0" />
-        </svg>
-      );
-    case 'tech':
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className={iconClassName}>
-          <rect x="4" y="4" width="16" height="16" rx="3" />
-          <path d="M9 9h.01M15 9h.01M9 15h6" />
-        </svg>
-      );
-    default:
-      return null;
-  }
-}
 
 export default function Hero() {
   const router = useRouter();
@@ -352,33 +290,40 @@ export default function Hero() {
                       aria-pressed={isActive}
                     >
                       <article
-                        className={`h-full min-h-[315px] rounded-[2rem] border p-6 transition duration-500 sm:min-h-[340px] sm:p-7 ${
-                          isActive ? 'scale-100 opacity-100' : 'scale-[0.96] opacity-70'
+                        className={`h-full min-h-[315px] rounded-[1.5rem] border bg-white p-6 transition duration-500 sm:min-h-[340px] sm:p-7 ${
+                          isActive ? 'scale-100 opacity-100' : 'scale-[0.96] opacity-75'
                         }`}
                         style={{
-                          background: isActive
-                            ? 'linear-gradient(180deg, rgba(30, 41, 59, 0.94) 0%, rgba(15, 23, 42, 0.99) 100%)'
-                            : 'linear-gradient(180deg, rgba(30, 41, 59, 0.78) 0%, rgba(15, 23, 42, 0.9) 100%)',
-                          borderColor: isActive ? 'rgba(96, 165, 250, 0.42)' : 'rgba(255, 255, 255, 0.1)',
-                          boxShadow: isActive ? '0 30px 60px rgba(15, 23, 42, 0.45)' : '0 18px 30px rgba(15, 23, 42, 0.28)',
+                          borderColor: isActive ? 'rgba(30, 74, 149, 0.5)' : 'rgba(226, 232, 240, 0.9)',
+                          boxShadow: isActive
+                            ? '0 28px 55px rgba(15, 23, 42, 0.24)'
+                            : '0 16px 30px rgba(15, 23, 42, 0.14)',
                         }}
                       >
                         <div className="flex items-center justify-between">
-                          <div
-                            className="flex h-12 w-12 items-center justify-center rounded-2xl text-white"
-                            style={{ background: 'linear-gradient(135deg, rgba(124,58,237,0.95) 0%, rgba(37,99,235,0.95) 100%)' }}
-                          >
-                            <DivisionIcon icon={division.icon} />
+                          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#10213c] p-3">
+                            <Image
+                              src={division.icon}
+                              alt=""
+                              width={32}
+                              height={32}
+                              aria-hidden="true"
+                              className="h-8 w-8 object-contain"
+                            />
                           </div>
-                          <span className="text-xs font-semibold tracking-[0.22em] text-white/60 uppercase">
+                          <span className="text-xs font-semibold text-[#71819a]">
                             {String(index + 1).padStart(2, '0')}
                           </span>
                         </div>
 
-                        <h3 className="mt-8 text-2xl font-semibold text-white">{division.title}</h3>
-                        <p className="mt-3 text-sm leading-6 text-white/70">{division.description}</p>
+                        <h3 className="mt-8 text-2xl font-semibold text-[var(--text-main)]">
+                          {division.title}
+                        </h3>
+                        <p className="mt-3 text-sm leading-6 text-[var(--text-soft)]">
+                          {division.description}
+                        </p>
 
-                        <div className="mt-8 flex items-center justify-between text-sm font-medium text-white/90">
+                        <div className="mt-8 flex items-center justify-between text-sm font-medium text-[var(--primary)]">
                           <span>Click to Open</span>
                           <span>↗</span>
                         </div>
@@ -438,9 +383,7 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="pb-2 pt-4 sm:pt-6">
-          {/* <CompaniesCarousel /> */}
-        </div>
+        <div className="pb-2 pt-4 sm:pt-6" />
       </div>
     </section>
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type CSSProperties } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { ArrowLeft, ArrowRight, CalendarDays, Clock3, MapPin } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -33,10 +33,19 @@ export type NewsVideoCard = {
   youtubeUrl: string;
 };
 
+export type NewsStory = {
+  id: string;
+  slides: NewsSlide[];
+  article: NewsArticle;
+  imageCard: NewsImageCard;
+  videoCard: NewsVideoCard;
+};
+
 export type NewsSectionData = {
   sectionLabel: string;
   sectionTitle: string;
   sectionDescription: string;
+  stories: NewsStory[];
   slides: NewsSlide[];
   article: NewsArticle;
   imageCard: NewsImageCard;
@@ -86,20 +95,70 @@ const articleDetailIcons = {
 };
 
 export default function NewsSection({ data }: NewsSectionProps) {
-  // I keep the slideshow manual so visitors can stay on the story they care about.
+  const [activeStoryIndex, setActiveStoryIndex] = useState(0);
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
+  const [isChangingStory, setIsChangingStory] = useState(false);
+  const transitionTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // I keep the controls simple so I can move through each news image without autoplay.
+  const fallbackStory: NewsStory = {
+    id: 'featured-story',
+    slides: data.slides,
+    article: data.article,
+    imageCard: data.imageCard,
+    videoCard: data.videoCard,
+  };
+  const stories = data.stories.length > 0 ? data.stories : [fallbackStory];
+  const activeStory = stories[activeStoryIndex] ?? stories[0];
+
   const showPreviousSlide = () => {
-    setActiveSlideIndex((currentIndex) => (currentIndex === 0 ? data.slides.length - 1 : currentIndex - 1));
+    setActiveSlideIndex((currentIndex) =>
+      currentIndex === 0 ? activeStory.slides.length - 1 : currentIndex - 1,
+    );
   };
 
   const showNextSlide = () => {
-    setActiveSlideIndex((currentIndex) => (currentIndex === data.slides.length - 1 ? 0 : currentIndex + 1));
+    setActiveSlideIndex((currentIndex) =>
+      currentIndex === activeStory.slides.length - 1 ? 0 : currentIndex + 1,
+    );
   };
 
-  const activeSlide = data.slides[activeSlideIndex] ?? data.slides[0];
-  const videoEmbedUrl = getYouTubeEmbedUrl(data.videoCard.youtubeUrl);
+  function showStory(index: number) {
+    if (isChangingStory || stories.length < 2) {
+      return;
+    }
+
+    const normalizedIndex = (index + stories.length) % stories.length;
+
+    if (normalizedIndex === activeStoryIndex) {
+      return;
+    }
+
+    setIsChangingStory(true);
+
+    if (transitionTimerRef.current) {
+      clearTimeout(transitionTimerRef.current);
+    }
+
+    transitionTimerRef.current = setTimeout(() => {
+      setActiveStoryIndex(normalizedIndex);
+      setActiveSlideIndex(0);
+
+      window.requestAnimationFrame(() => {
+        setIsChangingStory(false);
+      });
+    }, 180);
+  }
+
+  useEffect(() => {
+    return () => {
+      if (transitionTimerRef.current) {
+        clearTimeout(transitionTimerRef.current);
+      }
+    };
+  }, []);
+
+  const activeSlide = activeStory.slides[activeSlideIndex] ?? activeStory.slides[0];
+  const videoEmbedUrl = getYouTubeEmbedUrl(activeStory.videoCard.youtubeUrl);
 
   if (!activeSlide) {
     return null;
@@ -109,20 +168,53 @@ export default function NewsSection({ data }: NewsSectionProps) {
     <section id="news-room" className="bg-white px-5 py-16 sm:px-6 lg:px-10 lg:py-18">
       <div className="mx-auto max-w-7xl">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold tracking-[0.22em] uppercase" style={{ color: 'var(--primary)' }}>
-            -- News Room --
+          <p className="text-sm font-semibold uppercase" style={{ color: 'var(--primary)' }}>
+            {data.sectionLabel}
           </p>
           <h2 className="mt-3 text-3xl font-semibold sm:text-4xl" style={{ color: 'var(--text-main)' }}>
-            The latest stories, updates, and media from GiGOC
+            {data.sectionTitle}
           </h2>
           <p className="mt-4 text-base leading-7" style={{ color: 'var(--text-soft)' }}>
-            A flexible media block for featured stories, news imagery, and video content from across the group.
+            {data.sectionDescription}
           </p>
         </div>
 
-        <div className="mt-10 space-y-5">
+        {stories.length > 1 ? (
+          <div className="mt-8 flex items-center justify-center gap-3">
+            <button
+              type="button"
+              onClick={() => showStory(activeStoryIndex - 1)}
+              disabled={isChangingStory}
+              className="inline-flex min-h-11 items-center gap-2 rounded-full border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-[var(--text-main)] transition hover:border-[var(--primary)] hover:text-[var(--primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] disabled:cursor-wait disabled:opacity-60"
+              aria-label="Show previous newsroom story"
+            >
+              <ArrowLeft className="h-4 w-4" strokeWidth={2.2} />
+              Previous
+            </button>
+            <span className="min-w-14 text-center text-sm font-medium text-[var(--text-soft)]">
+              {String(activeStoryIndex + 1).padStart(2, '0')} /{' '}
+              {String(stories.length).padStart(2, '0')}
+            </span>
+            <button
+              type="button"
+              onClick={() => showStory(activeStoryIndex + 1)}
+              disabled={isChangingStory}
+              className="inline-flex min-h-11 items-center gap-2 rounded-full border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-[var(--text-main)] transition hover:border-[var(--primary)] hover:text-[var(--primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] disabled:cursor-wait disabled:opacity-60"
+              aria-label="Show next newsroom story"
+            >
+              Next
+              <ArrowRight className="h-4 w-4" strokeWidth={2.2} />
+            </button>
+          </div>
+        ) : null}
+
+        <div
+          className={`mt-10 space-y-5 transition-all duration-300 motion-reduce:transform-none motion-reduce:transition-none ${
+            isChangingStory ? 'translate-y-1.5 opacity-0' : 'translate-y-0 opacity-100'
+          }`}
+          aria-live="polite"
+        >
           <div className="grid gap-5 lg:grid-cols-[0.7fr_1.3fr] xl:grid-cols-[0.66fr_1.34fr]">
-            {/* I keep the slideshow visual and clean, with manual controls only. */}
             <article
               className="overflow-hidden rounded-[0.75rem] border bg-white shadow-[0_12px_28px_rgba(15,23,42,0.07)]"
               style={{ borderColor: 'rgba(148, 163, 184, 0.16)' }}
@@ -133,7 +225,7 @@ export default function NewsSection({ data }: NewsSectionProps) {
 
                 <div className="absolute inset-x-3 bottom-3 flex items-center justify-between gap-3 sm:inset-x-4 sm:bottom-4">
                   <div className="flex items-center gap-2 rounded-[0.75rem] bg-slate-950/45 px-3 py-2 backdrop-blur-sm">
-                    {data.slides.map((slide, index) => (
+                    {activeStory.slides.map((slide, index) => (
                       <button
                         key={slide.id}
                         type="button"
@@ -171,24 +263,23 @@ export default function NewsSection({ data }: NewsSectionProps) {
               </div>
             </article>
 
-            {/* I keep the article copy tight so the card stays balanced even when content gets longer later. */}
             <article
               className="flex h-full flex-col rounded-[0.75rem] border bg-white p-5 shadow-[0_12px_28px_rgba(15,23,42,0.07)] sm:p-6"
               style={{ borderColor: 'rgba(148, 163, 184, 0.16)' }}
             >
-              <p className="text-xs font-semibold tracking-[0.22em] uppercase" style={{ color: 'var(--primary)' }}>
-                {data.article.label}
+              <p className="text-xs font-semibold uppercase" style={{ color: 'var(--primary)' }}>
+                {activeStory.article.label}
               </p>
               <h3 className="mt-2 text-xl sm:mt-3 font-semibold leading-tight sm:text-[2.65rem]" style={{ color: 'var(--text-main)' }}>
-                {data.article.title}
+                {activeStory.article.title}
               </h3>
               <p className="mt-3 md:mt-2 text-sm leading-6 sm:text-[15px]" style={{ ...articleClampStyle, color: 'var(--text-soft)' }}>
-                {data.article.excerpt}
+                {activeStory.article.excerpt}
               </p>
 
               {/* I keep this event info stacked so the important details are easy to scan. */}
               <div className="mt-4 space-y-2.5 rounded-[0.75rem] border bg-slate-50/80 p-3 sm:p-4" style={{ borderColor: 'rgba(148, 163, 184, 0.16)' }}>
-                {data.article.details.map((detail) => {
+                {activeStory.article.details.map((detail) => {
                   const DetailIcon = articleDetailIcons[detail.icon];
 
                   return (
@@ -206,7 +297,7 @@ export default function NewsSection({ data }: NewsSectionProps) {
 
               <div className="mt-auto pt-6">
                 <Link
-                  href={data.article.href}
+                  href={activeStory.article.href}
                   className="inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold text-white shadow-[0_14px_28px_rgba(37,99,235,0.2)] transition hover:-translate-y-0.5"
                   style={{ background: 'linear-gradient(135deg, #1e4a95 0%, #2563eb 100%)' }}
                 >
@@ -226,10 +317,11 @@ export default function NewsSection({ data }: NewsSectionProps) {
                 {videoEmbedUrl ? (
                   <iframe
                     src={videoEmbedUrl}
-                    title={data.videoCard.title}
+                    title={activeStory.videoCard.title}
                     className="absolute inset-0 h-full w-full"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerPolicy="strict-origin-when-cross-origin"
+                    loading="lazy"
                     allowFullScreen
                   />
                 ) : (
@@ -239,7 +331,14 @@ export default function NewsSection({ data }: NewsSectionProps) {
                 )}
               </div>
 
-                
+              <div className="px-5 py-5 sm:px-6">
+                <h3 className="text-lg font-semibold text-[var(--text-main)]">
+                  {activeStory.videoCard.title}
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-[var(--text-soft)]">
+                  {activeStory.videoCard.summary}
+                </p>
+              </div>
             </article>
 
             <article
@@ -248,7 +347,7 @@ export default function NewsSection({ data }: NewsSectionProps) {
             >
               {/* I lock in a minimum height here so the news image stays visible on smaller screens. */}
               <div className="relative min-h-[270px] overflow-hidden rounded-[0.75rem] sm:min-h-[220px] lg:h-full">
-                <Image src={data.imageCard.image} alt={data.imageCard.alt} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 38vw" />
+                <Image src={activeStory.imageCard.image} alt={activeStory.imageCard.alt} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 38vw" />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 via-transparent to-transparent" />
               </div>
             </article>

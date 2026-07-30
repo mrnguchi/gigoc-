@@ -7,14 +7,14 @@ import { usePathname } from 'next/navigation';
 import { ChevronDown } from 'lucide-react';
 
 const divisions = [
-  { label: 'Music & Entertainment', href: '/music&entertainment' },
+  { label: 'Real Estate', href: '/#hero-divisions' },
   { label: 'GiGOC Rentals', href: '/gigoc_rentals' },
+  { label: 'GIGOC Biomass', href: '/manufacturing' },
   { label: 'Tech & Innovation', href: '/tech&innovation' },
   { label: 'Logistics', href: '/#hero-divisions' },
   { label: 'General Commerce', href: '/#hero-divisions' },
   { label: 'Modelling', href: '/#hero-divisions' },
-  { label: 'Real Estate', href: '/#hero-divisions' },
-  { label: 'Manufacturing', href: '/#hero-divisions' },
+  { label: 'Music & Entertainment', href: '/music&entertainment' },
 ];
 
 function isActivePath(pathname: string, href: string) {

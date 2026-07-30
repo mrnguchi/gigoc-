@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
-import { newsSectionData } from '@/data/news';
+import { newsArticles, newsSectionData } from '@/data/news';
 
 type NewsCardItem = {
   id: string;
@@ -27,7 +27,6 @@ const excerptClampStyle: CSSProperties = {
   overflow: 'hidden',
 };
 
-const primaryNewsImage = newsSectionData.slides[0]?.image ?? newsSectionData.imageCard.image;
 const newsDate = newsSectionData.article.details.find((detail) => detail.icon === 'calendar')?.info;
 const newsLocation = newsSectionData.article.details.find((detail) => detail.icon === 'location')?.info;
 
@@ -37,41 +36,17 @@ const heroHighlights = [
   { value: 'Updates', label: 'Announcements & Media' },
 ];
 
-const newsCards: NewsCardItem[] = [
-  {
-    id: 'featured-asake-live',
-    image: primaryNewsImage,
-    alt: newsSectionData.article.title,
-    label: newsSectionData.article.label,
-    title: newsSectionData.article.title,
-    excerpt: newsSectionData.article.excerpt,
-    date: newsDate,
-    location: newsLocation,
-    href: newsSectionData.article.href,
-  },
-  {
-    id: 'coming-soon-1',
-    image: '/gigoc-news.png',
-    alt: newsSectionData.slides[1]?.alt ?? 'More GiGOC stories coming soon',
-    label: 'Coming Soon',
-    title: 'More updates from across GiGOC are on the way',
-    excerpt:
-      'We are preparing more company stories, event recaps, and milestone announcements so this newsroom keeps growing with meaningful updates.',
-    location: 'Across GiGOC',
-    href: '#',
-  },
-  {
-    id: 'coming-soon-2',
-    image: '/gigoc-news.png',
-    alt: newsSectionData.slides[2]?.alt ?? 'Fresh GiGOC newsroom stories coming soon',
-    label: 'Coming Soon',
-    title: 'Fresh stories will be published here very soon',
-    excerpt:
-      'As new partnerships, launches, and public activities happen, they will appear here in the same clean card layout for visitors to explore.',
-    date: 'Publishing soon',
-    href: '#',
-  },
-];
+const newsCards: NewsCardItem[] = newsArticles.map((article) => ({
+  id: article.slug,
+  image: article.gallery[0]?.image ?? article.featuredImage.image,
+  alt: article.featuredImage.alt,
+  label: article.label,
+  title: article.title,
+  excerpt: article.excerpt,
+  date: article.details.find((detail) => detail.icon === 'calendar')?.info,
+  location: article.details.find((detail) => detail.icon === 'location')?.info,
+  href: article.href,
+}));
 
 function NewsCard({ item }: { item: NewsCardItem }) {
   return (
@@ -172,9 +147,9 @@ export default function NewsPage() {
                 GiGOC News
               </div>
 
-              {/* <h1 className="max-w-3xl text-4xl font-semibold leading-tight text-white sm:text-5xl lg:text-6xl">
-                Quiet updates, stories, and moments from across the group.
-              </h1> */}
+              <h1 className="max-w-3xl text-4xl font-semibold leading-tight text-white sm:text-5xl lg:text-6xl">
+                GIGOC Newsroom
+              </h1>
 
               <div className="mt-6 space-y-3 text-base leading-7 text-white/70 sm:text-lg">
                 <p>

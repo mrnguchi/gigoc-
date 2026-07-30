@@ -1,13 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import { useId, useState } from 'react';
 
 type FormState = {
   status: 'idle' | 'submitting' | 'success' | 'error';
   message?: string;
 };
 
-export default function NewsletterForm() {
+type NewsletterFormProps = {
+  buttonLabel?: string;
+  inputId?: string;
+  variant?: 'inline' | 'stacked';
+};
+
+export default function NewsletterForm({
+  buttonLabel = 'Subscribe',
+  inputId,
+  variant = 'inline',
+}: NewsletterFormProps) {
+  const generatedInputId = useId();
+  const resolvedInputId = inputId ?? generatedInputId;
   const [formState, setFormState] = useState<FormState>({ status: 'idle' });
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -48,31 +60,78 @@ export default function NewsletterForm() {
     }
   }
 
+  const emailIcon = (
+    <svg
+      className="h-4 w-4 shrink-0 stroke-[var(--text-soft)]"
+      viewBox="0 0 24 24"
+      fill="none"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <rect x="2" y="4" width="20" height="16" rx="2" />
+      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+    </svg>
+  );
+
   return (
     <form className="mt-1 space-y-3" onSubmit={handleSubmit}>
-      <div className="flex flex-row items-center rounded-full bg-white pr-1">
-        <svg className="ml-3 h-4 w-4 shrink-0 stroke-[var(--text-soft)]" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="2" y="4" width="20" height="16" rx="2" />
-          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-        </svg>
-        <input
-          type="email"
-          name="email"
-          required
-          disabled={formState.status === 'submitting'}
-          placeholder="Enter your email address"
-          className="flex-1 bg-transparent px-3 py-2.5 text-sm text-[var(--text-main)] outline-none placeholder:text-[var(--text-soft)]"
-        />
-        <button
-          type="submit"
-          disabled={formState.status === 'submitting'}
-          className={`shrink-0 rounded-full bg-[var(--primary)] px-4 py-2 text-xs font-semibold text-white transition sm:px-5 sm:text-sm ${
-            formState.status === 'submitting' ? 'cursor-not-allowed opacity-70' : 'hover:opacity-90'
-          }`}
-        >
-          {formState.status === 'submitting' ? 'Submitting...' : 'Subscribe'}
-        </button>
-      </div>
+      <label htmlFor={resolvedInputId} className="sr-only">
+        Email address
+      </label>
+
+      {variant === 'stacked' ? (
+        <>
+          <div className="flex min-h-12 items-center rounded-xl border border-white/15 bg-white px-4 transition focus-within:border-blue-300 focus-within:ring-2 focus-within:ring-blue-400/20">
+            {emailIcon}
+            <input
+              id={resolvedInputId}
+              type="email"
+              name="email"
+              required
+              disabled={formState.status === 'submitting'}
+              placeholder="Email address"
+              className="min-w-0 flex-1 bg-transparent px-3 py-3 text-sm text-[var(--text-main)] outline-none placeholder:text-[var(--text-soft)]"
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={formState.status === 'submitting'}
+            className={`inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-[#2456a4] px-5 py-3 text-sm font-semibold text-white transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-300 ${
+              formState.status === 'submitting'
+                ? 'cursor-not-allowed opacity-70'
+                : 'hover:bg-[#2d65ba]'
+            }`}
+          >
+            {formState.status === 'submitting' ? 'Submitting...' : buttonLabel}
+          </button>
+        </>
+      ) : (
+        <div className="flex flex-row items-center rounded-full bg-white pr-1">
+          <span className="ml-3">{emailIcon}</span>
+          <input
+            id={resolvedInputId}
+            type="email"
+            name="email"
+            required
+            disabled={formState.status === 'submitting'}
+            placeholder="Enter your email address"
+            className="flex-1 bg-transparent px-3 py-2.5 text-sm text-[var(--text-main)] outline-none placeholder:text-[var(--text-soft)]"
+          />
+          <button
+            type="submit"
+            disabled={formState.status === 'submitting'}
+            className={`shrink-0 rounded-full bg-[var(--primary)] px-4 py-2 text-xs font-semibold text-white transition sm:px-5 sm:text-sm ${
+              formState.status === 'submitting'
+                ? 'cursor-not-allowed opacity-70'
+                : 'hover:opacity-90'
+            }`}
+          >
+            {formState.status === 'submitting' ? 'Submitting...' : buttonLabel}
+          </button>
+        </div>
+      )}
 
       {formState.message ? (
         <p

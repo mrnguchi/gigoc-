@@ -63,3 +63,27 @@ html {
     transform: translateX(calc(-50% - 0.5rem));
   }
 }
+
+.footer-newsletter-glow {
+  animation: footer-newsletter-glow 1.9s ease-out;
+}
+
+@keyframes footer-newsletter-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(59 130 246 / 0%);
+  }
+
+  35% {
+    box-shadow:
+      0 0 0 1px rgb(96 165 250 / 38%),
+      0 0 26px 4px rgb(59 130 246 / 24%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-newsletter-glow {
+    animation-duration: 1ms;
+    box-shadow: 0 0 0 2px rgb(96 165 250 / 45%);
+  }
+}

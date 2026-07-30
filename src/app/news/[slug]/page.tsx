@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { ArrowLeft, CalendarDays, Clock3, MapPin } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -47,6 +48,25 @@ export function generateStaticParams() {
   return newsArticles.map((article) => ({ slug: article.slug }));
 }
 
+export async function generateMetadata({ params }: NewsDetailPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const article = getNewsArticleBySlug(slug);
+
+  if (!article) {
+    return {};
+  }
+
+  return {
+    title: `${article.title} | GIGOC Newsroom`,
+    description: article.excerpt,
+    openGraph: {
+      title: article.title,
+      description: article.excerpt,
+      type: 'article',
+    },
+  };
+}
+
 export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
   const { slug } = await params;
   const article = getNewsArticleBySlug(slug);
@@ -69,8 +89,8 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
       >
         <div className="absolute inset-0">
           <Image
-            src="/hero-00.png"
-            alt="GiGOC news detail background"
+            src={article.featuredImage.image}
+            alt=""
             fill
             priority
             className="object-cover object-center"
@@ -148,8 +168,8 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
           {videoEmbedUrl ? (
             <section className="mt-10 rounded-[1.75rem] border bg-white p-4 shadow-[0_18px_40px_rgba(15,23,42,0.06)] sm:p-6" style={{ borderColor: 'rgba(148, 163, 184, 0.16)' }}>
               <div className="mb-5">
-                <p className="text-sm font-semibold tracking-[0.22em] uppercase" style={{ color: 'var(--primary)' }}>
-                  -- Media --
+                <p className="text-sm font-semibold uppercase" style={{ color: 'var(--primary)' }}>
+                  Featured Media
                 </p>
                 <h2 className="mt-2 text-2xl font-semibold" style={{ color: 'var(--text-main)' }}>
                   {article.video?.title}
@@ -168,6 +188,7 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
                   className="absolute inset-0 h-full w-full"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerPolicy="strict-origin-when-cross-origin"
+                  loading="lazy"
                   allowFullScreen
                 />
               </div>
@@ -175,8 +196,8 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
           ) : null}
 
           <article className="mt-10 rounded-[1.75rem] border bg-white p-6 shadow-[0_18px_40px_rgba(15,23,42,0.06)] sm:p-8 lg:p-10" style={{ borderColor: 'rgba(148, 163, 184, 0.16)' }}>
-            <p className="text-sm font-semibold tracking-[0.22em] uppercase" style={{ color: 'var(--primary)' }}>
-              -- Story Content --
+            <p className="text-sm font-semibold uppercase" style={{ color: 'var(--primary)' }}>
+              GIGOC Newsroom
             </p>
 
             <div className="mt-6 space-y-8">
@@ -196,6 +217,21 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
                 </div>
               ))}
             </div>
+
+            {article.division === 'biomass' ? (
+              <div className="mt-10 border-t border-slate-200 pt-8">
+                <p className="max-w-2xl text-sm leading-7 text-[var(--text-soft)]">
+                  Explore the main GIGOC Biomass page for the current project overview, proposed
+                  production process and development status.
+                </p>
+                <Link
+                  href="/manufacturing"
+                  className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--primary)] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#173c7b] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+                >
+                  Explore GIGOC Biomass
+                </Link>
+              </div>
+            ) : null}
           </article>
         </div>
       </section>

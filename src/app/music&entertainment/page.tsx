@@ -5,7 +5,7 @@ import { Mic2, Radio, Ticket } from 'lucide-react';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import { companyContact } from '@/data/contact';
-import { newsArticles } from '@/data/news';
+import { musicNewsArticles } from '@/data/news';
 
 const highlights = [
   {
@@ -349,7 +349,7 @@ export default function MusicEntertainmentPage() {
           </div>
 
           <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {newsArticles.map((concert) => {
+            {musicNewsArticles.map((concert) => {
               const concertDate = concert.details.find((detail) => detail.icon === 'calendar')?.info;
               const concertLocation = concert.details.find((detail) => detail.icon === 'location')?.info;
 

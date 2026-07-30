@@ -1,6 +1,7 @@
 'use client';
 
-import { ArrowUpRight, CarFront, Cpu, Factory, Home, ShoppingBag, Sparkles, Music, Truck } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -8,20 +9,20 @@ import { useState } from 'react';
 type Business = {
   title: string;
   summary: string;
-  icon: typeof Home;
+  icon: string;
   href: string;
 };
 
 // This is the content powering the business cards.
 const businesses: Business[] = [
-  { title: 'Real Estate', icon: Home, href: '#', summary: 'Property development and real estate opportunities focused on quality assets and long-term value.' },
-  { title: 'Music & Entertainment', icon: Music, href: '/music&entertainment', summary: 'Experiences, production, and promotion that turn creative ideas into meaningful audience impact.' },
-  { title: 'Car Rentals', icon: CarFront, href: '/gigoc_rentals', summary: 'Reliable and executive vehicle rental solutions tailored for convenience, comfort, and flexibility.' },
-  { title: 'General Commerce', icon: ShoppingBag, href: '#', summary: 'Commercial solutions that connect supply, demand, and market opportunities across industries.' },
-  { title: 'Modelling', icon: Sparkles, href: '#', summary: 'Talent development, visual direction, and brand campaigns designed to build a stronger presence.' },
-  { title: 'Manufacturing', icon: Factory, href: '#', summary: 'Scalable production systems built to support operational efficiency, quality control, and growth.' },
-  { title: 'Tech & Innovation', icon: Cpu, href: '#', summary: 'Technology-driven products, automation, and systems that support modern business transformation.' },
-  { title: 'Logistics', icon: Truck, href: '#', summary: 'Efficient and reliable logistics solutions that connect supply chains, optimize operations, and ensure timely delivery.' },
+  { title: 'Real Estate', icon: '/real estate.png', href: '#', summary: 'Property development and real estate opportunities focused on quality assets and long-term value.' },
+  { title: 'Car Rentals', icon: '/car-rental.png', href: '/gigoc_rentals', summary: 'Reliable and executive vehicle rental solutions tailored for convenience, comfort, and flexibility.' },
+  { title: 'GIGOC Biomass', icon: '/renewable-energy.png', href: '/manufacturing', summary: 'Developing biomass wood-pellet production from suitable wood-processing residues in Limbe, Cameroon.' },
+  { title: 'Music & Entertainment', icon: '/music and entertainment.png', href: '/music&entertainment', summary: 'Experiences, production, and promotion that turn creative ideas into meaningful audience impact.' },
+  { title: 'Modelling', icon: '/modelling.png', href: '#', summary: 'Talent development, visual direction, and brand campaigns designed to build a stronger presence.' },
+  { title: 'General Commerce', icon: '/general commerce.png', href: '#', summary: 'Commercial solutions that connect supply, demand, and market opportunities across industries.' },
+  { title: 'Tech & Innovation', icon: '/tech and innovation.png', href: '#', summary: 'Technology-driven products, automation, and systems that support modern business transformation.' },
+  { title: 'Logistics', icon: '/logistics.png', href: '#', summary: 'Efficient and reliable logistics solutions that connect supply chains, optimize operations, and ensure timely delivery.' },
 ];
 
 export default function OurBusinesses() {
@@ -48,50 +49,41 @@ export default function OurBusinesses() {
 
         <div className="mx-auto mt-12 grid max-w-6xl gap-6 md:grid-cols-2 lg:grid-cols-3">
           {visibleBusinesses.map((business, index) => {
-            const Icon = business.icon;
-
             return (
               <Link
                 key={business.title}
                 href={business.href}
-                className="group relative flex min-h-[340px] flex-col overflow-hidden rounded-[0.75rem] border bg-white p-6 shadow-[0_16px_40px_rgba(15,23,42,0.06)] transition-all duration-300 hover:-translate-y-2 hover:border-[#60a5fa]/40 hover:shadow-[0_30px_60px_rgba(15,23,42,0.2)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563eb] focus-visible:ring-offset-4 sm:min-h-[360px] sm:p-7"
-                style={{ borderColor: 'rgba(148, 163, 184, 0.18)' }}
+                className="group relative flex min-h-[340px] flex-col overflow-hidden rounded-[0.75rem] border border-slate-200 bg-white p-6 shadow-[0_16px_40px_rgba(15,23,42,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-[#60a5fa]/50 hover:shadow-[0_24px_48px_rgba(15,23,42,0.12)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563eb] focus-visible:ring-offset-4 sm:min-h-[360px] sm:p-7"
               >
-                {/* This dark overlay gives the card the same premium feel as the hero slider on hover. */}
-                <div
-                  className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                  style={{ background: 'linear-gradient(180deg, rgba(30, 41, 59, 0.94) 0%, rgba(15, 23, 42, 0.99) 100%)' }}
-                  aria-hidden="true"
-                />
-
-                <div
-                  className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-gradient-to-r from-[#1e4a95] to-[#2563eb] transition-transform duration-300 group-hover:scale-x-100"
-                  aria-hidden="true"
-                />
-
                 <div className="relative z-10 flex h-full flex-col">
                   <div className="flex items-start justify-between gap-4">
                     <span
-                      className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-[rgba(22,56,115,0.08)] p-3 text-[#1e4a95] transition-all duration-300 group-hover:bg-[linear-gradient(135deg,rgba(124,58,237,0.95)_0%,rgba(37,99,235,0.95)_100%)] group-hover:text-white"
+                      className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-[#10213c] p-3 transition-colors duration-300 group-hover:bg-[#17335c]"
                       aria-hidden="true"
                     >
-                      <Icon className="h-5 w-5" strokeWidth={1.9} />
+                      <Image
+                        src={business.icon}
+                        alt=""
+                        width={32}
+                        height={32}
+                        className="h-8 w-8 object-contain"
+                      />
                     </span>
 
-                    <span className="text-sm font-medium text-[var(--primary)] transition-colors duration-300 group-hover:text-white/60">
+                    <span className="text-sm font-medium text-[var(--primary)]">
                       {String(index + 1).padStart(2, '0')}
                     </span>
                   </div>
 
-                  <h3 className="mt-6 text-2xl font-semibold text-[var(--text-main)] transition-colors duration-300 group-hover:text-white">
+                  <h3 className="mt-6 text-2xl font-semibold text-[var(--text-main)]">
                     {business.title}
                   </h3>
 
-                  <p className="mt-5 text-sm leading-7 text-[var(--text-soft)] transition-colors duration-300 group-hover:text-white/70 sm:text-base">
+                  <p className="mt-5 text-sm leading-7 text-[var(--text-soft)] sm:text-base">
                     {business.summary}
                   </p>
 
-                  <div className="mt-auto flex items-center justify-end pt-8 text-sm font-medium text-[var(--primary)] transition-colors duration-300 group-hover:text-white/90">
+                  <div className="mt-auto flex items-center justify-end pt-8 text-sm font-medium text-[var(--primary)]">
                     <span className="inline-flex items-center gap-2 transition-transform duration-300 group-hover:translate-x-1">
                       Explore
                       <ArrowUpRight className="h-4 w-4" strokeWidth={1.9} />
