@@ -92,7 +92,7 @@ function prettyService(service?: string) {
     case 'manufacturing':
       return 'Manufacturing';
     case 'entertainment':
-      return 'Music & Entertainment';
+      return 'Entertainment & Talent';
     case 'technology':
       return 'Tech & Innovation';
     case 'general':

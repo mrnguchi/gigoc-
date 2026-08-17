@@ -1,7 +1,4 @@
-'use client';
-
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
-import { ArrowLeft, ArrowRight, CalendarDays, Clock3, MapPin } from 'lucide-react';
+import { ArrowRight, CalendarDays, MapPin } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -52,54 +49,15 @@ export type NewsSectionData = {
   videoCard: NewsVideoCard;
 };
 
-const articleClampStyle: CSSProperties = {
-  display: '-webkit-box',
-  WebkitLineClamp: 4,
-  WebkitBoxOrient: 'vertical',
-  overflow: 'hidden',
-};
-
-function getYouTubeEmbedUrl(youtubeUrl: string) {
-  try {
-    const parsedUrl = new URL(youtubeUrl);
-
-    if (parsedUrl.hostname === 'youtu.be') {
-      const videoId = parsedUrl.pathname.replace('/', '');
-      return videoId ? `https://www.youtube-nocookie.com/embed/${videoId}` : null;
-    }
-
-    const videoIdFromQuery = parsedUrl.searchParams.get('v');
-    if (videoIdFromQuery) {
-      return `https://www.youtube-nocookie.com/embed/${videoIdFromQuery}`;
-    }
-
-    const embedMatch = parsedUrl.pathname.match(/\/embed\/([^/]+)/);
-    if (embedMatch?.[1]) {
-      return `https://www.youtube-nocookie.com/embed/${embedMatch[1]}`;
-    }
-  } catch {
-    return null;
-  }
-
-  return null;
-}
-
 type NewsSectionProps = {
   data: NewsSectionData;
 };
 
-const articleDetailIcons = {
-  calendar: CalendarDays,
-  location: MapPin,
-  time: Clock3,
-};
+function getDetail(article: NewsArticle, icon: 'calendar' | 'location') {
+  return article.details.find((detail) => detail.icon === icon)?.info;
+}
 
 export default function NewsSection({ data }: NewsSectionProps) {
-  const [activeStoryIndex, setActiveStoryIndex] = useState(0);
-  const [activeSlideIndex, setActiveSlideIndex] = useState(0);
-  const [isChangingStory, setIsChangingStory] = useState(false);
-  const transitionTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
   const fallbackStory: NewsStory = {
     id: 'featured-story',
     slides: data.slides,
@@ -108,251 +66,173 @@ export default function NewsSection({ data }: NewsSectionProps) {
     videoCard: data.videoCard,
   };
   const stories = data.stories.length > 0 ? data.stories : [fallbackStory];
-  const activeStory = stories[activeStoryIndex] ?? stories[0];
+  const [featuredStory, ...latestStories] = stories;
+  const hasSingleLatestStory = latestStories.length === 1;
+  const featuredImage = featuredStory.slides[0];
+  const featuredDate = getDetail(featuredStory.article, 'calendar');
+  const featuredLocation = getDetail(featuredStory.article, 'location');
 
-  const showPreviousSlide = () => {
-    setActiveSlideIndex((currentIndex) =>
-      currentIndex === 0 ? activeStory.slides.length - 1 : currentIndex - 1,
-    );
-  };
-
-  const showNextSlide = () => {
-    setActiveSlideIndex((currentIndex) =>
-      currentIndex === activeStory.slides.length - 1 ? 0 : currentIndex + 1,
-    );
-  };
-
-  function showStory(index: number) {
-    if (isChangingStory || stories.length < 2) {
-      return;
-    }
-
-    const normalizedIndex = (index + stories.length) % stories.length;
-
-    if (normalizedIndex === activeStoryIndex) {
-      return;
-    }
-
-    setIsChangingStory(true);
-
-    if (transitionTimerRef.current) {
-      clearTimeout(transitionTimerRef.current);
-    }
-
-    transitionTimerRef.current = setTimeout(() => {
-      setActiveStoryIndex(normalizedIndex);
-      setActiveSlideIndex(0);
-
-      window.requestAnimationFrame(() => {
-        setIsChangingStory(false);
-      });
-    }, 180);
-  }
-
-  useEffect(() => {
-    return () => {
-      if (transitionTimerRef.current) {
-        clearTimeout(transitionTimerRef.current);
-      }
-    };
-  }, []);
-
-  const activeSlide = activeStory.slides[activeSlideIndex] ?? activeStory.slides[0];
-  const videoEmbedUrl = getYouTubeEmbedUrl(activeStory.videoCard.youtubeUrl);
-
-  if (!activeSlide) {
+  if (!featuredImage) {
     return null;
   }
 
   return (
-    <section id="news-room" className="bg-white px-5 py-16 sm:px-6 lg:px-10 lg:py-18">
-      <div className="mx-auto max-w-7xl">
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold uppercase" style={{ color: 'var(--primary)' }}>
-            {data.sectionLabel}
-          </p>
-          <h2 className="mt-3 text-3xl font-semibold sm:text-4xl" style={{ color: 'var(--text-main)' }}>
-            {data.sectionTitle}
-          </h2>
-          <p className="mt-4 text-base leading-7" style={{ color: 'var(--text-soft)' }}>
-            {data.sectionDescription}
-          </p>
+    <section id="news-room" className="bg-[#f4f7fb] px-5 py-20 sm:px-6 lg:px-10 lg:py-24">
+      <div className="mx-auto max-w-7xl border-t border-slate-300 pt-8 sm:pt-10">
+        <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <div className="lg:col-span-7">
+            <div className="flex items-center gap-4 text-sm font-semibold text-[#2166d1]">
+              <span>{data.sectionLabel}</span>
+              <span className="h-px w-16 bg-[#2166d1]/45" aria-hidden="true" />
+            </div>
+            <h2 className="mt-5 max-w-3xl text-4xl font-semibold leading-[1.08] tracking-[-0.03em] text-[#17365f] sm:text-5xl lg:text-[3.5rem]">
+              News and updates from across GiGOC.
+            </h2>
+          </div>
+
+          <div className="lg:col-span-4 lg:col-start-9">
+            <p className="max-w-xl text-base leading-7 text-slate-600 sm:text-lg">
+              Follow our projects, company announcements and events as they happen.
+            </p>
+            <Link
+              href="/news"
+              className="group mt-6 inline-flex items-center gap-3 border-b border-[#17365f]/35 pb-1 text-sm font-semibold text-[#17365f] transition hover:border-[#2166d1] hover:text-[#2166d1]"
+            >
+              Visit the newsroom
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" strokeWidth={1.9} />
+            </Link>
+          </div>
         </div>
 
-        {stories.length > 1 ? (
-          <div className="mt-8 flex items-center justify-center gap-3">
-            <button
-              type="button"
-              onClick={() => showStory(activeStoryIndex - 1)}
-              disabled={isChangingStory}
-              className="inline-flex min-h-11 items-center gap-2 rounded-full border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-[var(--text-main)] transition hover:border-[var(--primary)] hover:text-[var(--primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] disabled:cursor-wait disabled:opacity-60"
-              aria-label="Show previous newsroom story"
+        <article className="mt-14 border-y border-slate-300 py-6 sm:py-8 lg:mt-16">
+          <div className="grid gap-8 lg:grid-cols-12 lg:items-stretch lg:gap-0">
+            <Link
+              href={featuredStory.article.href}
+              className="group relative block min-h-[300px] overflow-hidden rounded-md bg-slate-200 sm:min-h-[430px] lg:col-span-7 lg:min-h-[520px]"
+              aria-label={`Read ${featuredStory.article.title}`}
             >
-              <ArrowLeft className="h-4 w-4" strokeWidth={2.2} />
-              Previous
-            </button>
-            <span className="min-w-14 text-center text-sm font-medium text-[var(--text-soft)]">
-              {String(activeStoryIndex + 1).padStart(2, '0')} /{' '}
-              {String(stories.length).padStart(2, '0')}
-            </span>
-            <button
-              type="button"
-              onClick={() => showStory(activeStoryIndex + 1)}
-              disabled={isChangingStory}
-              className="inline-flex min-h-11 items-center gap-2 rounded-full border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-[var(--text-main)] transition hover:border-[var(--primary)] hover:text-[var(--primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] disabled:cursor-wait disabled:opacity-60"
-              aria-label="Show next newsroom story"
-            >
-              Next
-              <ArrowRight className="h-4 w-4" strokeWidth={2.2} />
-            </button>
-          </div>
-        ) : null}
+              <Image
+                src={featuredImage.image}
+                alt={featuredImage.alt}
+                fill
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.025]"
+                sizes="(max-width: 1024px) 100vw, 58vw"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#071a31]/35 via-transparent to-transparent" />
+              <span className="absolute bottom-5 left-5 text-xs font-semibold uppercase tracking-[0.16em] text-white/85 sm:bottom-7 sm:left-7">
+                Lead story
+              </span>
+            </Link>
 
-        <div
-          className={`mt-10 space-y-5 transition-all duration-300 motion-reduce:transform-none motion-reduce:transition-none ${
-            isChangingStory ? 'translate-y-1.5 opacity-0' : 'translate-y-0 opacity-100'
-          }`}
-          aria-live="polite"
-        >
-          <div className="grid gap-5 lg:grid-cols-[0.7fr_1.3fr] xl:grid-cols-[0.66fr_1.34fr]">
-            <article
-              className="overflow-hidden rounded-[0.75rem] border bg-white shadow-[0_12px_28px_rgba(15,23,42,0.07)]"
-              style={{ borderColor: 'rgba(148, 163, 184, 0.16)' }}
-            >
-              <div className="relative min-h-[260px] sm:min-h-[310px] lg:min-h-[390px] xl:min-h-[430px]">
-                <Image src={activeSlide.image} alt={activeSlide.alt} fill className="object-cover object-center" sizes="(max-width: 1024px) 100vw, 34vw" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/35 via-slate-900/10 to-transparent" />
-
-                <div className="absolute inset-x-3 bottom-3 flex items-center justify-between gap-3 sm:inset-x-4 sm:bottom-4">
-                  <div className="flex items-center gap-2 rounded-[0.75rem] bg-slate-950/45 px-3 py-2 backdrop-blur-sm">
-                    {activeStory.slides.map((slide, index) => (
-                      <button
-                        key={slide.id}
-                        type="button"
-                        onClick={() => setActiveSlideIndex(index)}
-                        className="h-2.5 rounded-full transition-all duration-300"
-                        style={{
-                          width: index === activeSlideIndex ? 28 : 10,
-                          backgroundColor: index === activeSlideIndex ? '#ffffff' : 'rgba(255, 255, 255, 0.45)',
-                        }}
-                        aria-label={`Show news slide ${index + 1}`}
-                        aria-pressed={index === activeSlideIndex}
-                      />
-                    ))}
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={showPreviousSlide}
-                      className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/88 text-slate-900 shadow-lg transition hover:bg-white"
-                      aria-label="Show previous news slide"
-                    >
-                      <ArrowLeft className="h-4 w-4" strokeWidth={2.4} />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={showNextSlide}
-                      className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/88 text-slate-900 shadow-lg transition hover:bg-white"
-                      aria-label="Show next news slide"
-                    >
-                      <ArrowRight className="h-4 w-4" strokeWidth={2.4} />
-                    </button>
-                  </div>
-                </div>
+            <div className="flex flex-col lg:col-span-5 lg:border-l lg:border-slate-300 lg:py-3 lg:pl-10 xl:pl-12">
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-medium text-slate-500">
+                <span className="font-semibold uppercase tracking-[0.14em] text-[#2166d1]">
+                  {featuredStory.article.label}
+                </span>
+                {featuredDate ? (
+                  <span className="inline-flex items-center gap-2">
+                    <CalendarDays className="h-3.5 w-3.5" strokeWidth={1.8} />
+                    {featuredDate}
+                  </span>
+                ) : null}
               </div>
-            </article>
 
-            <article
-              className="flex h-full flex-col rounded-[0.75rem] border bg-white p-5 shadow-[0_12px_28px_rgba(15,23,42,0.07)] sm:p-6"
-              style={{ borderColor: 'rgba(148, 163, 184, 0.16)' }}
-            >
-              <p className="text-xs font-semibold uppercase" style={{ color: 'var(--primary)' }}>
-                {activeStory.article.label}
-              </p>
-              <h3 className="mt-2 text-xl sm:mt-3 font-semibold leading-tight sm:text-[2.65rem]" style={{ color: 'var(--text-main)' }}>
-                {activeStory.article.title}
+              <h3 className="mt-6 text-3xl font-semibold leading-[1.15] tracking-[-0.025em] text-[#17365f] sm:text-4xl">
+                {featuredStory.article.title}
               </h3>
-              <p className="mt-3 md:mt-2 text-sm leading-6 sm:text-[15px]" style={{ ...articleClampStyle, color: 'var(--text-soft)' }}>
-                {activeStory.article.excerpt}
+              <p className="mt-5 max-w-xl text-base leading-7 text-slate-600">
+                {featuredStory.article.excerpt}
               </p>
 
-              {/* I keep this event info stacked so the important details are easy to scan. */}
-              <div className="mt-4 space-y-2.5 rounded-[0.75rem] border bg-slate-50/80 p-3 sm:p-4" style={{ borderColor: 'rgba(148, 163, 184, 0.16)' }}>
-                {activeStory.article.details.map((detail) => {
-                  const DetailIcon = articleDetailIcons[detail.icon];
+              {featuredLocation ? (
+                <p className="mt-7 inline-flex items-start gap-2 text-sm font-medium text-[#273f60]">
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#2166d1]" strokeWidth={1.9} />
+                  {featuredLocation}
+                </p>
+              ) : null}
 
-                  return (
-                    <div key={`${detail.icon}-${detail.info}`} className="flex items-start gap-3">
-                      <span className="mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white shadow-sm" style={{ color: 'var(--primary)' }}>
-                        <DetailIcon className="h-4 w-4" strokeWidth={2.2} />
-                      </span>
-                      <p className="text-sm leading-6 sm:text-[15px]" style={{ color: 'var(--text-soft)' }}>
-                        {detail.info}
-                      </p>
-                    </div>
-                  );
-                })}
-              </div>
-
-              <div className="mt-auto pt-6">
+              <div className="mt-auto pt-9">
                 <Link
-                  href={activeStory.article.href}
-                  className="inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold text-white shadow-[0_14px_28px_rgba(37,99,235,0.2)] transition hover:-translate-y-0.5"
-                  style={{ background: 'linear-gradient(135deg, #1e4a95 0%, #2563eb 100%)' }}
+                  href={featuredStory.article.href}
+                  className="group inline-flex items-center gap-3 rounded-md bg-[#2166d1] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#2b73df]"
                 >
-                  Read more
-                  <ArrowRight className="h-4 w-4" strokeWidth={2.2} />
+                  Read the story
+                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" strokeWidth={1.9} />
                 </Link>
               </div>
-            </article>
+            </div>
           </div>
+        </article>
 
-          <div className="grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
-            <article
-              className="flex flex-col rounded-[0.75rem] border bg-white  shadow-[0_12px_28px_rgba(15,23,42,0.07)] "
-              style={{ borderColor: 'rgba(148, 163, 184, 0.16)' }}
-            >
-              <div className="relative aspect-[16/10] overflow-hidden rounded-[0.75rem] bg-slate-950 lg:aspect-[16/8.6]">
-                {videoEmbedUrl ? (
-                  <iframe
-                    src={videoEmbedUrl}
-                    title={activeStory.videoCard.title}
-                    className="absolute inset-0 h-full w-full"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    loading="lazy"
-                    allowFullScreen
-                  />
-                ) : (
-                  <div className="flex h-full items-center justify-center px-6 text-center text-sm text-white/70 sm:text-base">
-                    Add a valid YouTube link to display the video here.
-                  </div>
-                )}
-              </div>
+        {latestStories.length > 0 ? (
+          <div className="mt-12">
+            <div className="flex items-end justify-between gap-6 border-b border-slate-300 pb-4">
+              <h3 className="text-lg font-semibold text-[#17365f]">More from the newsroom</h3>
+              <span className="text-xs font-medium uppercase tracking-[0.14em] text-slate-500">
+                Latest stories
+              </span>
+            </div>
 
-              <div className="px-5 py-5 sm:px-6">
-                <h3 className="text-lg font-semibold text-[var(--text-main)]">
-                  {activeStory.videoCard.title}
-                </h3>
-                <p className="mt-2 text-sm leading-6 text-[var(--text-soft)]">
-                  {activeStory.videoCard.summary}
-                </p>
-              </div>
-            </article>
+            <div className="grid gap-x-8 md:grid-cols-2 lg:grid-cols-3">
+              {latestStories.map((story, index) => {
+                const storyImage = story.slides[0];
+                const storyDate = getDetail(story.article, 'calendar');
 
-            <article
-              className="overflow-hidden rounded-[0.75rem] border bg-white shadow-[0_12px_28px_rgba(15,23,42,0.07)]"
-              style={{ borderColor: 'rgba(148, 163, 184, 0.16)' }}
-            >
-              {/* I lock in a minimum height here so the news image stays visible on smaller screens. */}
-              <div className="relative min-h-[270px] overflow-hidden rounded-[0.75rem] sm:min-h-[220px] lg:h-full">
-                <Image src={activeStory.imageCard.image} alt={activeStory.imageCard.alt} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 38vw" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 via-transparent to-transparent" />
-              </div>
-            </article>
+                if (!storyImage) {
+                  return null;
+                }
+
+                return (
+                  <article key={story.id} className={`group border-b border-slate-300 py-7 ${hasSingleLatestStory ? 'md:col-span-2 lg:col-span-3' : ''}`}>
+                    <Link
+                      href={story.article.href}
+                      className={hasSingleLatestStory ? 'grid gap-6 md:grid-cols-12 md:items-center md:gap-8' : 'block'}
+                    >
+                      <div className={`relative aspect-[16/10] overflow-hidden rounded-md bg-slate-200 ${hasSingleLatestStory ? 'md:col-span-5 lg:col-span-4' : ''}`}>
+                        <Image
+                          src={storyImage.image}
+                          alt={storyImage.alt}
+                          fill
+                          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        />
+                      </div>
+
+                      <div className={`mt-5 ${hasSingleLatestStory ? 'md:col-span-7 md:mt-0 lg:col-span-8' : ''}`}>
+                        <div className="flex items-center justify-between gap-4 text-xs font-medium text-slate-500">
+                          <span className="font-semibold uppercase tracking-[0.12em] text-[#2166d1]">
+                            {story.article.label}
+                          </span>
+                          {storyDate ? <span>{storyDate}</span> : null}
+                        </div>
+
+                        <div className="mt-3 grid grid-cols-[2rem_1fr] gap-3">
+                          <span className="pt-1 text-xs font-medium text-slate-400">
+                            {String(index + 2).padStart(2, '0')}
+                          </span>
+                          <div>
+                            <h4 className={`font-semibold leading-snug text-[#17365f] transition-colors group-hover:text-[#2166d1] ${hasSingleLatestStory ? 'text-2xl sm:text-3xl' : 'text-xl sm:text-2xl'}`}>
+                              {story.article.title}
+                            </h4>
+                            {hasSingleLatestStory ? (
+                              <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">
+                                {story.article.excerpt}
+                              </p>
+                            ) : null}
+                            <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#17365f]">
+                              Read article
+                              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" strokeWidth={1.9} />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  </article>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        ) : null}
       </div>
     </section>
   );

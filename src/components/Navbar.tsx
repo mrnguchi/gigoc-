@@ -4,17 +4,51 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ChevronDown } from 'lucide-react';
+import { ArrowRight, ChevronDown } from 'lucide-react';
 
 const divisions = [
-  { label: 'Real Estate', href: '/#hero-divisions' },
-  { label: 'GiGOC Rentals', href: '/gigoc_rentals' },
-  { label: 'GIGOC Biomass', href: '/manufacturing' },
-  { label: 'Tech & Innovation', href: '/tech&innovation' },
-  { label: 'Logistics', href: '/#hero-divisions' },
-  { label: 'General Commerce', href: '/#hero-divisions' },
-  { label: 'Modelling', href: '/#hero-divisions' },
-  { label: 'Music & Entertainment', href: '/music&entertainment' },
+  {
+    label: 'Real Estate',
+    description: 'Property and development',
+    icon: '/real estate.png',
+    href: '/#our-businesses',
+  },
+  {
+    label: 'GiGOC Rentals',
+    description: 'Executive mobility',
+    icon: '/car-rental.png',
+    href: '/gigoc_rentals',
+  },
+  {
+    label: 'GiGOC Biomass',
+    description: 'Renewable manufacturing',
+    icon: '/renewable-energy.png',
+    href: '/manufacturing',
+  },
+  {
+    label: 'Entertainment & Talent',
+    description: 'Music, talent and campaigns',
+    icon: '/music and entertainment.png',
+    href: '/music&entertainment',
+  },
+  {
+    label: 'General Commerce',
+    description: 'Trade and market access',
+    icon: '/general commerce.png',
+    href: '/#our-businesses',
+  },
+  {
+    label: 'Tech & Innovation',
+    description: 'Digital products and systems',
+    icon: '/tech and innovation.png',
+    href: '/tech&innovation',
+  },
+  {
+    label: 'Logistics',
+    description: 'Supply and distribution',
+    icon: '/logistics.png',
+    href: '/#our-businesses',
+  },
 ];
 
 function isActivePath(pathname: string, href: string) {
@@ -47,6 +81,7 @@ export default function Navbar() {
   const [isMobileDivisionsOpen, setIsMobileDivisionsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const divisionsMenuRef = useRef<HTMLDivElement | null>(null);
+  const useLightHeader = isScrolled || isMobileMenuOpen;
 
   const navTextClassName = isScrolled ? 'text-[#1e4a95] hover:text-[#2563eb]' : 'text-white/90 hover:text-white';
   const homeHref = '/#home';
@@ -54,33 +89,35 @@ export default function Navbar() {
   const getDesktopLinkClassName = (href: string) => {
     const isActive = isActivePath(pathname, href);
 
-    return `rounded-full px-3 py-2 text-sm transition ${
+    return `border-b-2 px-1 py-2 text-sm transition-colors ${
       isActive
         ? isScrolled
-          ? 'bg-[#1e4a95]/10 font-semibold text-[#1e4a95]'
-          : 'bg-white/12 font-semibold text-white'
-        : `font-medium ${navTextClassName}`
+          ? 'border-[#2166d1] font-semibold text-[#17365f]'
+          : 'border-white/80 font-semibold text-white'
+        : `border-transparent font-medium ${navTextClassName}`
     }`;
   };
 
   const getMobileLinkClassName = (href: string) => {
     const isActive = isActivePath(pathname, href);
 
-    return `rounded-2xl px-4 py-3 text-sm transition ${
-      isActive ? 'bg-white/12 font-semibold text-white' : 'text-white/90 hover:bg-white/6'
+    return `rounded-md border-l-2 px-4 py-3 text-sm transition ${
+      isActive
+        ? 'border-[#2166d1] bg-[#edf4ff] font-semibold text-[#17365f]'
+        : 'border-transparent text-slate-700 hover:bg-slate-50 hover:text-[#2166d1]'
     }`;
   };
 
-  const desktopDivisionsClassName = `flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium transition ${
+  const desktopDivisionsClassName = `flex items-center gap-2 border-b-2 px-1 py-2 text-sm font-medium transition-colors ${
     isDivisionsOpen
       ? isScrolled
-        ? 'bg-[#1e4a95]/10 text-[#1e4a95]'
-        : 'bg-white/12 text-white'
-      : navTextClassName
+        ? 'border-[#2166d1] text-[#17365f]'
+        : 'border-white/80 text-white'
+      : `border-transparent ${navTextClassName}`
   }`;
 
-  const mobileDivisionsClassName = `flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left text-sm font-semibold transition ${
-    isMobileDivisionsOpen ? 'bg-white/12 text-white' : 'text-white'
+  const mobileDivisionsClassName = `flex w-full items-center justify-between rounded-md px-4 py-3 text-left text-sm font-semibold transition ${
+    isMobileDivisionsOpen ? 'bg-[#edf4ff] text-[#17365f]' : 'text-[#17365f] hover:bg-slate-50'
   }`;
 
   const closeMobileMenu = () => {
@@ -151,26 +188,25 @@ export default function Navbar() {
       {isMobileMenuOpen ? (
         <button
           type="button"
-          className="fixed inset-0 z-40 bg-slate-950/78 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-40 bg-slate-950/55 backdrop-blur-sm lg:hidden"
           onClick={closeMobileMenu}
           aria-label="Close navigation menu backdrop"
         />
       ) : null}
 
-      <div className="relative z-[60] px-4 pt-4 sm:px-6 lg:px-8">
+      <div
+        className={`relative z-[60] transition-all duration-300 ${
+          useLightHeader
+            ? 'border-b border-slate-200/90 bg-white/95 px-5 shadow-[0_10px_35px_rgba(15,23,42,0.08)] backdrop-blur-xl sm:px-6 lg:px-10'
+            : 'px-4 pt-4 sm:px-6 lg:px-8'
+        }`}
+      >
         <nav
-          className={`relative z-50 mx-auto flex max-w-7xl items-center justify-between px-4 py-3 transition-all duration-300 sm:px-6 ${
-            isScrolled ? 'rounded-[1.75rem] border shadow-[0_18px_45px_rgba(15,23,42,0.12)]' : ''
-          }`}
-          style={{
-            backgroundColor: isScrolled ? 'rgba(255, 255, 255, 0.96)' : 'transparent',
-            borderColor: isScrolled ? 'rgba(148, 163, 184, 0.22)' : 'transparent',
-            backdropFilter: isScrolled ? 'blur(18px)' : 'none',
-          }}
+          className="relative z-50 mx-auto flex max-w-7xl items-center justify-between px-1 py-3 transition-all duration-300 sm:px-2"
         >
           <Link href="/#home" className="flex items-center gap-3">
             <Image
-              src={isScrolled ? '/gigoc-blue.png' : '/gigoc-white.png'}
+              src={useLightHeader ? '/gigoc-blue.png' : '/gigoc-white.png'}
               alt="Gebah Investment Group Of Companies logo"
               width={120}
               height={150}
@@ -178,12 +214,17 @@ export default function Navbar() {
             />
           </Link>
 
-          <div className="hidden items-center gap-7 lg:flex">
+          <div className="hidden items-center gap-8 lg:flex">
             <Link href={homeHref} className={getDesktopLinkClassName(homeHref)}>
               Home
             </Link>
 
-            <div ref={divisionsMenuRef} className="relative">
+            <div
+              ref={divisionsMenuRef}
+              className="relative"
+              onMouseEnter={() => setIsDivisionsOpen(true)}
+              onMouseLeave={() => setIsDivisionsOpen(false)}
+            >
               <button
                 type="button"
                 className={desktopDivisionsClassName}
@@ -199,22 +240,63 @@ export default function Navbar() {
 
               {isDivisionsOpen ? (
                 <div
-                  className="absolute left-1/2 top-full mt-4 w-72 -translate-x-1/2 rounded-3xl border p-3 shadow-2xl"
-                  style={{
-                    backgroundColor: 'rgba(15, 23, 42, 0.96)',
-                    borderColor: 'rgba(255, 255, 255, 0.12)',
-                  }}
+                  className={`fixed left-1/2 w-[calc(100vw-3rem)] max-w-7xl -translate-x-1/2 border border-slate-200 border-t-[3px] border-t-[#2166d1] bg-white p-3 shadow-[0_24px_65px_rgba(15,23,42,0.18)] sm:p-4 ${
+                    isScrolled ? 'top-[4.55rem]' : 'top-[5.25rem]'
+                  }`}
                 >
-                  {divisions.map((division) => (
+                  <div className="mb-3 flex items-center justify-between gap-6 border-b border-slate-200 px-1 pb-3">
+                    <p className="text-sm font-semibold text-[#17365f]">Our businesses</p>
                     <Link
-                      key={division.label}
-                      href={division.href}
-                      className="block rounded-2xl px-4 py-3 text-sm text-white/80 transition hover:bg-white/10 hover:text-white"
+                      href="/#our-businesses"
+                      className="text-xs font-semibold text-[#2166d1] transition hover:text-[#17365f]"
                       onClick={() => setIsDivisionsOpen(false)}
                     >
-                      {division.label}
+                      View all businesses
                     </Link>
-                  ))}
+                  </div>
+
+                  <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-6">
+                    {divisions.map((division, index) => (
+                      <Link
+                        key={division.label}
+                        href={division.href}
+                        className="group relative grid min-h-28 grid-cols-[5.5rem_1fr] gap-4 rounded-md border border-slate-200 p-3 transition duration-300 hover:border-[#2166d1]/45 hover:bg-[#f8fbff] hover:shadow-[0_10px_25px_rgba(15,23,42,0.07)] lg:col-span-2"
+                        onClick={() => setIsDivisionsOpen(false)}
+                      >
+                        <span className="flex min-h-20 items-center justify-center rounded-[3px] border border-slate-200 bg-[#f0f4f8]">
+                          <span
+                            className="h-10 w-10 bg-[#2166d1] transition-transform duration-300 group-hover:scale-105"
+                            style={{
+                              WebkitMaskImage: `url("${division.icon}")`,
+                              maskImage: `url("${division.icon}")`,
+                              WebkitMaskPosition: 'center',
+                              maskPosition: 'center',
+                              WebkitMaskRepeat: 'no-repeat',
+                              maskRepeat: 'no-repeat',
+                              WebkitMaskSize: 'contain',
+                              maskSize: 'contain',
+                            }}
+                            aria-hidden="true"
+                          />
+                        </span>
+
+                        <span className="flex min-w-0 flex-col justify-center">
+                          <span className="absolute right-3 top-3 text-[10px] font-semibold tracking-[0.12em] text-slate-400">
+                            {String(index + 1).padStart(2, '0')}
+                          </span>
+                          <span className="text-[15px] font-semibold leading-5 text-[#10243f]">
+                            {division.label}
+                          </span>
+                          <span className="mt-1 text-xs leading-5 text-slate-500">
+                            {division.description}
+                          </span>
+                          <span className="mt-2 w-fit border-b border-[#2166d1]/55 pb-0.5 text-xs font-semibold text-[#2166d1] transition group-hover:border-[#2166d1]">
+                            Explore business
+                          </span>
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               ) : null}
             </div>
@@ -233,24 +315,21 @@ export default function Navbar() {
           <div className="hidden lg:block">
             <Link
               href="/contact"
-              className="rounded-full text-center px-6 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5"
-              style={{
-                background: 'linear-gradient(135deg, #1e4a95 0%, #2563eb 100%)',
-                boxShadow: '0 18px 30px rgba(37, 99, 235, 0.24)',
-              }}
+              className="group inline-flex items-center gap-3 rounded-md bg-[#2166d1] px-6 py-3 text-center text-sm font-semibold text-white shadow-[0_12px_26px_rgba(33,102,209,0.18)] transition hover:bg-[#2b73df]"
             >
               Start a Project
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" strokeWidth={1.9} />
             </Link>
           </div>
 
           <button
               type="button"
-              className={`inline-flex h-11 w-11 items-center justify-center rounded-2xl border transition-colors lg:hidden ${
-                isScrolled ? 'text-[#1e4a95]' : 'text-white'
+              className={`inline-flex h-11 w-11 items-center justify-center rounded-md border transition-colors lg:hidden ${
+                useLightHeader ? 'text-[#1e4a95]' : 'text-white'
               }`}
               style={{
-                backgroundColor: isScrolled ? 'rgba(30, 74, 149, 0.06)' : 'rgba(255, 255, 255, 0.06)',
-                borderColor: isScrolled ? 'rgba(30, 74, 149, 0.18)' : 'rgba(255, 255, 255, 0.12)',
+                backgroundColor: useLightHeader ? 'rgba(30, 74, 149, 0.06)' : 'rgba(255, 255, 255, 0.06)',
+                borderColor: useLightHeader ? 'rgba(30, 74, 149, 0.18)' : 'rgba(255, 255, 255, 0.12)',
               }}
               onClick={toggleMobileMenu}
               aria-expanded={isMobileMenuOpen}
@@ -263,11 +342,7 @@ export default function Navbar() {
         {isMobileMenuOpen ? (
           <div className="fixed inset-x-0 top-0 z-40 px-4 pb-4 pt-24 sm:px-6 lg:hidden">
             <div
-              className="mx-auto max-w-7xl overflow-hidden rounded-[1.5rem] border shadow-2xl backdrop-blur-xl"
-              style={{
-                backgroundColor: 'rgba(15, 23, 42, 0.94)',
-                borderColor: 'rgba(255, 255, 255, 0.12)',
-              }}
+              className="mx-auto max-w-7xl overflow-hidden rounded-md border border-slate-200 bg-white shadow-2xl"
               role="dialog"
               aria-modal="true"
               aria-label="Mobile navigation menu"
@@ -278,7 +353,7 @@ export default function Navbar() {
                     Home
                   </Link>
 
-                  <div className="rounded-2xl border" style={{ borderColor: 'rgba(255, 255, 255, 0.1)' }}>
+                  <div className="rounded-md border border-slate-200">
                     <button
                       type="button"
                       className={mobileDivisionsClassName}
@@ -293,14 +368,37 @@ export default function Navbar() {
 
                     {isMobileDivisionsOpen ? (
                       <div className="grid gap-2 px-3 pb-3 sm:grid-cols-2">
-                        {divisions.map((division) => (
+                        {divisions.map((division, index) => (
                           <Link
                             key={division.label}
                             href={division.href}
-                            className="rounded-2xl px-3 py-2 text-sm text-white/75 transition hover:bg-white/10 hover:text-white"
+                            className="group grid grid-cols-[2.75rem_minmax(0,1fr)_1rem] items-center gap-3 rounded-md border border-slate-200 bg-white p-2.5 transition hover:border-[#2166d1]/45 hover:bg-[#f8fbff]"
                             onClick={closeMobileMenu}
                           >
-                            {division.label}
+                            <span className="flex h-11 w-11 items-center justify-center rounded-[3px] border border-slate-200 bg-[#f0f4f8]">
+                              <span
+                                className="h-6 w-6 bg-[#2166d1] transition-transform duration-300 group-hover:scale-105"
+                                style={{
+                                  WebkitMaskImage: `url("${division.icon}")`,
+                                  maskImage: `url("${division.icon}")`,
+                                  WebkitMaskPosition: 'center',
+                                  maskPosition: 'center',
+                                  WebkitMaskRepeat: 'no-repeat',
+                                  maskRepeat: 'no-repeat',
+                                  WebkitMaskSize: 'contain',
+                                  maskSize: 'contain',
+                                }}
+                                aria-hidden="true"
+                              />
+                            </span>
+                            <span className="min-w-0">
+                              <span className="block text-sm font-semibold leading-5 text-[#10243f]">{division.label}</span>
+                              <span className="mt-0.5 block text-[11px] leading-4 text-slate-500">{division.description}</span>
+                            </span>
+                            <span className="flex flex-col items-end gap-2">
+                              <span className="text-[9px] font-semibold tracking-[0.1em] text-slate-400">{String(index + 1).padStart(2, '0')}</span>
+                              <ArrowRight className="h-4 w-4 text-[#2166d1] transition-transform duration-300 group-hover:translate-x-0.5" strokeWidth={1.8} />
+                            </span>
                           </Link>
                         ))}
                       </div>
@@ -320,11 +418,11 @@ export default function Navbar() {
 
                   <Link
                     href="/contact"
-                    className="mt-2 rounded-full px-6 py-3 text-sm font-semibold text-white"
+                    className="group mt-2 flex items-center justify-between gap-4 rounded-md bg-[#2166d1] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#2b73df]"
                     onClick={closeMobileMenu}
-                    style={{ background: 'linear-gradient(135deg, #1e4a95 0%, #2563eb 100%)' }}
                   >
                     Start a Project
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" strokeWidth={1.9} />
                   </Link>
                 </div>
               </div>

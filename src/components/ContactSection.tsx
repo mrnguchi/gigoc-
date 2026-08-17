@@ -1,41 +1,79 @@
+import { Mail, MapPin, Phone } from 'lucide-react';
 import Link from 'next/link';
 import { companyContact } from '@/data/contact';
 import ContactForm from '@/components/forms/ContactForm';
 
 export default function ContactSection() {
   return (
-    <section id="contact-section" className="scroll-mt-32 bg-[var(--bg-main)] px-5 pb-20 pt-4 sm:px-6 lg:px-10 lg:pb-24">
-      <div className="mx-auto grid max-w-7xl items-start gap-10 rounded-[2rem] border bg-white md:mt-10 px-6 py-8 shadow-[0_20px_70px_rgba(15,23,42,0.08)] sm:px-8 sm:py-10 lg:grid-cols-[1.05fr_0.95fr] lg:px-10">
-        <div className="lg:pl-6">
-          <p className="text-sm font-semibold tracking-[0.22em] uppercase" style={{ color: 'var(--primary)' }}>
-            -- Contact us --
-          </p>
-          <h2 className="mt-3 text-3xl font-semibold leading-tight sm:text-4xl" style={{ color: 'var(--text-main)' }}>
-            Let’s talk about your next project
-          </h2>
-          <p className="mt-5 text-base leading-7" style={{ color: 'var(--text-soft)' }}>
-            Share your idea, business need, or partnership goal and our team will get back to you with the right next steps.
-          </p>
-          <p className="mt-4 text-sm leading-7 sm:text-base" style={{ color: 'var(--text-soft)' }}>
-            We work across multiple industries, so whether your project is creative, commercial, or operational, we are ready to help you move it forward.
-          </p>
-
-          <div className="mt-6 space-y-2 text-sm leading-7 sm:text-base" style={{ color: 'var(--text-soft)' }}>
-            <p>{companyContact.address}</p>
-            <p>
-              <Link href={`mailto:${companyContact.email}`} className="font-medium transition hover:text-[var(--primary)]">
-                {companyContact.email}
-              </Link>
-            </p>
-            <p>
-              <Link href={`tel:${companyContact.phoneHref}`} className="font-medium transition hover:text-[var(--primary)]">
-                {companyContact.phoneDisplay}
-              </Link>
-            </p>
+    <section id="contact-section" className="scroll-mt-32 bg-white px-5 py-20 sm:px-6 lg:px-10 lg:py-24">
+      <div className="mx-auto max-w-7xl border-t border-slate-300 pt-8 sm:pt-10">
+        <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <div className="lg:col-span-7">
+            <div className="flex items-center gap-4 text-sm font-semibold text-[#2166d1]">
+              <span>Contact GiGOC</span>
+              <span className="h-px w-16 bg-[#2166d1]/45" aria-hidden="true" />
+            </div>
+            <h2 className="mt-5 max-w-3xl text-4xl font-semibold leading-[1.08] tracking-[-0.03em] text-[#17365f] sm:text-5xl lg:text-[3.5rem]">
+              Let’s talk about your next project.
+            </h2>
           </div>
+
+          <p className="max-w-xl text-base leading-7 text-slate-600 sm:text-lg lg:col-span-4 lg:col-start-9">
+            Tell us what you are working on and how we can help. Our team will get back to you.
+          </p>
         </div>
 
-        <ContactForm variant="homepage" />
+        <div className="mt-14 grid gap-8 border-y border-slate-300 py-8 lg:mt-16 lg:grid-cols-12 lg:gap-0">
+          <aside className="rounded-md bg-[#071a31] p-7 text-white sm:p-9 lg:col-span-4 lg:p-10">
+            <p className="text-sm font-semibold text-[#5ea0ff]">Contact details</p>
+            <h3 className="mt-4 max-w-sm text-2xl font-semibold leading-tight sm:text-3xl">
+              Based in Limbe. Working across sectors.
+            </h3>
+            <p className="mt-5 max-w-sm text-sm leading-7 text-white/65">
+              For projects, partnerships and general enquiries, reach us directly or use the form.
+            </p>
+
+            <div className="mt-10 border-t border-white/15">
+              <div className="grid grid-cols-[1.5rem_1fr] gap-4 border-b border-white/15 py-5">
+                <MapPin className="mt-0.5 h-5 w-5 text-[#5ea0ff]" strokeWidth={1.7} />
+                <div>
+                  <p className="text-xs font-medium text-white/50">Office</p>
+                  <p className="mt-1 text-sm leading-6 text-white/85">{companyContact.address}</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-[1.5rem_1fr] gap-4 border-b border-white/15 py-5">
+                <Mail className="mt-0.5 h-5 w-5 text-[#5ea0ff]" strokeWidth={1.7} />
+                <div>
+                  <p className="text-xs font-medium text-white/50">Email</p>
+                  <Link href={`mailto:${companyContact.email}`} className="mt-1 inline-block text-sm text-white/85 transition hover:text-white">
+                    {companyContact.email}
+                  </Link>
+                </div>
+              </div>
+              <div className="grid grid-cols-[1.5rem_1fr] gap-4 py-5">
+                <Phone className="mt-0.5 h-5 w-5 text-[#5ea0ff]" strokeWidth={1.7} />
+                <div>
+                  <p className="text-xs font-medium text-white/50">Phone</p>
+                  <Link href={`tel:${companyContact.phoneHref}`} className="mt-1 inline-block text-sm text-white/85 transition hover:text-white">
+                    {companyContact.phoneDisplay}
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <div className="lg:col-span-7 lg:col-start-6 lg:py-3">
+            <div className="mb-8 flex items-end justify-between gap-6 border-b border-slate-300 pb-5">
+              <div>
+                <p className="text-sm font-semibold text-[#2166d1]">Send an enquiry</p>
+                <h3 className="mt-2 text-2xl font-semibold text-[#17365f] sm:text-3xl">How can we help?</h3>
+              </div>
+              <span className="hidden text-xs text-slate-500 sm:block">* Required fields</span>
+            </div>
+
+            <ContactForm variant="homepage" />
+          </div>
+        </div>
       </div>
     </section>
   );

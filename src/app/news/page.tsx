@@ -1,270 +1,141 @@
-'use client';
-
-import { useState, type CSSProperties } from 'react';
-import { ArrowRight, CalendarDays, MapPin } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, CalendarDays, MapPin } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
-import { newsArticles, newsSectionData } from '@/data/news';
-
-type NewsCardItem = {
-  id: string;
-  image: string;
-  alt: string;
-  label: string;
-  title: string;
-  excerpt: string;
-  href: string;
-  date?: string;
-  location?: string;
-};
-
-const excerptClampStyle: CSSProperties = {
-  display: '-webkit-box',
-  WebkitLineClamp: 4,
-  WebkitBoxOrient: 'vertical',
-  overflow: 'hidden',
-};
-
-const newsDate = newsSectionData.article.details.find((detail) => detail.icon === 'calendar')?.info;
-const newsLocation = newsSectionData.article.details.find((detail) => detail.icon === 'location')?.info;
-
-const heroHighlights = [
-  { value: 'News', label: 'Across the Group' },
-  { value: 'Events', label: 'Highlights & Coverage' },
-  { value: 'Updates', label: 'Announcements & Media' },
-];
-
-const newsCards: NewsCardItem[] = newsArticles.map((article) => ({
-  id: article.slug,
-  image: article.gallery[0]?.image ?? article.featuredImage.image,
-  alt: article.featuredImage.alt,
-  label: article.label,
-  title: article.title,
-  excerpt: article.excerpt,
-  date: article.details.find((detail) => detail.icon === 'calendar')?.info,
-  location: article.details.find((detail) => detail.icon === 'location')?.info,
-  href: article.href,
-}));
-
-function NewsCard({ item }: { item: NewsCardItem }) {
-  return (
-    <article
-      className="group overflow-hidden rounded-[1.5rem] border bg-white shadow-[0_18px_40px_rgba(15,23,42,0.07)] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_24px_48px_rgba(15,23,42,0.11)]"
-      style={{ borderColor: 'rgba(148, 163, 184, 0.16)' }}
-    >
-      <div className="relative h-64 overflow-hidden">
-        <Image
-          src={item.image}
-          alt={item.alt}
-          fill
-          className="object-cover transition-transform duration-700 group-hover:scale-105"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        />
-      </div>
-
-      <div className="px-5 py-5">
-        <span
-          className="inline-flex rounded-full px-3 py-1 text-xs font-semibold uppercase"
-          style={{ backgroundColor: 'var(--primary-soft)', color: 'var(--primary)' }}
-        >
-          {item.label}
-        </span>
-
-        {item.date || item.location ? (
-          <div className="mt-4 flex flex-wrap gap-4 text-xs" style={{ color: 'var(--text-soft)' }}>
-            {item.date ? (
-              <span className="inline-flex items-center gap-1.5">
-                <CalendarDays className="h-3.5 w-3.5" />
-                {item.date}
-              </span>
-            ) : null}
-            {item.location ? (
-              <span className="inline-flex items-center gap-1.5">
-                <MapPin className="h-3.5 w-3.5" />
-                {item.location}
-              </span>
-            ) : null}
-          </div>
-        ) : null}
-
-        <h3 className="mt-4 text-xl font-semibold leading-snug" style={{ color: 'var(--text-main)' }}>
-          {item.title}
-        </h3>
-
-        <p className="mt-3 text-sm leading-7" style={{ ...excerptClampStyle, color: 'var(--text-soft)' }}>
-          {item.excerpt}
-        </p>
-
-        <Link
-          href={item.href}
-          className="mt-5 inline-flex items-center gap-2 text-sm font-semibold"
-          style={{ color: 'var(--primary)' }}
-        >
-          Read More
-          <ArrowRight className="h-4 w-4" strokeWidth={2.2} />
-        </Link>
-      </div>
-    </article>
-  );
-}
+import { newsArticles } from '@/data/news';
 
 export default function NewsPage() {
-  const [visibleCount, setVisibleCount] = useState(6);
-  const visibleCards = newsCards.slice(0, visibleCount);
-  const hasMoreCards = visibleCount < newsCards.length;
-
   return (
-    <main className="min-h-screen bg-white" style={{ overflow: 'hidden' }}>
+    <main className="min-h-screen overflow-hidden bg-white">
       <Navbar />
 
-      <section
-        className="relative overflow-hidden"
-        style={{ background: 'linear-gradient(180deg, #0f172a 0%, #101827 100%)' }}
-      >
-        <div className="absolute inset-0">
-          <Image
-            src="/hero-00.png"
-            alt="GiGOC news page hero background"
-            fill
-            priority
-            className="object-cover object-center"
-          />
-          <div className="absolute inset-0 bg-black/60" />
-        </div>
+      <section className="relative min-h-[680px] overflow-hidden bg-[#07172b] sm:min-h-[720px]">
+        <Image
+          src="/hero-00.png"
+          alt="GiGOC newsroom"
+          fill
+          priority
+          className="object-cover object-center"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(3,15,30,0.94)_0%,rgba(4,19,38,0.78)_50%,rgba(4,18,35,0.4)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,13,27,0.34)_0%,rgba(3,14,29,0.18)_55%,rgba(3,15,30,0.7)_100%)]" />
 
-        <div className="relative mx-auto flex min-h-[82vh] max-w-7xl flex-col px-4 pb-16 pt-28 sm:px-6 lg:px-8 lg:pb-20 lg:pt-32">
-          <div className="grid flex-1 items-center gap-14 py-8 lg:grid-cols-[1.08fr_0.92fr] lg:py-12">
-            <div className="max-w-2xl">
-              <div
-                className="mb-6 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold tracking-[0.22em] uppercase text-white/80"
-                style={{
-                  backgroundColor: 'rgba(255, 255, 255, 0.06)',
-                  borderColor: 'rgba(255, 255, 255, 0.12)',
-                }}
-              >
-                GiGOC News
-              </div>
-
-              <h1 className="max-w-3xl text-4xl font-semibold leading-tight text-white sm:text-5xl lg:text-6xl">
-                GIGOC Newsroom
-              </h1>
-
-              <div className="mt-6 space-y-3 text-base leading-7 text-white/70 sm:text-lg">
-                <p>
-                  This page brings together featured events, company announcements, and curated media highlights in one clean newsroom experience.
-                </p>
-              </div>
-
-              <div
-                className="mt-8 grid gap-px overflow-hidden rounded-[1.75rem] border sm:grid-cols-3"
-                style={{
-                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                  borderColor: 'rgba(255, 255, 255, 0.12)',
-                }}
-              >
-                {heroHighlights.map((item) => (
-                  <div key={item.label} className="px-5 py-5" style={{ backgroundColor: 'rgba(255, 255, 255, 0.06)' }}>
-                    <p className="text-2xl font-semibold text-white sm:text-3xl">{item.value}</p>
-                    <p className="mt-2 text-sm text-white/70">{item.label}</p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-                <Link
-                  href="#news-grid"
-                  className="rounded-full px-7 py-4 text-center text-sm font-semibold text-white transition hover:-translate-y-0.5"
-                  style={{
-                    background: 'linear-gradient(135deg, #7c3aed 0%, #2563eb 100%)',
-                    boxShadow: '0 18px 35px rgba(37, 99, 235, 0.28)',
-                  }}
-                >
-                  Browse News
-                </Link>
-                <Link
-                  href="/"
-                  className="rounded-full border px-7 py-4 text-center text-sm font-semibold text-white transition hover:bg-white/10"
-                  style={{ borderColor: 'rgba(255, 255, 255, 0.18)' }}
-                >
-                  Back Home
-                </Link>
-              </div>
+        <div className="relative mx-auto flex min-h-[680px] max-w-7xl items-center px-5 pb-24 pt-32 sm:min-h-[720px] sm:px-6 lg:px-10 lg:pt-36">
+          <div className="max-w-4xl">
+            <div className="flex items-center gap-4 text-sm font-semibold text-[#8abbff]">
+              <span>GiGOC News</span>
+              <span className="h-px w-16 bg-[#8abbff]/55" aria-hidden="true" />
             </div>
+            <h1 className="mt-6 max-w-4xl text-5xl font-semibold leading-[1.03] tracking-[-0.04em] text-white sm:text-6xl lg:text-[5rem]">
+              GIGOC Newsroom
+            </h1>
+            <p className="mt-7 max-w-2xl text-base leading-8 text-white/70 sm:text-lg">
+              This page brings together featured events, company announcements, and curated media highlights in one clean newsroom experience.
+            </p>
 
-            <div className="relative mx-auto w-full max-w-[31rem] lg:ml-auto lg:mr-0">
-              <div
-                className="rounded-[2rem] border p-6 text-white shadow-[0_30px_60px_rgba(15,23,42,0.35)] backdrop-blur-sm sm:p-7"
-                style={{
-                  backgroundColor: 'rgba(15, 23, 42, 0.48)',
-                  borderColor: 'rgba(255, 255, 255, 0.12)',
-                }}
+            <div className="mt-9 flex flex-col items-start gap-5 sm:flex-row sm:items-center">
+              <Link
+                href="#news-grid"
+                className="group inline-flex min-h-12 items-center justify-center gap-3 rounded-md bg-[#2166d1] px-6 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(10,55,130,0.28)] transition hover:bg-[#2b73df]"
               >
-                <p className="text-sm font-semibold tracking-[0.22em] uppercase text-white/65">Currently Featured</p>
-                <h2 className="mt-3 text-2xl font-semibold leading-snug sm:text-3xl">{newsSectionData.article.title}</h2>
-                <div className="mt-5 flex flex-wrap gap-4 text-sm text-white/75">
-                  {newsDate ? (
-                    <span className="inline-flex items-center gap-2">
-                      <CalendarDays className="h-4 w-4" />
-                      {newsDate}
-                    </span>
-                  ) : null}
-                  {newsLocation ? (
-                    <span className="inline-flex items-center gap-2">
-                      <MapPin className="h-4 w-4" />
-                      {newsLocation}
-                    </span>
-                  ) : null}
-                </div>
-                <p className="mt-5 text-sm leading-7 text-white/75" style={excerptClampStyle}>
-                  {newsSectionData.article.excerpt}
-                </p>
-                <Link
-                  href="#news-grid"
-                  className="mt-7 inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-[#1e4a95] transition hover:-translate-y-0.5"
-                >
-                  View Stories
-                  <ArrowRight className="h-4 w-4" strokeWidth={2.2} />
-                </Link>
-              </div>
+                Browse News
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" strokeWidth={1.9} />
+              </Link>
+              <Link
+                href="/"
+                className="group inline-flex items-center gap-3 border-b border-white/45 pb-1 text-sm font-semibold text-white transition hover:border-white"
+              >
+                Back Home
+                <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={1.9} />
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="news-grid" className="bg-white px-5 py-16 sm:px-6 lg:px-10 lg:py-20">
-        <div className="mx-auto max-w-7xl">
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="text-sm font-semibold tracking-[0.22em] uppercase" style={{ color: 'var(--primary)' }}>
-              -- News Room --
-            </p>
-            <h2 className="mt-3 text-3xl font-semibold sm:text-4xl" style={{ color: 'var(--text-main)' }}>
-              Latest News & Updates
-            </h2>
-            <p className="mt-4 text-base leading-7" style={{ color: 'var(--text-soft)' }}>
+      <section id="news-grid" className="scroll-mt-24 bg-[#f4f7fb] px-5 py-20 sm:px-6 lg:px-10 lg:py-24">
+        <div className="mx-auto max-w-7xl border-t border-slate-300 pt-8 sm:pt-10">
+          <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-7">
+              <div className="flex items-center gap-4 text-sm font-semibold text-[#2166d1]">
+                <span>News Room</span>
+                <span className="h-px w-16 bg-[#2166d1]/45" aria-hidden="true" />
+              </div>
+              <h2 className="mt-5 max-w-3xl text-4xl font-semibold leading-[1.08] tracking-[-0.03em] text-[#17365f] sm:text-5xl lg:text-[3.5rem]">
+                Latest News &amp; Updates
+              </h2>
+            </div>
+            <p className="max-w-xl text-base leading-7 text-slate-600 sm:text-lg lg:col-span-4 lg:col-start-9">
               A growing collection of event highlights, official updates, and news moments from across GiGOC.
             </p>
           </div>
 
-          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {visibleCards.map((item) => (
-              <NewsCard key={item.id} item={item} />
-            ))}
-          </div>
+          <div className="mt-14 border-t border-slate-300 lg:mt-16">
+            {newsArticles.map((article, index) => {
+              const date = article.details.find((detail) => detail.icon === 'calendar')?.info;
+              const location = article.details.find((detail) => detail.icon === 'location')?.info;
+              const image = article.gallery[0] ?? article.featuredImage;
 
-          {hasMoreCards ? (
-            <div className="mt-10 flex justify-center">
-              <button
-                type="button"
-                onClick={() => setVisibleCount((currentCount) => currentCount + 6)}
-                className="rounded-full px-7 py-3 text-sm font-semibold text-white shadow-[0_18px_35px_rgba(37,99,235,0.22)] transition hover:-translate-y-0.5"
-                style={{ background: 'linear-gradient(135deg, #1e4a95 0%, #2563eb 100%)' }}
-              >
-                View More
-              </button>
-            </div>
-          ) : null}
+              return (
+                <article key={article.slug} className="group border-b border-slate-300 py-7 sm:py-8">
+                  <div className="grid gap-7 lg:grid-cols-12 lg:items-stretch lg:gap-10">
+                    <Link
+                      href={article.href}
+                      className="relative block min-h-[300px] overflow-hidden rounded-md bg-slate-200 sm:min-h-[400px] lg:col-span-5 lg:min-h-[430px]"
+                      aria-label={`Read ${article.title}`}
+                    >
+                      <Image
+                        src={image.image}
+                        alt={image.alt}
+                        fill
+                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.025]"
+                        sizes="(max-width: 1024px) 100vw, 42vw"
+                      />
+                      <span className="absolute left-5 top-5 bg-[#071a31]/80 px-2.5 py-1.5 text-[10px] font-medium text-white backdrop-blur-sm">
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+                    </Link>
+
+                    <div className="flex flex-col justify-center lg:col-span-6 lg:col-start-7">
+                      <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-medium text-slate-500">
+                        <span className="font-semibold uppercase tracking-[0.12em] text-[#2166d1]">
+                          {article.label}
+                        </span>
+                        {date ? (
+                          <span className="inline-flex items-center gap-2">
+                            <CalendarDays className="h-3.5 w-3.5" strokeWidth={1.8} />
+                            {date}
+                          </span>
+                        ) : null}
+                      </div>
+
+                      <h3 className="mt-5 max-w-2xl text-3xl font-semibold leading-[1.14] tracking-[-0.025em] text-[#17365f] transition-colors group-hover:text-[#2166d1] sm:text-4xl">
+                        {article.title}
+                      </h3>
+                      <p className="mt-5 max-w-2xl text-base leading-8 text-slate-600">{article.excerpt}</p>
+
+                      {location ? (
+                        <p className="mt-6 inline-flex items-start gap-2 text-sm font-medium text-[#273f60]">
+                          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#2166d1]" strokeWidth={1.9} />
+                          {location}
+                        </p>
+                      ) : null}
+
+                      <Link
+                        href={article.href}
+                        className="mt-8 inline-flex w-fit items-center gap-3 border-b border-[#17365f]/35 pb-1 text-sm font-semibold text-[#17365f] transition hover:border-[#2166d1] hover:text-[#2166d1]"
+                      >
+                        Read More
+                        <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" strokeWidth={1.9} />
+                      </Link>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
         </div>
       </section>
 

@@ -1,460 +1,200 @@
-'use client';
-
+import { ArrowLeft, Menu, X } from 'lucide-react';
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { AppWindow, ArrowRight, BriefcaseBusiness, CarFront, CheckCircle2, MapPinned, ShieldCheck, TimerReset, UserRoundPlus, WalletCards } from 'lucide-react';
-import Footer from '@/components/Footer';
-import Navbar from '@/components/Navbar';
-import NewsletterForm from '@/components/forms/NewsletterForm';
+import RentalsWaitlistForm from '@/components/forms/RentalsWaitlistForm';
+import RentalsFeatureShowcase from '@/components/rentals/RentalsFeatureShowcase';
 
-const benefits = [
-  {
-    title: 'Fast City Mobility',
-    description: 'Request rides and access rental options built for daily movement, airport transfers, and business schedules.',
-    icon: TimerReset,
-  },
-  {
-    title: 'Reliable Vehicles',
-    description: 'Our rental experience is centered on clean, dependable, and well-managed vehicles across different categories.',
-    icon: ShieldCheck,
-  },
-  {
-    title: 'Flexible Booking',
-    description: 'Choose the transport option that fits your timeline, whether you need a quick ride, a daily rental, or a premium trip.',
-    icon: WalletCards,
-  },
-  {
-    title: 'Location-Aware Service',
-    description: 'The mobile app is designed around real-time awareness so users can discover available rides near them with clarity.',
-    icon: MapPinned,
-  },
-];
+export const metadata: Metadata = {
+  title: 'G-Rides | Car rentals made simpler',
+  description: 'Find and rent vehicles, list your car, or provide driver services through G-Rides by GiGOC.',
+};
 
-const carCategories = [
-  {
-    title: 'Economy Cars',
-    badge: 'Economy',
-    badgeClassName: 'border-white/16 bg-white/12 text-white',
-    image: '/car1.jpg',
-    description: 'Practical and budget-friendly cars for everyday movement.',
-  },
-  {
-    title: 'Executive Sedans',
-    badge: 'Executive',
-    badgeClassName: 'border-black/20 bg-[rgba(15,23,42,0.72)] text-white',
-    image: '/bmw3-s.jpg',
-    description: 'Comfortable and polished vehicles for professionals.',
-  },
-  {
-    title: 'SUVs & Family Mobility',
-    badge: 'Family',
-    badgeClassName: 'border-[rgba(255,255,255,0.22)] bg-[linear-gradient(135deg,rgba(30,74,149,0.92),rgba(37,99,235,0.88))] text-white',
-    image: '/gle-23.jpg',
-    description: 'Spacious rides for group movement.',
-  },
-  {
-    title: 'Utility & Pickup Options',
-    badge: 'Utility',
-    badgeClassName: 'border-[rgba(255,215,140,0.35)] bg-[linear-gradient(135deg,rgba(176,124,33,0.95),rgba(244,196,83,0.92))] text-[#fff8e6]',
-    image: '/ford-ranger.jpg',
-    description: 'Vehicles suited for logistics-related transport.',
-  },
-];
-
-const partnerSteps = [
-  {
-    title: 'Apply as a Partner',
-    description: 'Start by sharing your vehicle and ownership details so the GiGOC Rentals team can review your fit for the platform.',
-    icon: UserRoundPlus,
-  },
-  {
-    title: 'Vehicle Review & Onboarding',
-    description: 'We validate key details, prepare your onboarding, and help position your ride within the right rental category.',
-    icon: CarFront,
-  },
-  {
-    title: 'Go Live in the App',
-    description: 'Once approved, your vehicle becomes part of the rentals ecosystem where customers can discover and request it.',
-    icon: AppWindow,
-  },
-  {
-    title: 'Earn & Grow with Us',
-    description: 'Track demand, receive bookings, and grow alongside a rental network built around trust, service quality, and visibility.',
-    icon: BriefcaseBusiness,
-  },
-];
+function Brand({ compact = false }: { compact?: boolean }) {
+  return (
+    <Link href="/gigoc_rentals" className="inline-flex items-center gap-0.5" aria-label="G-Rides home">
+      <span className={`${compact ? 'h-8 w-8' : 'h-10 w-10'} flex items-center justify-center`}>
+        <Image
+          src="/app-mockup(rentals)/logo.png"
+          alt="G"
+          width={48}
+          height={48}
+          className="h-full w-full object-contain [filter:brightness(0)_saturate(100%)_invert(32%)_sepia(87%)_saturate(1803%)_hue-rotate(209deg)_brightness(86%)_contrast(101%)]"
+        />
+      </span>
+      <span className={`${compact ? 'text-lg' : 'text-xl'} -ml-[.6rem] font-semibold tracking-[-0.03em] text-[#10243f]`}>
+        - Rides
+      </span>
+    </Link>
+  );
+}
 
 export default function GigocRentalsPage() {
   return (
-    <main className="min-h-screen overflow-hidden bg-[var(--bg-main)]">
-      <Navbar />
+    <main className="min-h-screen bg-[#e9ecef] px-0 py-0 lg:px-8 lg:py-8">
+      <div className="mx-auto max-w-[1440px] overflow-hidden bg-white shadow-[0_18px_70px_rgba(15,23,42,0.06)]">
+        <header className="bg-white px-5 sm:px-8 lg:px-14">
+          <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between border-b border-slate-200/80">
+            <Brand />
 
-      <section className="relative px-0 pt-24 md:pt-32">
-        <div className="absolute inset-0">
-          <Image src="/hero-00.png" alt="GiGOC Rentals hero background" fill className="object-cover object-center" sizes="100vw" />
-        </div>
-        <div className="absolute inset-0 bg-[rgba(8,18,36,0.82)]" />
-
-        <div className="relative -mb-4 flex items-center justify-center px-4 pb-0 md:hidden">
-          <div className="absolute bottom-12 left-6 z-10 flex items-center gap-2 rounded-xl border border-white/12 bg-white/95 px-3 py-2 shadow-md backdrop-blur-sm">
-            <Image src="/location-icon.png" alt="location" width={48} height={24} className="h-6 w-12 shrink-0 object-contain" />
-            <span className="text-xs font-semibold text-[var(--text-main)]">Near You</span>
-          </div>
-
-          <div className="absolute right-6 top-6 z-10 flex items-center gap-2 rounded-xl border border-white/12 bg-white/95 px-3 py-2 shadow-md backdrop-blur-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="var(--primary)">
-              <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z" />
-            </svg>
-            <span className="text-xs font-semibold text-[var(--text-main)]">120+ Cars</span>
-          </div>
-
-          <Image src="/hero-car2.png" alt="GiGOC Rentals featured vehicle" width={320} height={220} className="h-auto w-[95%] max-w-[320px] object-contain drop-shadow-2xl" priority />
-        </div>
-
-        <div className="relative mx-auto grid max-w-7xl gap-12 px-5 pb-16 pt-0 md:grid-cols-2 md:items-center md:px-4 md:py-16">
-          <div className="flex flex-col gap-4">
-            <p className="text-sm text-center md:text-left font-semibold tracking-[0.22em] uppercase text-white/70">
-              -- GiGOC Rentals --
-            </p>
-
-            <h1 className="text-3xl text-center  md:text-left font-semibold leading-tight text-white sm:text-5xl md:text-5xl lg:text-5xl">
-              Rent a Car Anytime, Anywhere with GIGOC Rentals
-            </h1>
-
-            <p className="max-w-xl text-sm text-center  md:text-left text-white/72 md:text-lg">
-              GiGOC Rentals is evolving into a mobile-first experience for smarter ride access, rental discovery, and partner-driven mobility across Cameroon.
-            </p>
-
-            <div className="flex flex-col gap-3 sm:flex-row md:gap-4">
-              <Link
-                href="#app-download"
-                className="w-full rounded-full px-6 py-3 text-center text-sm font-semibold text-white shadow-[0_18px_35px_rgba(37,99,235,0.28)] transition hover:-translate-y-0.5 sm:w-auto sm:px-8 md:text-base"
-                style={{ background: 'linear-gradient(135deg, #1e4a95 0%, #2563eb 100%)' }}
-              >
-                Get The App
+            <div className="hidden items-center gap-8 md:flex">
+              <Link href="#how-it-works" className="text-sm font-medium text-slate-600 transition hover:text-[#245cdb]">
+                How it works
               </Link>
-              <Link
-                href="#partner-program"
-                className="w-full rounded-full border px-6 py-3 text-center text-sm font-semibold text-white transition hover:bg-white/10 sm:w-auto sm:px-8 md:text-base"
-                style={{ borderColor: 'rgba(255, 255, 255, 0.18)' }}
-              >
-                Become A Partner
+              <Link href="/" className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition hover:text-[#245cdb]">
+                <ArrowLeft className="h-4 w-5" strokeWidth={1.8} aria-hidden="true" />
+                Back to GiGOC
               </Link>
             </div>
 
-            <div
-              className="grid w-full divide-y divide-white/12 overflow-hidden rounded-[1.75rem] border sm:grid-cols-3 sm:divide-x sm:divide-y-0 md:w-11/12"
-              style={{
-                backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                borderColor: 'rgba(255, 255, 255, 0.12)',
-              }}
-            >
-              <div className="px-5 py-6 text-center" style={{ backgroundColor: 'rgba(255, 255, 255, 0.06)' }}>
-                <p className="text-2xl font-semibold text-white md:text-3xl">Mobile</p>
-                <p className="mt-2 text-xs text-white/70 md:text-sm">First Experience</p>
-              </div>
-              <div className="px-5 py-6 text-center" style={{ backgroundColor: 'rgba(255, 255, 255, 0.06)' }}>
-                <p className="text-2xl font-semibold text-white md:text-3xl">Partner</p>
-                <p className="mt-2 text-xs text-white/70 md:text-sm">Driven Network</p>
-              </div>
-              <div className="px-5 py-6 text-center" style={{ backgroundColor: 'rgba(255, 255, 255, 0.06)' }}>
-                <p className="text-2xl font-semibold text-white md:text-3xl">Smart</p>
-                <p className="mt-2 text-xs text-white/70 md:text-sm">Urban Mobility</p>
-              </div>
-            </div>
-          </div>
-
-          <Image
-            src="/hero-car2.png"
-            alt="GiGOC Rentals hero vehicle"
-            width={920}
-            height={640}
-            priority
-            className="hidden h-auto w-full object-contain drop-shadow-xl md:block md:w-[110%] lg:w-[120%] xl:w-[128%]"
-          />
-        </div>
-      </section>
-
-      <section className="bg-white px-4 py-18 sm:px-6 lg:px-10">
-        <div className="mx-auto max-w-7xl">
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="text-sm font-semibold tracking-[0.22em] uppercase" style={{ color: 'var(--primary)' }}>
-              -- Why Choose Us --
-            </p>
-            <h2 className="mt-3 text-3xl font-semibold sm:text-4xl" style={{ color: 'var(--text-main)' }}>
-              Built for modern rentals, everyday riders, and trusted mobility partners
-            </h2>
-            <p className="mt-4 text-base leading-7" style={{ color: 'var(--text-soft)' }}>
-              GiGOC Rentals is being positioned as more than a fleet page. It is a mobility service ecosystem designed for convenience, clarity, and growth.
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-            {benefits.map((benefit) => {
-              const Icon = benefit.icon;
-
-              return (
-                <article
-                  key={benefit.title}
-                  className="rounded-[1.5rem] border bg-white p-6 shadow-[0_18px_40px_rgba(15,23,42,0.07)] transition-transform duration-300 hover:-translate-y-1"
-                  style={{ borderColor: 'rgba(148, 163, 184, 0.16)' }}
-                >
-                  <span className="inline-flex h-12 w-12 items-center justify-center rounded-full" style={{ backgroundColor: 'var(--primary-soft)', color: 'var(--primary)' }}>
-                    <Icon className="h-5 w-5" strokeWidth={2.2} />
-                  </span>
-                  <h3 className="mt-5 text-xl font-semibold" style={{ color: 'var(--text-main)' }}>
-                    {benefit.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-7" style={{ color: 'var(--text-soft)' }}>
-                    {benefit.description}
-                  </p>
-                </article>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-[var(--bg-main)] px-4 py-18 sm:px-6 lg:px-10">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid items-start gap-10 lg:grid-cols-[0.44fr_0.56fr] lg:gap-14">
-            <div className="max-w-xl">
-              <p className="text-sm text-center  md:text-left font-semibold tracking-[0.22em] uppercase" style={{ color: 'var(--primary)' }}>
-                -- Our Categories --
-              </p>
-              <h2 className="mt-3 max-w-[13ch] text-3xl text-center  md:text-left font-semibold leading-tight sm:text-4xl" style={{ color: 'var(--text-main)' }}>
-                Find the right ride for every type of movement
-              </h2>
-              <p className="mt-4 max-w-lg text-base text-center  md:text-left leading-7" style={{ color: 'var(--text-soft)' }}>
-                GiGOC Rentals is being designed around real transport needs. Whether it is daily city movement, executive travel, family trips, or utility support, the platform helps users discover the category that fits the journey.
-              </p>
-              <div className="mt-8 inline-flex items-center gap-3 rounded-full bg-white px-4 py-3 shadow-[0_14px_30px_rgba(15,23,42,0.07)] ring-1 ring-slate-200/80">
-                <span className="inline-flex rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em]" style={{ backgroundColor: 'var(--primary-soft)', color: 'var(--primary)' }}>
-                  Mobility First
-                </span>
-                <p className="text-sm font-medium" style={{ color: 'var(--text-soft)' }}>
-                  One rentals platform, multiple ride categories
-                </p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3 sm:gap-4">
-              {carCategories.map((category) => (
-              <article
-                key={category.title}
-                className="group relative overflow-hidden rounded-[1.4rem] border shadow-[0_20px_44px_rgba(15,23,42,0.12)] transition duration-500 hover:-translate-y-1.5 hover:shadow-[0_28px_60px_rgba(15,23,42,0.18)] sm:rounded-[1.75rem]"
-                style={{ borderColor: 'rgba(148, 163, 184, 0.16)' }}
+            <div className="flex items-center gap-2">
+              <Link
+                href="#waitlist"
+                className="hidden rounded-xl bg-[#245cdb] px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-[#1749bd] sm:inline-flex sm:px-5 sm:text-sm"
               >
-                <div className="relative h-44 overflow-hidden sm:h-52">
-                  <Image
-                    src={category.image}
-                    alt={category.title}
-                    fill
-                    className="object-cover transition duration-700 group-hover:scale-110"
-                    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 40vw, 25vw"
-                  />
-                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,16,32,0.2)_0%,rgba(16,24,39,0.6)_48%,rgba(30,74,149,0.88)_100%)] transition duration-500 group-hover:bg-[linear-gradient(180deg,rgba(7,16,32,0.16)_0%,rgba(22,54,115,0.66)_42%,rgba(37,99,235,0.94)_100%)]" />
-                  <div className="absolute inset-0 flex flex-col justify-between p-3 sm:p-4">
-                    <span className={`inline-flex w-fit rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] backdrop-blur-sm sm:px-3 sm:text-[11px] ${category.badgeClassName}`}>
-                      {category.badge}
-                    </span>
+                Join the waitlist
+              </Link>
 
-                    <div className="translate-y-1 transition duration-500 group-hover:translate-y-0">
-                      <h3 className="max-w-[11ch] text-base font-semibold leading-tight text-white sm:text-xl">
-                        {category.title}
-                      </h3>
-                      <p className="mt-2 line-clamp-3 text-[11px] leading-5 text-white/78 sm:text-xs sm:leading-5">
-                        {category.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </article>
-            ))}
-            </div>
-          </div>
-        </div>
-      </section>
+              <details className="group relative md:hidden">
+                <summary className="flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-xl border border-slate-200 text-[#10243f] transition hover:border-[#245cdb]/40 hover:bg-slate-50 hover:text-[#245cdb] [&::-webkit-details-marker]:hidden">
+                  <span className="sr-only">Open navigation menu</span>
+                  <Menu className="h-5 w-5 group-open:hidden" strokeWidth={1.8} aria-hidden="true" />
+                  <X className="hidden h-5 w-5 group-open:block" strokeWidth={1.8} aria-hidden="true" />
+                </summary>
 
-      <section id="app-download" className="bg-white -mt-10 px-4 py-12 sm:px-6 lg:px-10">
-        <div className="mx-auto max-w-7xl">
-          <div
-            className="relative overflow-hidden rounded-[2rem] border bg-[#fcfdfc] px-4 py-6 shadow-[0_20px_70px_rgba(15,23,42,0.08)] sm:px-6 sm:py-8 lg:px-10 lg:py-12"
-            style={{ borderColor: 'rgba(148, 163, 184, 0.16)' }}
-          >
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(37,99,235,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(37,99,235,0.04)_1px,transparent_1px)] bg-[size:72px_72px] opacity-60" />
-
-            <div className="relative grid items-center gap-10 lg:grid-cols-[0.86fr_1.14fr] lg:gap-12">
-              <div className="lg:pr-4">
-                <p className="text-sm text-center font-semibold tracking-[0.22em] uppercase" style={{ color: 'var(--primary)' }}>
-                  -- Mobile App --
-                </p>
-                <h2 className="mt-4 text-center max-w-[14ch] text-[2.7rem] font-semibold leading-[0.96] sm:max-w-md sm:text-5xl" style={{ color: '#111827' }}>
-                  Download app,
-                  <br />
-                  Start drive, Earn money!
-                </h2>
-                <p className="mt-5 text-center max-w-full text-[1.05rem] leading-8 sm:mt-6 sm:max-w-md sm:text-base" style={{ color: '#5b6475' }}>
-                  The GiGOC Rentals app brings our mobility service closer to you. Discover available rides, request transport faster, manage your bookings with ease, and stay connected to reliable movement across town, business trips, airport transfers, and everyday errands.
-                </p>
-
-                <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+                <div className="absolute right-0 top-[calc(100%+0.75rem)] z-50 w-64 rounded-2xl border border-slate-200 bg-white p-2 shadow-[0_20px_50px_rgba(15,23,42,0.14)]">
                   <Link
-                    href="#"
-                    className="inline-flex w-full min-w-0 items-center gap-3 rounded-[0.9rem] border border-black/90 bg-[#16181d] px-4 py-3 transition hover:-translate-y-0.5 hover:bg-black sm:w-auto sm:min-w-[225px]"
+                    href="#how-it-works"
+                    className="flex rounded-xl px-4 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-[#245cdb]"
                   >
-                    <Image src="/playstore.jpeg" alt="Play Store icon" width={40} height={40} className="h-10 w-10 rounded-[0.65rem] object-cover" />
-                    <div className="text-left">
-                      <p className="text-[11px] leading-none text-white/65">Android</p>
-                      <p className="mt-1 text-[1.05rem] font-semibold leading-none text-white sm:text-lg">Download from Playstore</p>
-                    </div>
+                    How it works
                   </Link>
-
                   <Link
-                    href="#"
-                    className="inline-flex w-full min-w-0 items-center gap-3 rounded-[0.9rem] border border-black/90 bg-[#16181d] px-4 py-3 transition hover:-translate-y-0.5 hover:bg-black sm:w-auto sm:min-w-[225px]"
+                    href="/"
+                    className="flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-[#245cdb]"
                   >
-                    <Image src="/appstore.jpeg" alt="App Store icon" width={40} height={40} className="h-10 w-10 rounded-[0.65rem] object-cover" />
-                    <div className="text-left">
-                      <p className="text-[11px] leading-none text-white/65">iOS</p>
-                      <p className="mt-1 text-[1.05rem] font-semibold leading-none text-white sm:text-lg">Available on App Store</p>
-                    </div>
+                    <ArrowLeft className="h-4 w-5" strokeWidth={1.8} aria-hidden="true" />
+                    Back to GiGOC
+                  </Link>
+                  <Link
+                    href="#waitlist"
+                    className="mt-1 flex justify-center rounded-xl bg-[#245cdb] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#1749bd] sm:hidden"
+                  >
+                    Join the waitlist
                   </Link>
                 </div>
+              </details>
+            </div>
+          </nav>
+        </header>
 
-                <div className="mt-8 flex w-full max-w-[320px] items-center gap-3 rounded-full bg-white px-4 py-3 shadow-[0_12px_30px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/80 sm:w-fit sm:max-w-none">
-                  <div className="h-11 w-11 overflow-hidden rounded-[0.85rem] bg-white p-1 ring-1 ring-slate-200/80">
-                    <Image src="/sample-qr.png" alt="GiGOC Rentals QR code" width={44} height={44} className="h-full w-full rounded-[0.55rem] object-cover" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold" style={{ color: '#111827' }}>Scan to download</p>
-                    <p className="text-xs" style={{ color: '#6b7280' }}>Get GiGOC Rentals on your phone in seconds</p>
-                  </div>
-                </div>
+        <section className="px-5 pb-14 pt-12 sm:px-8 sm:pt-16 lg:px-14 lg:pb-20 lg:pt-20">
+          <div className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
+            <div className="max-w-3xl">
+              <p className="text-sm font-semibold text-[#245cdb]">A new car rental app by GiGOC</p>
+              <h1 className="mt-6 text-[3.25rem] font-semibold leading-[0.98] tracking-[-0.05em] text-[#0d1726] sm:text-6xl lg:text-[5rem]">
+                Rent a car. List your own. Add a driver when you need one.
+              </h1>
+              <p className="mt-6 text-4xl font-medium tracking-[-0.04em] text-[#245cdb] sm:text-5xl">Meet G-Rides.</p>
+              <p className="mt-8 max-w-xl text-base leading-7 text-slate-500 sm:text-lg sm:leading-8">
+                Find trusted vehicles nearby, choose self-drive or chauffeur service, and manage the full rental from one app.
+              </p>
+
+              <div id="waitlist" className="mt-8 scroll-mt-24">
+                <RentalsWaitlistForm />
               </div>
+              <p className="mt-3 text-xs text-slate-400">G-Rides is currently under development. Join for launch updates.</p>
+            </div>
 
-              <div className="relative flex min-h-[430px] items-start justify-center pt-2 sm:min-h-[700px] sm:items-center sm:pt-0 lg:justify-end">
-                <div className="absolute inset-x-2 top-2 h-[80%] rounded-[2rem] bg-[radial-gradient(circle_at_40%_28%,rgba(37,99,235,0.12),transparent_24%),linear-gradient(180deg,rgba(255,255,255,0.88),rgba(244,248,255,0.92))] sm:inset-x-8 sm:top-6 sm:h-[86%] sm:rounded-[2.25rem]" />
-
-                <div className="relative mt-10 z-10 flex w-full justify-center px-1 sm:px-0">
-                  <div className="relative mx-auto w-fit">
-                    <div className="absolute left-0 top-6 z-20 max-w-[160px] rounded-[0.75rem] bg-[var(--primary)] px-2 py-1.5 text-white shadow-[0_14px_24px_rgba(37,99,235,0.2)] sm:left-4 sm:top-20 sm:max-w-none sm:rounded-[0.85rem] sm:px-3 sm:py-2.5 lg:-left-2">
-                      <div className="flex items-center gap-2 sm:gap-3">
-                        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/18 sm:h-7 sm:w-7">
-                          <CheckCircle2 className="h-3 w-3 sm:h-3.5 sm:w-3.5" strokeWidth={2.6} />
-                        </span>
-                        <p className="text-[10px] font-semibold leading-3.5 sm:text-xs sm:leading-5 lg:text-sm">Book rides in just a few taps</p>
-                      </div>
-                    </div>
-
-                    <div className="absolute bottom-12 right-0 z-20 max-w-[176px] rounded-[0.75rem] bg-[#15346b] px-2 py-1.5 text-white shadow-[0_14px_24px_rgba(21,52,107,0.2)] sm:bottom-30 sm:right-2 sm:max-w-[300px] sm:rounded-[0.85rem] sm:px-3 sm:py-2.5 lg:right-0">
-                      <div className="flex items-center gap-2 sm:gap-3">
-                        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/18 sm:h-7 sm:w-7">
-                          <CheckCircle2 className="h-3 w-3 sm:h-3.5 sm:w-3.5" strokeWidth={2.6} />
-                        </span>
-                        <p className="text-[10px] font-semibold leading-3.5 sm:text-xs sm:leading-5 lg:text-sm">Track rentals, bookings and movement easily</p>
-                      </div>
-                    </div>
-
-                    <div className="relative overflow-hidden rounded-[2.2rem]">
-                      <Image
-                        src="/g-rides-mockup.png"
-                        alt="GiGOC Rentals app mockup"
-                        width={430}
-                        height={620}
-                        className="h-auto w-[340px] max-w-full object-contain sm:w-[430px] lg:w-[490px]"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div className="relative mx-auto flex min-h-[25rem] w-full max-w-[34rem] items-end justify-center sm:min-h-[35rem] lg:ml-auto lg:mr-0 lg:min-h-[40rem]">
+              <div className="absolute bottom-3 left-1/2 h-[17rem] w-[64%] -translate-x-1/2 rounded-[2.5rem] bg-[#2f3fe8] sm:h-[20rem] sm:w-[62%] lg:h-[24rem] lg:w-[64%]" />
+              <Image
+                src="/app-mockup(rentals)/hero-mockup.png"
+                alt="G-Rides app showing nearby rental vehicles on a map"
+                width={1080}
+                height={1080}
+                priority
+                className="relative z-10 mb-10 h-auto w-[32rem] max-w-[96%] object-contain drop-shadow-[0_30px_35px_rgba(15,23,42,0.18)] sm:w-[33rem] lg:w-[35rem]"
+              />
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section id="partner-program" className="bg-[var(--bg-main)] -mt-12 px-4 py-6 md:py-18 sm:px-6 lg:px-10">
-        <div className="mx-auto max-w-7xl">
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="text-sm font-semibold tracking-[0.22em] uppercase" style={{ color: 'var(--primary)' }}>
-              -- Partner Program --
-            </p>
-            <h2 className="mt-3 text-3xl font-semibold sm:text-4xl" style={{ color: 'var(--text-main)' }}>
-              How to list your ride and grow with GiGOC Rentals
+        <RentalsFeatureShowcase />
+
+        <section id="for-owners" className="px-5 pt-6 sm:px-8 sm:pt-8 lg:px-14 lg:pt-14">
+          <div className="mx-auto max-w-7xl text-center">
+            <h2 className="mx-auto max-w-3xl text-3xl font-medium tracking-[-0.035em] text-[#0d1726] sm:text-4xl">
+              Coming soon on iOS and Android…
             </h2>
-            <p className="mt-4 text-base leading-7" style={{ color: 'var(--text-soft)' }}>
-              We want the platform to support vehicle owners too. Here is the simple roadmap for becoming part of the partner network.
-            </p>
-          </div>
 
-          <div className="mt-12 grid gap-6 lg:grid-cols-4">
-            {partnerSteps.map((step, index) => {
-              const Icon = step.icon;
-
-              return (
-                <article
-                  key={step.title}
-                  className="relative rounded-[1.75rem] border bg-white p-6 shadow-[0_18px_40px_rgba(15,23,42,0.07)]"
-                  style={{ borderColor: 'rgba(148, 163, 184, 0.16)' }}
-                >
-                  <span className="inline-flex h-12 w-12 items-center justify-center rounded-full" style={{ backgroundColor: 'var(--primary-soft)', color: 'var(--primary)' }}>
-                    <Icon className="h-5 w-5" strokeWidth={2.2} />
-                  </span>
-                  <span className="absolute right-6 top-6 text-sm font-semibold" style={{ color: 'var(--primary)' }}>
-                    0{index + 1}
-                  </span>
-                  <h3 className="mt-5 text-xl font-semibold" style={{ color: 'var(--text-main)' }}>
-                    {step.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-7" style={{ color: 'var(--text-soft)' }}>
-                    {step.description}
-                  </p>
-                </article>
-              );
-            })}
-          </div>
-
-          <div className="mt-10 flex justify-center">
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5"
-              style={{ background: 'linear-gradient(135deg, #1e4a95 0%, #2563eb 100%)' }}
-            >
-              Talk To The Rentals Team
-              <ArrowRight className="h-4 w-4" strokeWidth={2.2} />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <section className="relative mt-5 px-4 pb-10">
-        <div className="relative z-10 mx-auto max-w-6xl">
-          <div
-            className="flex flex-col items-center justify-center gap-10 rounded-[2rem] px-8 py-6 sm:flex-row sm:px-10 md:gap-16 md:px-14 md:py-8"
-            style={{ background: 'linear-gradient(135deg, #1e4a95 0%, #2563eb 100%)' }}
-          >
-            <Image src="/footer-car2.png" alt="GiGOC Rentals CTA car" width={320} height={180} className="w-60 shrink-0 object-contain drop-shadow-xl sm:w-48 md:w-80" />
-
-            <div className="flex max-w-md flex-1 align-center justify-center -mt-5 flex-col gap-3">
-              <p className="text-sm font-semibold tracking-[0.2em] uppercase text-white/65">
-                -- Stay Updated --
-              </p>
-              <h2 className="text-lg font-semibold leading-tight text-white sm:text-xl md:text-2xl">
-                Stay ahead and get our latest updates to make the most out of our platform
-              </h2>
-              <p className="text-xs leading-relaxed text-white/75 sm:text-sm">
-                Subscribe and be the first to discover new cars, exclusive deals, and rental tips from GiGOC Rentals.
-              </p>
-
-              <NewsletterForm />
-
-              <p className="text-xs text-white/50">You can unsubscribe at any time. No spam, ever.</p>
+            <div className="relative mx-auto mt-5 h-[19rem] max-w-5xl overflow-hidden sm:h-[25rem] lg:h-[29rem]">
+              <div className="absolute left-1/2 top-4 h-[19rem] w-[19rem] -translate-x-1/2 rounded-full border border-slate-200/75 sm:h-[26rem] sm:w-[26rem] lg:h-[31rem] lg:w-[31rem]" />
+              <div className="absolute left-1/2 top-9 h-[16rem] w-[16rem] -translate-x-1/2 rounded-full border border-slate-200/75 sm:h-[22rem] sm:w-[22rem] lg:h-[27rem] lg:w-[27rem]" />
+              <div className="absolute left-1/2 top-14 h-[13rem] w-[13rem] -translate-x-1/2 rounded-full border border-slate-200/75 sm:h-[18rem] sm:w-[18rem] lg:h-[23rem] lg:w-[23rem]" />
+              <div className="absolute left-1/2 top-[4.75rem] h-[10rem] w-[10rem] -translate-x-1/2 rounded-full border border-slate-200/75 sm:h-[14rem] sm:w-[14rem] lg:h-[19rem] lg:w-[19rem]" />
+              <Image
+                src="/app-mockup(rentals)/bottom-section-mockup-1.png"
+                alt="G-Rides owner earnings and payouts screen"
+                width={1485}
+                height={1485}
+                loading="eager"
+                className="absolute -ml-[.5rem] left-1/2 top-2 h-auto w-[22rem] max-w-none -translate-x-1/2 object-contain sm:top-0 sm:w-[30rem] lg:w-[38rem]"
+              />
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <Footer />
+        <footer className="relative z-20 mx-5 -mt-8 mb-5 rounded-t-[1.75rem] bg-[#f3f4f6] px-6 py-10 sm:mx-8 sm:-mt-12 sm:px-9 lg:mx-14 lg:-mt-16 lg:px-12 lg:py-12">
+          <div className="mx-auto max-w-7xl">
+            <div className="grid gap-12 border-b border-slate-300 pb-10 lg:grid-cols-[1.15fr_0.85fr]">
+              <div>
+                <Brand compact />
+                <p className="mt-5 max-w-md text-sm leading-6 text-slate-500">
+                  G-Rides is a digital car rental platform developed and operated by GiGOC in Limbe, Cameroon.
+                </p>
+                <div className="mt-6 max-w-md">
+                  <RentalsWaitlistForm compact />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
+                <div>
+                  <p className="text-sm font-semibold text-[#10243f]">Product</p>
+                  <div className="mt-4 space-y-3 text-sm text-slate-500">
+                    <Link href="#how-it-works" className="block transition hover:text-[#245cdb]">How it works</Link>
+                    <Link href="#for-owners" className="block transition hover:text-[#245cdb]">For owners</Link>
+                    <Link href="#waitlist" className="block transition hover:text-[#245cdb]">Launch updates</Link>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-[#10243f]">GiGOC</p>
+                  <div className="mt-4 space-y-3 text-sm text-slate-500">
+                    <Link href="/about" className="block transition hover:text-[#245cdb]">About us</Link>
+                    <Link href="/news" className="block transition hover:text-[#245cdb]">Newsroom</Link>
+                    <Link href="/contact" className="block transition hover:text-[#245cdb]">Contact</Link>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-[#10243f]">Support</p>
+                  <div className="mt-4 space-y-3 text-sm text-slate-500">
+                    <Link href="mailto:info@gigoc.org" className="block transition hover:text-[#245cdb]">info@gigoc.org</Link>
+                    <Link href="tel:+237676111147" className="block transition hover:text-[#245cdb]">+237 676 111 147</Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-3 pt-6 text-xs text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+              <p>© 2026 Gebah Investment Group of Companies. All rights reserved.</p>
+              <div className="flex items-center gap-2 text-slate-500">
+                {/* <ShieldCheck className="h-4 w-4 text-[#245cdb]" strokeWidth={1.8} />
+                Built around verification and trust */}
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
     </main>
   );
 }

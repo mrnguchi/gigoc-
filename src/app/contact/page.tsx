@@ -1,4 +1,4 @@
-import { Clock3, Mail, MapPin, PhoneCall } from 'lucide-react';
+import { ArrowUpRight, Clock3, Mail, MapPin, PhoneCall } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaXTwitter } from 'react-icons/fa6';
@@ -8,18 +8,21 @@ import ContactForm from '@/components/forms/ContactForm';
 import { companyContact } from '@/data/contact';
 
 const contactDetails = [
+  { title: 'Office', icon: MapPin, lines: companyContact.addressLines },
   {
-    title: 'Address',
-    icon: MapPin,
-    lines: companyContact.addressLines,
+    title: 'Email',
+    icon: Mail,
+    lines: [companyContact.email],
+    href: `mailto:${companyContact.email}`,
   },
   {
-    title: 'Contact',
+    title: 'Phone',
     icon: PhoneCall,
-    lines: [`Phone: ${companyContact.phoneDisplay}`, `Email: ${companyContact.email}`],
+    lines: [companyContact.phoneDisplay],
+    href: `tel:${companyContact.phoneHref}`,
   },
   {
-    title: 'Open Time',
+    title: 'Office hours',
     icon: Clock3,
     lines: ['Monday - Friday', '09:00 am - 05:00 pm'],
   },
@@ -32,186 +35,163 @@ const socialLinks = [
   { label: 'LinkedIn', href: '#', icon: FaLinkedinIn },
 ];
 
-const heroHighlights = [
-  { value: 'Fast', label: 'Response Time' },
-  { value: 'Tailored', label: 'Project Quotes' },
-  { value: 'Multi-Sector', label: 'Support Team' },
-];
-
 export default function ContactPage() {
   return (
-    <main className="min-h-screen bg-white" style={{ overflow: 'hidden' }}>
+    <main className="min-h-screen overflow-hidden bg-white">
       <Navbar />
 
-      <section
-        className="relative overflow-hidden"
-        style={{ background: 'linear-gradient(180deg, #0f172a 0%, #101827 100%)' }}
-      >
-        <div className="absolute inset-0">
-          <Image
-            src="/hero-00.png"
-            alt="GiGOC contact page hero background"
-            fill
-            priority
-            className="object-cover object-center"
-          />
-          <div className="absolute inset-0 bg-black/55" />
-        </div>
+      <section className="relative min-h-[720px] overflow-hidden bg-[#06182d] text-white lg:min-h-[780px]">
+        <Image
+          src="/hero-00.png"
+          alt="GiGOC contact page hero background"
+          fill
+          priority
+          className="object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-[#06182d]/80" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#06182d] via-[#06182d]/72 to-[#06182d]/30" />
 
-        <div className="relative mx-auto flex min-h-[82vh] max-w-7xl flex-col px-4 pb-16 pt-28 sm:px-6 lg:px-8 lg:pb-20 lg:pt-32">
-          <div className="grid flex-1 items-center gap-14 py-8 lg:grid-cols-[1.08fr_0.92fr] lg:py-12">
-            <div className="max-w-2xl">
-              <div
-                className="mb-6 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold tracking-[0.22em] uppercase text-white/80"
-                style={{
-                  backgroundColor: 'rgba(255, 255, 255, 0.06)',
-                  borderColor: 'rgba(255, 255, 255, 0.12)',
-                }}
-              >
-             Contact Us
+        <div className="relative mx-auto flex min-h-[720px] max-w-7xl flex-col px-5 pb-12 pt-32 sm:px-6 lg:min-h-[780px] lg:px-8 lg:pb-16 lg:pt-36">
+          <div className="grid flex-1 items-center gap-12 py-12 lg:grid-cols-12">
+            <div className="lg:col-span-8">
+              <div className="flex items-center gap-4 text-sm font-semibold text-[#65a4ff]">
+                <span>Contact GiGOC</span>
+                <span className="h-px w-16 bg-[#65a4ff]/70" aria-hidden="true" />
               </div>
 
-              <h1 className="max-w-3xl text-4xl font-semibold leading-tight text-white sm:text-5xl lg:text-6xl">
+              <h1 className="mt-7 max-w-4xl text-5xl font-semibold leading-[1.02] tracking-[-0.035em] text-white sm:text-6xl lg:text-[4.75rem]">
                 Let’s Talk About Your Next Big Move
               </h1>
 
-              <div className="mt-6 space-y-3 text-base leading-7 text-white/70 sm:text-lg">
-                <p>
-                  Whether you need business support, partnership direction, or a tailored quote, our team is ready to listen and help you move forward with clarity.
-                </p>
-              </div>
-
-              <div
-                className="mt-8 grid gap-px overflow-hidden rounded-[1.75rem] border sm:grid-cols-3"
-                style={{
-                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                  borderColor: 'rgba(255, 255, 255, 0.12)',
-                }}
-              >
-                {heroHighlights.map((item) => (
-                  <div key={item.label} className="px-5 py-5" style={{ backgroundColor: 'rgba(255, 255, 255, 0.06)' }}>
-                    <p className="text-2xl font-semibold text-white sm:text-3xl">{item.value}</p>
-                    <p className="mt-2 text-sm text-white/70">{item.label}</p>
-                  </div>
-                ))}
-              </div>
+              <p className="mt-7 max-w-2xl text-base leading-8 text-white/70 sm:text-lg">
+                Whether you need business support, partnership direction, or a tailored quote, our team is ready to listen and help you move forward with clarity.
+              </p>
             </div>
 
-            <div className="relative mx-auto w-full max-w-[31rem] lg:ml-auto lg:mr-0">
-              <div
-                className="rounded-[2rem] border p-6 text-white shadow-[0_30px_60px_rgba(15,23,42,0.35)] backdrop-blur-sm sm:p-7"
-                style={{
-                  backgroundColor: 'rgba(15, 23, 42, 0.5)',
-                  borderColor: 'rgba(255, 255, 255, 0.12)',
-                }}
+            <div className="self-end border-t border-white/20 pt-6 lg:col-span-3 lg:col-start-10 lg:self-center">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/45">Start a conversation</p>
+              <Link
+                href={`mailto:${companyContact.email}`}
+                className="group mt-4 flex items-center justify-between gap-5 border-b border-white/20 pb-4 text-base font-medium text-white transition hover:border-[#65a4ff] hover:text-[#8abbff]"
               >
-                <p className="text-sm font-semibold tracking-[0.22em] uppercase text-white/65">Quick Reach</p>
-                <h2 className="mt-3 text-2xl font-semibold sm:text-3xl">We’re here to help you get started</h2>
-                <div className="mt-6 space-y-4 text-sm leading-7 text-white/75">
-                  <p>Talk to us about projects, partnerships, investments, or operational support.</p>
-                  <p>
-                    Email us at{' '}
-                    <Link href={`mailto:${companyContact.email}`} className="font-medium text-white transition hover:text-blue-200">
-                      {companyContact.email}
-                    </Link>
-                    {' '}or call{' '}
-                    <Link href={`tel:${companyContact.phoneHref}`} className="font-medium text-white transition hover:text-blue-200">
-                      {companyContact.phoneDisplay}
-                    </Link>
-                    .
-                  </p>
-                </div>
-                <div className="mt-7 flex flex-wrap gap-3">
-                  <Link
-                    href={`mailto:${companyContact.email}`}
-                    className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-[#1e4a95] transition hover:-translate-y-0.5"
-                  >
-                    <Mail className="h-4 w-4" strokeWidth={2.2} />
-                    Email Us
-                  </Link>
-                  <Link
-                    href={`tel:${companyContact.phoneHref}`}
-                    className="inline-flex items-center gap-2 rounded-full border px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
-                    style={{ borderColor: 'rgba(255, 255, 255, 0.16)' }}
-                  >
-                    <PhoneCall className="h-4 w-4" strokeWidth={2.2} />
-                    Call Now
-                  </Link>
-                </div>
-              </div>
+                {companyContact.email}
+                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </Link>
+              <Link
+                href={`tel:${companyContact.phoneHref}`}
+                className="group flex items-center justify-between gap-5 border-b border-white/20 py-4 text-base font-medium text-white transition hover:border-[#65a4ff] hover:text-[#8abbff]"
+              >
+                {companyContact.phoneDisplay}
+                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid border-y border-white/20 sm:grid-cols-3">
+            <div className="border-b border-white/20 py-5 sm:border-b-0 sm:border-r sm:pr-6">
+              <p className="text-xs font-medium uppercase tracking-[0.15em] text-white/40">Office</p>
+              <p className="mt-2 text-sm text-white/80">Limbe, Cameroon</p>
+            </div>
+            <div className="border-b border-white/20 py-5 sm:border-b-0 sm:border-r sm:px-6">
+              <p className="text-xs font-medium uppercase tracking-[0.15em] text-white/40">Enquiries</p>
+              <p className="mt-2 text-sm text-white/80">Projects and partnerships</p>
+            </div>
+            <div className="py-5 sm:pl-6">
+              <p className="text-xs font-medium uppercase tracking-[0.15em] text-white/40">Availability</p>
+              <p className="mt-2 text-sm text-white/80">Monday - Friday</p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="relative z-10 -mt-16 bg-[var(--bg-main)] px-5 pb-20 pt-0 sm:px-6 lg:px-10 lg:pb-24">
-        <div className="mx-auto max-w-7xl rounded-[2rem] border bg-white px-5 py-6 shadow-[0_22px_70px_rgba(15,23,42,0.1)] sm:px-7 sm:py-7 lg:px-8 lg:py-8">
-          <div className="grid gap-6 lg:grid-cols-[0.72fr_1.28fr] lg:items-stretch">
-            <aside className="relative overflow-hidden rounded-[1.75rem] bg-[#081a4d] p-6 text-white sm:p-7">
-              <div
-                className="absolute inset-0 opacity-35"
-                style={{
-                  backgroundImage:
-                    'radial-gradient(circle at 20% 20%, rgba(59,130,246,0.26) 0, transparent 22%), radial-gradient(circle at 80% 30%, rgba(96,165,250,0.22) 0, transparent 24%), radial-gradient(circle at 40% 75%, rgba(99,102,241,0.18) 0, transparent 28%)',
-                }}
-              />
-              <div className="relative flex h-full flex-col">
-                <div className="space-y-8">
-                  {contactDetails.map((item) => {
-                    const Icon = item.icon;
-
-                    return (
-                      <div key={item.title}>
-                        <div className="flex items-center gap-2.5">
-                          <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white">
-                            <Icon className="h-4 w-4" strokeWidth={2.2} />
-                          </span>
-                          <h3 className="text-lg font-semibold">{item.title}</h3>
-                        </div>
-                        <div className="mt-3 space-y-1 pl-[2.9rem] text-sm leading-7 text-white/75">
-                          {item.lines.map((line) => (
-                            <p key={line}>{line}</p>
-                          ))}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-
-                <div className="mt-10 pt-8 lg:mt-auto">
-                  <p className="text-lg font-semibold">Stay Connected</p>
-                  <div className="mt-4 flex flex-wrap gap-3">
-                    {socialLinks.map((item) => {
-                      const Icon = item.icon;
-
-                      return (
-                        <Link
-                          key={item.label}
-                          href={item.href}
-                          aria-label={item.label}
-                          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/12 bg-white/10 text-white transition hover:-translate-y-0.5 hover:bg-white/16"
-                        >
-                          <Icon className="h-4 w-4" />
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
+      <section className="bg-[var(--bg-main)] px-5 py-20 sm:px-6 lg:px-10 lg:py-28">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid gap-8 border-t border-slate-300 pt-8 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-7">
+              <div className="flex items-center gap-4 text-sm font-semibold text-[#2166d1]">
+                <span>Send an enquiry</span>
+                <span className="h-px w-16 bg-[#2166d1]/45" aria-hidden="true" />
               </div>
-            </aside>
+              <h2 className="mt-5 max-w-3xl text-4xl font-semibold leading-[1.08] tracking-[-0.03em] text-[#17365f] sm:text-5xl lg:text-[3.5rem]">
+                Get a response within 48 hours.
+              </h2>
+            </div>
 
-            <div className="rounded-[1.75rem] bg-white px-1 py-2 sm:px-3 lg:px-4">
-              <div className="max-w-3xl">
-                <p className="text-sm font-semibold tracking-[0.18em] uppercase" style={{ color: 'var(--primary)' }}>
-                  -- Contact Us --
-                </p>
-                <h2 className="mt-2 text-3xl font-semibold leading-tight sm:text-4xl" style={{ color: 'var(--text-main)' }}>
-                  Get A Response within <span style={{ color: '#4f7cff' }}>48 Hours</span> !
-                </h2>
+            <p className="max-w-xl text-base leading-7 text-slate-600 sm:text-lg lg:col-span-4 lg:col-start-9">
+              Talk to us about projects, partnerships, investments, or operational support.
+            </p>
+          </div>
+
+          <div className="mt-14 grid border-y border-slate-300 lg:mt-16 lg:grid-cols-12">
+            <div className="py-10 lg:col-span-7 lg:border-r lg:border-slate-300 lg:py-14 lg:pr-14">
+              <div className="mb-8 flex items-end justify-between gap-6 border-b border-slate-300 pb-5">
+                <div>
+                  <p className="text-sm font-semibold text-[#2166d1]">Your enquiry</p>
+                  <h3 className="mt-2 text-2xl font-semibold text-[#17365f] sm:text-3xl">How can we help?</h3>
+                </div>
+                <span className="hidden text-xs text-slate-500 sm:block">* Required fields</span>
               </div>
 
               <ContactForm variant="contact-page" />
             </div>
+
+            <aside className="bg-[#071a31] px-6 py-10 text-white sm:px-9 lg:col-span-5 lg:px-12 lg:py-14">
+              <p className="text-sm font-semibold text-[#65a4ff]">Contact details</p>
+              <h3 className="mt-4 max-w-md text-2xl font-semibold leading-tight sm:text-3xl">
+                Based in Limbe. Working across sectors.
+              </h3>
+
+              <div className="mt-10 border-t border-white/15">
+                {contactDetails.map((item) => {
+                  const Icon = item.icon;
+                  const content = (
+                    <div className="grid grid-cols-[1.5rem_1fr] gap-4">
+                      <Icon className="mt-0.5 h-5 w-5 text-[#65a4ff]" strokeWidth={1.7} />
+                      <div>
+                        <p className="text-xs font-medium uppercase tracking-[0.12em] text-white/45">{item.title}</p>
+                        <div className="mt-2 space-y-1 text-sm leading-6 text-white/80">
+                          {item.lines.map((line) => <p key={line}>{line}</p>)}
+                        </div>
+                      </div>
+                    </div>
+                  );
+
+                  return item.href ? (
+                    <Link
+                      key={item.title}
+                      href={item.href}
+                      className="block border-b border-white/15 py-6 transition hover:bg-white/[0.035]"
+                    >
+                      {content}
+                    </Link>
+                  ) : (
+                    <div key={item.title} className="border-b border-white/15 py-6">
+                      {content}
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="mt-9">
+                <p className="text-xs font-medium uppercase tracking-[0.12em] text-white/45">Stay connected</p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {socialLinks.map((item) => {
+                    const Icon = item.icon;
+
+                    return (
+                      <Link
+                        key={item.label}
+                        href={item.href}
+                        aria-label={item.label}
+                        className="inline-flex h-10 w-10 items-center justify-center rounded-[3px] border border-white/20 text-white/75 transition hover:border-[#65a4ff] hover:bg-[#2166d1] hover:text-white"
+                      >
+                        <Icon className="h-4 w-4" />
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            </aside>
           </div>
         </div>
       </section>

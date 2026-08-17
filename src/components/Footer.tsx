@@ -1,143 +1,124 @@
+import { ArrowUpRight, Mail, MapPin, Phone } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import NewsletterForm from '@/components/forms/NewsletterForm';
 import { companyContact } from '@/data/contact';
 
-type SocialPlatform = 'facebook' | 'instagram' | 'linkedin';
-
 const companyLinks = [
   { label: 'Home', href: '/#home' },
-  { label: 'About Us', href: '/about' },
-  { label: 'GiGOC News', href: '/news' },
+  { label: 'About GiGOC', href: '/about' },
+  { label: 'Newsroom', href: '/news' },
   { label: 'Contact', href: '/contact' },
 ];
 
 const divisionLinks = [
-  { label: 'Modelling', href: '/#' },
-  { label: 'Real Estate', href: '/#' },
-  { label: 'Manufacturing', href: '/manufacturing' },
-  { label: 'Tech & Innovation', href: '/#' },
-  { label: 'Music & Entertainment', href: '/music&entertainment' },
+  { label: 'Real Estate', href: '/#hero-divisions' },
   { label: 'GiGOC Rentals', href: '/gigoc_rentals' },
-  { label: 'Logistics', href: '/#' },
-  { label: 'General Commerce', href: '/#' },
-
+  { label: 'GiGOC Biomass', href: '/manufacturing' },
+  { label: 'Entertainment & Talent', href: '/music&entertainment' },
+  { label: 'General Commerce', href: '/#hero-divisions' },
+  { label: 'Tech & Innovation', href: '/tech&innovation' },
+  { label: 'Logistics', href: '/#hero-divisions' },
 ];
-
-const socialLinks = [
-  { label: 'Facebook', platform: 'facebook' as const, href: '#' },
-  { label: 'Instagram', platform: 'instagram' as const, href: '#' },
-  { label: 'LinkedIn', platform: 'linkedin' as const, href: '#' },
-];
-
-function SocialIcon({ platform }: { platform: SocialPlatform }) {
-  switch (platform) {
-    case 'facebook':
-      return (
-        <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
-          <path d="M13.5 21v-7h2.3l.4-3h-2.7V9.1c0-.9.3-1.6 1.6-1.6H16V4.9c-.3 0-.9-.1-1.8-.1-2.5 0-4.2 1.5-4.2 4.3V11H7.5v3H10v7h3.5Z" />
-        </svg>
-      );
-    case 'instagram':
-      return (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-4 w-4">
-          <rect x="3.5" y="3.5" width="17" height="17" rx="5" />
-          <circle cx="12" cy="12" r="4" />
-          <circle cx="17.3" cy="6.7" r=".9" fill="currentColor" stroke="none" />
-        </svg>
-      );
-    case 'linkedin':
-      return (
-        <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
-          <path d="M6.8 8.3a1.9 1.9 0 1 1 0-3.8 1.9 1.9 0 0 1 0 3.8ZM5 9.8h3.5V19H5V9.8Zm5.5 0h3.3V11h.1c.5-.9 1.6-1.6 3.2-1.6 3.4 0 4 2.1 4 4.9V19h-3.5v-4.1c0-1 0-2.3-1.5-2.3s-1.7 1.1-1.7 2.2V19h-3.5V9.8Z" />
-        </svg>
-      );
-  }
-}
 
 export default function Footer() {
   return (
-    <footer className="bg-[#081224] px-5 pb-10 pt-16 text-white sm:px-6 lg:px-10">
-      <div className="mx-auto max-w-7xl rounded-[2rem] border border-white/10 bg-white/5 px-6 py-10 backdrop-blur-sm sm:px-8 lg:px-10">
-        <div className="grid gap-10 md:grid-cols-2 xl:grid-cols-4">
-          <div>
-            <Link href="/#home" className="inline-flex items-center">
-              <Image src="/gigoc-footer.png" alt="GiGOC logo" width={180} height={60} />
-            </Link>
-            <p className="mt-5 max-w-xs text-sm leading-7 text-white/70">
-              GiGOC brings together creative, commercial, and operational divisions to build modern businesses and lasting value.
+    <footer className="relative overflow-hidden bg-[#06162b] px-5 text-white sm:px-6 lg:px-10">
+      <div
+        className="pointer-events-none absolute inset-0 opacity-30"
+        style={{
+          backgroundImage:
+            'linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px)',
+          backgroundSize: '96px 96px',
+        }}
+        aria-hidden="true"
+      />
+
+      <div className="relative mx-auto max-w-7xl">
+        <div className="grid gap-10 border-b border-white/15 py-14 sm:py-16 lg:grid-cols-12 lg:items-end lg:py-20">
+          <div className="lg:col-span-6">
+            <div className="flex items-center gap-4 text-sm font-semibold text-[#5ea0ff]">
+              <span>GiGOC updates</span>
+              <span className="h-px w-16 bg-[#5ea0ff]/50" aria-hidden="true" />
+            </div>
+            <h2 className="mt-5 max-w-2xl text-3xl font-semibold leading-[1.08] tracking-[-0.03em] text-white sm:text-4xl lg:text-5xl">
+              Get our latest news and project updates.
+            </h2>
+          </div>
+
+          <div id="footer-newsletter" className="scroll-mt-8 lg:col-span-5 lg:col-start-8">
+            <p className="mb-5 max-w-xl text-sm leading-7 text-white/60 sm:text-base">
+              Occasional updates from GiGOC. No unnecessary emails.
             </p>
-            <div className="mt-6 flex items-center gap-3">
-              {socialLinks.map((social) => (
-                <Link
-                  key={social.label}
-                  href={social.href}
-                  aria-label={social.label}
-                  className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/8 text-sm font-semibold text-white/80 transition hover:border-blue-400 hover:bg-blue-500/15 hover:text-white"
-                >
-                  <SocialIcon platform={social.platform} />
-                </Link>
-              ))}
-            </div>
+            <NewsletterForm variant="stacked" buttonLabel="Subscribe" inputId="footer-newsletter-email" />
+          </div>
+        </div>
+
+        <div className="grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8 lg:py-16">
+          <div className="sm:col-span-2 lg:col-span-4">
+            <Link href="/#home" className="inline-flex items-center" aria-label="GiGOC home">
+              <Image src="/gigoc-white.png" alt="GiGOC" width={145} height={56} />
+            </Link>
+            <p className="mt-6 max-w-sm text-sm leading-7 text-white/60">
+              GiGOC develops and operates businesses across seven sectors from Cameroon.
+            </p>
+            <Link
+              href="/about"
+              className="group mt-6 inline-flex items-center gap-2 border-b border-white/30 pb-1 text-sm font-semibold text-white transition hover:border-[#5ea0ff] hover:text-[#8abbff]"
+            >
+              About the group
+              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={1.8} />
+            </Link>
           </div>
 
-          <div>
-            <h3 className="text-sm font-semibold tracking-[0.2em] uppercase text-white/55">Company</h3>
-            <div className="mt-5 flex flex-col gap-3">
+          <nav aria-label="Company links" className="lg:col-span-2">
+            <h3 className="text-sm font-semibold text-white">Company</h3>
+            <div className="mt-6 flex flex-col items-start gap-3.5">
               {companyLinks.map((link) => (
-                <Link key={link.label} href={link.href} className="text-sm text-white/70 transition hover:text-white">
+                <Link key={link.label} href={link.href} className="text-sm text-white/60 transition hover:text-white">
                   {link.label}
                 </Link>
               ))}
             </div>
-          </div>
+          </nav>
 
-          <div>
-            <h3 className="text-sm font-semibold tracking-[0.2em] uppercase text-white/55">Divisions</h3>
-            <div className="mt-5 flex flex-col gap-3">
+          <nav aria-label="GiGOC businesses" className="lg:col-span-3">
+            <h3 className="text-sm font-semibold text-white">Our businesses</h3>
+            <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-3.5 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
               {divisionLinks.map((link) => (
-                <Link key={link.label} href={link.href} className="text-sm text-white/70 transition hover:text-white">
+                <Link key={link.label} href={link.href} className="text-sm text-white/60 transition hover:text-white">
                   {link.label}
                 </Link>
               ))}
             </div>
-          </div>
+          </nav>
 
-          <div>
-            <h3 className="text-sm font-semibold tracking-[0.2em] uppercase text-white/55">Contact Info</h3>
-            <div className="mt-5 space-y-4 text-sm leading-7 text-white/70">
-              <p>{companyContact.address}</p>
-              <p>
+          <div className="lg:col-span-3">
+            <h3 className="text-sm font-semibold text-white">Contact</h3>
+            <div className="mt-6 space-y-5 text-sm text-white/60">
+              <div className="grid grid-cols-[1.25rem_1fr] gap-3">
+                <MapPin className="mt-0.5 h-4 w-4 text-[#5ea0ff]" strokeWidth={1.7} />
+                <p className="leading-6">{companyContact.address}</p>
+              </div>
+              <div className="grid grid-cols-[1.25rem_1fr] gap-3">
+                <Mail className="mt-0.5 h-4 w-4 text-[#5ea0ff]" strokeWidth={1.7} />
                 <Link href={`mailto:${companyContact.email}`} className="transition hover:text-white">
                   {companyContact.email}
                 </Link>
-              </p>
-              <p>
+              </div>
+              <div className="grid grid-cols-[1.25rem_1fr] gap-3">
+                <Phone className="mt-0.5 h-4 w-4 text-[#5ea0ff]" strokeWidth={1.7} />
                 <Link href={`tel:${companyContact.phoneHref}`} className="transition hover:text-white">
                   {companyContact.phoneDisplay}
                 </Link>
-              </p>
-            </div>
-
-            <div
-              id="footer-newsletter"
-              aria-label="Newsletter subscription"
-              className="-mx-3 mt-7 scroll-mt-8 rounded-2xl px-3 py-3"
-            >
-              <p className="mb-4 max-w-xs text-sm leading-6 text-white/65">
-                Receive occasional GIGOC news and project updates.
-              </p>
-              <NewsletterForm
-                variant="stacked"
-                buttonLabel="Subscribe"
-                inputId="footer-newsletter-email"
-              />
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="mt-10 border-t border-white/10 pt-6 text-sm text-white/50">
-          © {new Date().getFullYear()} Gebah Investment Group Of Companies. All rights reserved.
+        <div className="flex flex-col gap-3 border-t border-white/15 py-7 text-xs text-white/45 sm:flex-row sm:items-center sm:justify-between">
+          <p>© {new Date().getFullYear()} Gebah Investment Group of Companies. All rights reserved.</p>
+          <p>Limbe, Cameroon</p>
         </div>
       </div>
     </footer>

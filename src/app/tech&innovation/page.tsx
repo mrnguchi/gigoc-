@@ -1,108 +1,187 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Boxes, Code2, Cpu } from 'lucide-react';
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Bot,
+  Brush,
+  Code2,
+  Megaphone,
+  Search,
+  ShoppingBag,
+  Smartphone,
+} from 'lucide-react';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+import TechHero from '@/components/tech/TechHero';
 
-const highlights = [
+export const metadata: Metadata = {
+  title: 'Tech & Innovation | GiGOC',
+  description: 'Explore GiGOC digital products and technology services, from product development and design to digital growth and automation.',
+};
+
+const services = [
   {
-    title: 'Development',
-    subtitle: 'Web, product, and systems delivery',
+    title: 'Web Development',
+    description: 'Corporate websites, online stores and custom web platforms built for speed, clarity and long-term use.',
     icon: Code2,
   },
   {
-    title: 'Solutions',
-    subtitle: 'Business-focused digital execution',
-    icon: Boxes,
+    title: 'Graphic Design',
+    description: 'Brand identities, campaign artwork and digital assets that keep communication clear and consistent.',
+    icon: Brush,
   },
   {
-    title: 'Innovation',
-    subtitle: 'Scalable tools for modern growth',
-    icon: Cpu,
+    title: 'Mobile App Development',
+    description: 'Mobile products for iOS and Android, designed around practical customer and business needs.',
+    icon: Smartphone,
+  },
+  {
+    title: 'Search Engine Optimisation',
+    description: 'Technical and content improvements that help the right customers find your business organically.',
+    icon: Search,
+  },
+  {
+    title: 'Meta Advertising',
+    description: 'Campaign planning, creative setup and performance management across Facebook and Instagram.',
+    icon: Megaphone,
+  },
+  {
+    title: 'Google Advertising',
+    description: 'Search and display campaigns structured around relevant audiences and measurable business goals.',
+    icon: ArrowUpRight,
+  },
+  {
+    title: 'AI & Workflow Automation',
+    description: 'Useful automation for repetitive work, connected tools and smoother internal processes.',
+    icon: Bot,
   },
 ];
 
 export default function TechInnovationPage() {
   return (
-    <main className="min-h-screen overflow-hidden bg-[var(--bg-main)]">
+    <main className="min-h-screen overflow-hidden bg-white">
       <Navbar />
+      <TechHero />
 
-      <section className="relative px-0 pt-24 md:pt-30">
-        <div className="absolute inset-0">
-          <Image src="/hero-00.png" alt="GiGOC Tech and Innovation hero background" fill className="object-cover object-center" sizes="100vw" priority />
-        </div>
-        <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(4,10,24,0.92)_0%,rgba(8,18,36,0.8)_48%,rgba(19,63,145,0.62)_100%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.12),transparent_26%)]" />
-
-        <div className="relative mx-auto grid max-w-7xl gap-10 px-5 pb-16 pt-6 md:grid-cols-[1.02fr_0.98fr] md:items-center md:px-4 md:py-18 lg:gap-12">
-          <div className="flex flex-col gap-5">
-            <div
-              className="inline-flex w-fit items-center self-center rounded-full border px-4 py-2 text-xs font-semibold tracking-[0.22em] uppercase text-white/80 md:self-start"
-              style={{
-                backgroundColor: 'rgba(255, 255, 255, 0.06)',
-                borderColor: 'rgba(255, 255, 255, 0.12)',
-              }}
-            >
-              GiGOC Tech & Innovation
+      <section id="products" className="scroll-mt-24 bg-white px-5 py-20 sm:px-6 lg:px-10 lg:py-24">
+        <div className="mx-auto max-w-7xl border-t border-slate-300 pt-8 sm:pt-10">
+          <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-6">
+              <div className="flex items-center gap-4 text-sm font-semibold text-[#2166d1]">
+                <span>Products in development</span>
+                <span className="h-px w-16 bg-[#2166d1]/45" aria-hidden="true" />
+              </div>
+              <h2 className="mt-5 max-w-2xl text-4xl font-semibold leading-[1.08] tracking-[-0.035em] text-[#17365f] sm:text-5xl lg:text-[3.5rem]">
+                Products we are building and supporting.
+              </h2>
             </div>
-
-            <h1 className="max-w-[15ch] text-center text-4xl font-semibold leading-[1.02] text-white  sm:text-4xl md:max-w-[16ch] md:text-left md:text-5xl">
-              We develop digital products and systems built for growth
-            </h1>
-
-            <p className="max-w-[44rem] text-center text-base leading-8 text-white/76 md:text-left md:text-lg">
-              GiGOC&apos;s Tech sector focuses on development that solves real business problems. From websites, mobile apps, product design, and digital infrastructure.
+            <p className="max-w-xl text-base leading-8 text-slate-600 sm:text-lg lg:col-span-5 lg:col-start-8">
+              Each product starts with a clear use case: easier mobility or more accessible commerce.
             </p>
+          </div>
 
-            <div className="flex flex-col gap-3 sm:flex-row md:gap-4">
-              <Link
-                href="/contact"
-                className="w-full rounded-full px-6 py-3 text-center text-sm font-semibold text-white shadow-[0_18px_35px_rgba(37,99,235,0.28)] transition hover:-translate-y-0.5 sm:w-auto sm:px-8 md:text-base"
-                style={{ background: 'linear-gradient(135deg, #1e4a95 0%, #2563eb 100%)' }}
-              >
-                Build With Our Team
-              </Link>
-              <Link
-                href="#"
-                className="w-full rounded-full border px-6 py-3 text-center text-sm font-semibold text-white transition hover:bg-white/10 sm:w-auto sm:px-8 md:text-base"
-                style={{ borderColor: 'rgba(255, 255, 255, 0.18)' }}
-              >
-                Explore Solutions
-              </Link>
-            </div>
-
-            <div
-              className="grid w-full max-w-[60rem] divide-y divide-white/12 overflow-hidden rounded-[1.75rem] border sm:grid-cols-3 sm:divide-x sm:divide-y-0"
-              style={{
-                backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                borderColor: 'rgba(255, 255, 255, 0.12)',
-              }}
+          <div className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            <Link
+              href="/gigoc_rentals"
+              className="group flex h-full flex-col overflow-hidden rounded-lg border border-slate-200 bg-white transition duration-300 hover:border-slate-400 hover:shadow-[0_18px_45px_rgba(15,23,42,0.09)]"
             >
-              {highlights.map((highlight) => {
-                const Icon = highlight.icon;
+              <div className="relative aspect-[4/3] overflow-hidden bg-[#edf3ff]">
+                <Image
+                  src="/G-rides card image.png"
+                  alt="G-Rides product preview"
+                  fill
+                  className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.025]"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                />
+                <span className="absolute left-4 top-4 border border-white/45 bg-[#071a31]/88 px-3 py-2 text-xs font-semibold text-white backdrop-blur-sm">
+                  In development
+                </span>
+              </div>
+              <div className="flex min-h-72 flex-1 flex-col border-t border-slate-200 px-6 py-7">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#2166d1]">Mobility</p>
+                <div className="mt-3 flex items-start justify-between gap-5">
+                  <h3 className="text-3xl font-semibold tracking-[-0.03em] text-[#17365f]">G-Rides</h3>
+                  <ArrowUpRight className="mt-1 h-5 w-5 shrink-0 text-[#2166d1] transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" strokeWidth={1.8} />
+                </div>
+                <p className="mt-4 text-sm leading-7 text-slate-600">
+                  A car rental platform for finding vehicles, listing privately owned cars and requesting a driver when needed.
+                </p>
+                <span className="mt-auto pt-6 text-sm font-semibold text-[#17365f]">Explore G-Rides</span>
+              </div>
+            </Link>
 
-                return (
-                  <div key={highlight.title} className="px-4 py-4 sm:px-5 sm:py-5" style={{ backgroundColor: 'rgba(255, 255, 255, 0.06)' }}>
-                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/12 text-white sm:h-10 sm:w-10">
-                      <Icon className="h-4 w-4 sm:h-4.5 sm:w-4.5" strokeWidth={2.1} />
-                    </span>
-                    <p className="mt-2.5 text-[1.65rem] font-semibold text-white md:text-[1.8rem]">{highlight.title}</p>
-                    <p className="mt-1.5 text-[10px] leading-5 text-white/70 md:text-xs">{highlight.subtitle}</p>
-                  </div>
-                );
-              })}
+            <article className="flex h-full flex-col overflow-hidden rounded-lg border border-slate-200 bg-white">
+              <div className="relative aspect-[4/3] overflow-hidden bg-[#f3f6fa] p-6">
+                <div className="absolute inset-0 opacity-55 [background-image:linear-gradient(to_right,rgba(33,102,209,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(33,102,209,0.08)_1px,transparent_1px)] [background-size:42px_42px]" />
+                <span className="absolute left-4 top-4 border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-600">
+                  Early development
+                </span>
+                <div className="relative flex h-full flex-col items-center justify-center text-center">
+                  <span className="inline-flex h-14 w-14 items-center justify-center rounded-md bg-[#2166d1] text-white">
+                    <ShoppingBag className="h-7 w-7" strokeWidth={1.8} />
+                  </span>
+                  <p className="mt-6 text-sm font-semibold uppercase tracking-[0.2em] text-[#2166d1]">Bato</p>
+                </div>
+              </div>
+              <div className="flex min-h-72 flex-1 flex-col border-t border-slate-200 px-6 py-7">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#2166d1]">Marketplace</p>
+                <h3 className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-[#17365f]">Bato</h3>
+                <p className="mt-4 text-sm leading-7 text-slate-600">
+                  A general commerce marketplace for buyers and sellers. More product details will be added as development progresses.
+                </p>
+                <span className="mt-auto pt-6 text-sm font-semibold text-slate-400">More details coming soon</span>
+              </div>
+            </article>
+
+          </div>
+        </div>
+      </section>
+
+      <section id="services" className="scroll-mt-24 bg-white px-5 py-20 text-[#17365f] sm:px-6 lg:px-10 lg:py-24">
+        <div className="mx-auto max-w-7xl border-t border-slate-300 pt-8 sm:pt-10">
+          <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-6">
+              <div className="flex items-center gap-4 text-sm font-semibold text-[#2166d1]">
+                <span>Technology services</span>
+                <span className="h-px w-16 bg-[#2166d1]/45" aria-hidden="true" />
+              </div>
+              <h2 className="mt-5 max-w-2xl text-4xl font-semibold leading-[1.08] tracking-[-0.035em] sm:text-5xl lg:text-[3.5rem]">
+                Practical digital support for growing businesses.
+              </h2>
+            </div>
+            <div className="lg:col-span-4 lg:col-start-9">
+              <p className="text-base leading-8 text-slate-600 sm:text-lg">
+                From the first design decision to launch and ongoing growth, our work stays focused on clear business outcomes.
+              </p>
+              <Link href="/contact" className="group mt-6 inline-flex items-center gap-3 border-b border-[#2166d1]/45 pb-1 text-sm font-semibold text-[#17365f] transition hover:border-[#2166d1] hover:text-[#2166d1]">
+                Discuss a project
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" strokeWidth={1.8} />
+              </Link>
             </div>
           </div>
 
-          <div className="flex justify-center md:justify-end">
-            <Image
-              src="/tech-hero-image.png"
-              alt="GiGOC tech development showcase"
-              width={980}
-              height={980}
-              className="h-auto w-full max-w-[33rem] object-contain"
-              sizes="(max-width: 768px) 100vw, 42vw"
-            />
+          <div className="mt-14 grid border-t border-slate-200 lg:mt-16 lg:grid-cols-2">
+            {services.map((service, index) => {
+              const Icon = service.icon;
+
+              return (
+                <article
+                  key={service.title}
+                  className={`group grid min-h-52 grid-cols-[2.5rem_1fr] gap-4 border-b border-slate-200 py-8 transition duration-300 hover:bg-slate-50/70 sm:grid-cols-[3rem_3rem_1fr] sm:gap-5 sm:px-5 ${index % 2 === 0 ? 'lg:border-r' : ''}`}
+                >
+                  <span className="pt-1 text-xs font-semibold text-[#2166d1]/70">{String(index + 1).padStart(2, '0')}</span>
+                  <span className="hidden h-10 w-10 items-center justify-center border border-slate-300 text-[#2166d1] transition group-hover:border-[#2166d1]/60 group-hover:bg-[#2166d1] group-hover:text-white sm:flex">
+                    <Icon className="h-5 w-5" strokeWidth={1.7} />
+                  </span>
+                  <div>
+                    <h3 className="text-xl font-semibold tracking-[-0.02em] text-[#17365f] sm:text-2xl">{service.title}</h3>
+                    <p className="mt-4 max-w-md text-sm leading-7 text-slate-600">{service.description}</p>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>

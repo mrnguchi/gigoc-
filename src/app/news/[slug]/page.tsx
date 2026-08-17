@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { ArrowLeft, CalendarDays, Clock3, MapPin } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CalendarDays, Clock3, MapPin } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -80,108 +80,192 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
   const videoEmbedUrl = article.video?.youtubeUrl ? getYouTubeEmbedUrl(article.video.youtubeUrl) : null;
 
   return (
-    <main className="min-h-screen bg-white" style={{ overflow: 'hidden' }}>
+    <main className="min-h-screen overflow-hidden bg-white">
       <Navbar />
 
-      <section
-        className="relative overflow-hidden px-5 pb-24 pt-28 sm:px-6 lg:px-10 lg:pb-28 lg:pt-32"
-        style={{ background: 'linear-gradient(180deg, #0f172a 0%, #101827 100%)' }}
-      >
-        <div className="absolute inset-0">
-          <Image
-            src={article.featuredImage.image}
-            alt=""
-            fill
-            priority
-            className="object-cover object-center"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-black/70" />
-        </div>
+      <section className="relative min-h-[720px] overflow-hidden bg-[#07172b] px-5 pb-20 pt-32 sm:min-h-[760px] sm:px-6 lg:px-10 lg:pb-24 lg:pt-36">
+        <Image
+          src={article.featuredImage.image}
+          alt=""
+          fill
+          priority
+          className="object-cover object-center"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(3,15,30,0.96)_0%,rgba(4,19,38,0.84)_54%,rgba(4,18,35,0.55)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,13,27,0.34)_0%,rgba(3,14,29,0.2)_55%,rgba(3,15,30,0.74)_100%)]" />
 
-        <div className="relative mx-auto max-w-7xl">
-          <div className="max-w-4xl">
+        <div className="relative mx-auto flex min-h-[568px] max-w-7xl items-center">
+          <div className="max-w-5xl">
             <Link
               href="/news"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-white/85 transition hover:text-white"
+              className="group inline-flex items-center gap-2 border-b border-white/35 pb-1 text-sm font-semibold text-white/80 transition hover:border-white hover:text-white"
             >
-              <ArrowLeft className="h-4 w-4" strokeWidth={2.2} />
+              <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" strokeWidth={1.9} />
               Back to News
             </Link>
 
-            <div className="mt-6">
-              <span className="inline-flex rounded-full border border-white/12 bg-white/10 px-3 py-1 text-xs font-semibold uppercase text-white/85 backdrop-blur-sm">
-                {article.label}
-              </span>
+            <div className="mt-8 flex items-center gap-4 text-sm font-semibold text-[#8abbff]">
+              <span>{article.label}</span>
+              <span className="h-px w-16 bg-[#8abbff]/55" aria-hidden="true" />
+            </div>
+            <h1 className="mt-5 max-w-5xl text-4xl font-semibold leading-[1.06] tracking-[-0.035em] text-white sm:text-5xl lg:text-[4.25rem]">
+              {article.title}
+            </h1>
+            <p className="mt-6 max-w-3xl text-base leading-8 text-white/70 sm:text-lg">
+              {article.excerpt}
+            </p>
 
-              <h1 className="mt-4 text-3xl font-semibold leading-tight text-white sm:text-4xl lg:text-5xl">
-                {article.title}
-              </h1>
+            <div className="mt-9 grid max-w-4xl border-y border-white/20 sm:grid-cols-3">
+              {article.details.map((detail, index) => {
+                const DetailIcon = articleDetailIcons[detail.icon];
 
-              <p className="mt-5 max-w-3xl text-base leading-8 text-white/72 sm:text-lg">
-                {article.excerpt}
-              </p>
-
-              <div className="mt-6 flex flex-wrap gap-4 text-sm text-white/75">
-                {article.details.map((detail) => {
-                  const DetailIcon = articleDetailIcons[detail.icon];
-
-                  return (
-                    <span
-                      key={`${detail.icon}-${detail.info}`}
-                      className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/8 px-4 py-2 backdrop-blur-sm"
-                    >
-                      <DetailIcon className="h-4 w-4" strokeWidth={2.1} />
-                      {detail.info}
-                    </span>
-                  );
-                })}
-              </div>
+                return (
+                  <div
+                    key={`${detail.icon}-${detail.info}`}
+                    className={`flex items-start gap-3 py-4 text-sm text-white/72 sm:px-5 ${
+                      index > 0 ? 'border-t border-white/20 sm:border-l sm:border-t-0' : ''
+                    }`}
+                  >
+                    <DetailIcon className="mt-0.5 h-4 w-4 shrink-0 text-[#8abbff]" strokeWidth={1.8} />
+                    <span className="leading-6">{detail.info}</span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
       </section>
 
-      <section className="relative z-10 -mt-14 bg-[var(--bg-main)] px-5 pb-14 pt-0 sm:px-6 lg:px-10 lg:pb-16">
-        <div className="mx-auto max-w-7xl rounded-[2rem] border bg-white px-5 py-5 shadow-[0_18px_40px_rgba(15,23,42,0.08)] sm:px-6 sm:py-6 lg:px-8 lg:py-8" style={{ borderColor: 'rgba(148, 163, 184, 0.16)' }}>
-          <div className="grid gap-5 lg:grid-cols-[1.35fr_0.65fr]">
-            <div className="relative min-h-[320px] overflow-hidden rounded-[1.75rem] bg-slate-100 shadow-[0_18px_40px_rgba(15,23,42,0.08)] sm:min-h-[420px] lg:min-h-[520px]">
+      <section className="bg-[#f4f7fb] px-5 py-20 sm:px-6 lg:px-10 lg:py-24">
+        <div className="mx-auto max-w-7xl border-t border-slate-300 pt-8 sm:pt-10">
+          <div className="mb-8 flex items-center justify-between gap-6">
+            <div className="flex items-center gap-4 text-sm font-semibold text-[#2166d1]">
+              <span>Gallery</span>
+              <span className="h-px w-16 bg-[#2166d1]/45" aria-hidden="true" />
+            </div>
+            <span className="text-xs font-medium text-slate-500">
+              {String(gallery.length).padStart(2, '0')} images
+            </span>
+          </div>
+
+          <div className="grid gap-5 lg:grid-cols-12">
+            <div className="relative min-h-[340px] overflow-hidden rounded-md bg-slate-200 sm:min-h-[520px] lg:col-span-8 lg:min-h-[650px]">
               <Image
                 src={primaryImage.image}
                 alt={primaryImage.alt}
                 fill
                 priority
                 className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 65vw"
+                sizes="(max-width: 1024px) 100vw, 67vw"
               />
             </div>
 
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-1">
-              {secondaryImages.map((image) => (
-                <div key={image.id} className="relative min-h-[190px] overflow-hidden rounded-[1.5rem] bg-slate-100 shadow-[0_18px_40px_rgba(15,23,42,0.08)] sm:min-h-[230px] lg:min-h-[248px]">
-                  <Image src={image.image} alt={image.alt} fill className="object-cover" sizes="(max-width: 1024px) 50vw, 28vw" />
-                </div>
+            {secondaryImages.length > 0 ? (
+              <div className="grid gap-5 sm:grid-cols-2 lg:col-span-4 lg:grid-cols-1">
+                {secondaryImages.map((image) => (
+                  <div key={image.id} className="relative min-h-[240px] overflow-hidden rounded-md bg-slate-200 lg:min-h-0">
+                    <Image
+                      src={image.image}
+                      alt={image.alt}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 50vw, 33vw"
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : null}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white px-5 py-20 sm:px-6 lg:px-10 lg:py-24">
+        <div className="mx-auto grid max-w-7xl gap-10 border-t border-slate-300 pt-8 sm:pt-10 lg:grid-cols-12 lg:gap-8">
+          <aside className="lg:col-span-3">
+            <p className="text-sm font-semibold text-[#2166d1]">GIGOC Newsroom</p>
+            <div className="mt-6 border-t border-slate-300">
+              {article.details.map((detail) => {
+                const DetailIcon = articleDetailIcons[detail.icon];
+
+                return (
+                  <div key={`${detail.icon}-aside-${detail.info}`} className="grid grid-cols-[1.25rem_1fr] gap-3 border-b border-slate-300 py-4">
+                    <DetailIcon className="mt-0.5 h-4 w-4 text-[#2166d1]" strokeWidth={1.8} />
+                    <span className="text-sm leading-6 text-slate-600">{detail.info}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </aside>
+
+          <article className="lg:col-span-7 lg:col-start-5">
+            <div className="border-t border-slate-300">
+              {article.content.map((section, index) => (
+                <section key={section.heading ?? section.paragraphs[0]} className="border-b border-slate-300 py-8 first:pt-0">
+                  <div className="grid gap-4 sm:grid-cols-[2.5rem_1fr] sm:gap-5">
+                    <span className="pt-1 text-xs font-medium text-[#2166d1]">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <div>
+                      {section.heading ? (
+                        <h2 className="text-2xl font-semibold leading-tight text-[#17365f] sm:text-3xl">
+                          {section.heading}
+                        </h2>
+                      ) : null}
+
+                      <div className={`${section.heading ? 'mt-5' : ''} space-y-5 text-base leading-8 text-slate-600`}>
+                        {section.paragraphs.map((paragraph) => (
+                          <p key={paragraph}>{paragraph}</p>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </section>
               ))}
             </div>
-          </div>
 
-          {videoEmbedUrl ? (
-            <section className="mt-10 rounded-[1.75rem] border bg-white p-4 shadow-[0_18px_40px_rgba(15,23,42,0.06)] sm:p-6" style={{ borderColor: 'rgba(148, 163, 184, 0.16)' }}>
-              <div className="mb-5">
-                <p className="text-sm font-semibold uppercase" style={{ color: 'var(--primary)' }}>
-                  Featured Media
+            {article.division === 'biomass' ? (
+              <div className="mt-10 border-b border-slate-300 pb-10">
+                <p className="max-w-2xl text-sm leading-7 text-slate-600">
+                  Explore the main GIGOC Biomass page for the current project overview, proposed production process and development status.
                 </p>
-                <h2 className="mt-2 text-2xl font-semibold" style={{ color: 'var(--text-main)' }}>
+                <Link
+                  href="/manufacturing"
+                  className="group mt-5 inline-flex min-h-11 items-center justify-center gap-3 rounded-md bg-[#2166d1] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#2b73df]"
+                >
+                  Explore GIGOC Biomass
+                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" strokeWidth={1.9} />
+                </Link>
+              </div>
+            ) : null}
+          </article>
+        </div>
+      </section>
+
+      {videoEmbedUrl ? (
+        <section className="relative overflow-hidden bg-[#071a31] px-5 py-20 text-white sm:px-6 lg:px-10 lg:py-24">
+          <div
+            className="pointer-events-none absolute inset-0 opacity-40 [background-image:linear-gradient(to_right,rgba(255,255,255,0.045)_1px,transparent_1px)] [background-size:12.5%_100%]"
+            aria-hidden="true"
+          />
+          <div className="relative mx-auto max-w-7xl border-t border-white/20 pt-8 sm:pt-10">
+            <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
+              <div className="lg:col-span-5">
+                <div className="flex items-center gap-4 text-sm font-semibold text-[#8abbff]">
+                  <span>Featured Media</span>
+                  <span className="h-px w-16 bg-[#8abbff]/45" aria-hidden="true" />
+                </div>
+                <h2 className="mt-5 text-3xl font-semibold leading-tight sm:text-4xl">
                   {article.video?.title}
                 </h2>
                 {article.video?.summary ? (
-                  <p className="mt-3 max-w-3xl text-sm leading-7" style={{ color: 'var(--text-soft)' }}>
+                  <p className="mt-5 max-w-xl text-sm leading-7 text-white/65 sm:text-base">
                     {article.video.summary}
                   </p>
                 ) : null}
               </div>
 
-              <div className="relative aspect-[16/9] overflow-hidden rounded-[1.25rem] bg-slate-950">
+              <div className="relative aspect-video overflow-hidden rounded-md bg-slate-950 lg:col-span-7">
                 <iframe
                   src={videoEmbedUrl}
                   title={article.video?.title ?? article.title}
@@ -192,47 +276,20 @@ export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
                   allowFullScreen
                 />
               </div>
-            </section>
-          ) : null}
-
-          <article className="mt-10 rounded-[1.75rem] border bg-white p-6 shadow-[0_18px_40px_rgba(15,23,42,0.06)] sm:p-8 lg:p-10" style={{ borderColor: 'rgba(148, 163, 184, 0.16)' }}>
-            <p className="text-sm font-semibold uppercase" style={{ color: 'var(--primary)' }}>
-              GIGOC Newsroom
-            </p>
-
-            <div className="mt-6 space-y-8">
-              {article.content.map((section) => (
-                <div key={section.heading ?? section.paragraphs[0]}>
-                  {section.heading ? (
-                    <h2 className="text-2xl font-semibold" style={{ color: 'var(--text-main)' }}>
-                      {section.heading}
-                    </h2>
-                  ) : null}
-
-                  <div className="mt-3 space-y-4 text-base leading-8" style={{ color: 'var(--text-soft)' }}>
-                    {section.paragraphs.map((paragraph) => (
-                      <p key={paragraph}>{paragraph}</p>
-                    ))}
-                  </div>
-                </div>
-              ))}
             </div>
+          </div>
+        </section>
+      ) : null}
 
-            {article.division === 'biomass' ? (
-              <div className="mt-10 border-t border-slate-200 pt-8">
-                <p className="max-w-2xl text-sm leading-7 text-[var(--text-soft)]">
-                  Explore the main GIGOC Biomass page for the current project overview, proposed
-                  production process and development status.
-                </p>
-                <Link
-                  href="/manufacturing"
-                  className="mt-5 inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--primary)] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#173c7b] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
-                >
-                  Explore GIGOC Biomass
-                </Link>
-              </div>
-            ) : null}
-          </article>
+      <section className="bg-white px-5 py-14 sm:px-6 lg:px-10 lg:py-16">
+        <div className="mx-auto max-w-7xl border-y border-slate-300 py-8">
+          <Link
+            href="/news"
+            className="group inline-flex items-center gap-3 border-b border-[#17365f]/35 pb-1 text-sm font-semibold text-[#17365f] transition hover:border-[#2166d1] hover:text-[#2166d1]"
+          >
+            <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" strokeWidth={1.9} />
+            Back to News
+          </Link>
         </div>
       </section>
 

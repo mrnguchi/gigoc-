@@ -207,13 +207,13 @@ export default function ManufacturingPage() {
             <div className="flex flex-col gap-3 sm:flex-row">
               <Link
                 href="#project-overview"
-                className="inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--primary)] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#173c7b] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+                className="inline-flex min-h-11 items-center justify-center rounded-md bg-[var(--primary)] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#173c7b] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
               >
                 Explore the Project
               </Link>
               <Link
                 href="/contact"
-                className="inline-flex min-h-11 items-center justify-center rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-[var(--text-main)] transition hover:border-[var(--primary)] hover:text-[var(--primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+                className="inline-flex min-h-11 items-center justify-center rounded-md border border-slate-300 px-6 py-3 text-sm font-semibold text-[var(--text-main)] transition hover:border-[var(--primary)] hover:text-[var(--primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
               >
                 Discuss a Partnership
               </Link>
@@ -317,7 +317,7 @@ export default function ManufacturingPage() {
             <Link
               href="/manufacturing/wood-pellets"
               aria-label="Read more about wood pellets"
-              className="mt-8 inline-flex min-h-11 items-center gap-2.5 rounded-full border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-[var(--text-main)] transition hover:border-[var(--primary)] hover:text-[var(--primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+              className="mt-8 inline-flex min-h-11 items-center gap-2.5 rounded-md border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-[var(--text-main)] transition hover:border-[var(--primary)] hover:text-[var(--primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
             >
               Read More
               <Image
@@ -359,7 +359,7 @@ export default function ManufacturingPage() {
             <Link
               href="/manufacturing/production-process"
               aria-label="Read more about the wood-pellet production process"
-              className="mt-8 inline-flex min-h-11 items-center gap-2.5 rounded-full border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-[var(--text-main)] transition hover:border-[var(--primary)] hover:text-[var(--primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+              className="mt-8 inline-flex min-h-11 items-center gap-2.5 rounded-md border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-[var(--text-main)] transition hover:border-[var(--primary)] hover:text-[var(--primary)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
             >
               Read More
               <Image
@@ -721,7 +721,7 @@ export default function ManufacturingPage() {
               <FooterNewsletterButton />
               <Link
                 href="/contact"
-                className="inline-flex min-h-11 items-center justify-center gap-2.5 rounded-full bg-[var(--primary)] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#173c7b] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+                className="inline-flex min-h-11 items-center justify-center gap-2.5 rounded-md bg-[var(--primary)] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#173c7b] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
               >
                 <Image
                   src="/phone.png"

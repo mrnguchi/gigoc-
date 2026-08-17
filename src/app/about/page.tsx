@@ -1,375 +1,281 @@
-import { ArrowRight, CalendarDays, Mail, MapPin, Minus, PhoneCall, Plus } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Mail } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa6';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import { companyContact } from '@/data/contact';
-import { newsSectionData } from '@/data/news';
 
-type TeamSocialLinks = Partial<{
-  facebook: string;
-  instagram: string;
-  linkedin: string;
-}>;
+const chiefExecutive = {
+  name: 'Bill B. Gebah',
+  role: 'Chief Executive Officer',
+  description: 'Sets the direction for the group and oversees its long-term development.',
+  image: '/GOC.jpg',
+  imagePosition: 'object-[center_40%]',
+};
 
-const teamMembers = [
+const leadershipTeam = [
   {
-    name: 'Bill B. Gebah',
-    role: 'Chief Executive Officer',
-    info: 'Leads the group vision and long-term strategy.',
-    image: '/GOC.jpg',
-    socialLinks: {
-      linkedin: '#',
-      instagram: 'https://www.instagram.com/rasbalotelli?igsh=bjBmb2p5NnR4Y2dr&utm_source=qr',
-      facebook: '#',
-    },
-  },
-  {
-    name: 'Fogam Fabrice',
+    name: 'Ndifon Harrison',
     role: 'General Manager',
-    info: 'Oversees performance, coordination, and execution across divisions.',
-    image: '/fogam.jpg',
-    socialLinks: {
-      instagram: '#',
-      facebook: '#',
-      linkedin: '#',
-    },
-  },
-  {
-    name: 'Motoma Harry',
-    role: 'Operations Manager',
-    info: 'Drives day-to-day systems, and cross-team workflow.',
-    image: '/motoma.jpg',
-    socialLinks: {
-      facebook: '#',
-      instagram: '#',
-      linkedin: '#',
-    },
+    description: 'Coordinates performance and execution across GiGOC businesses.',
+    image: null,
+    imagePosition: 'object-center',
   },
   {
     name: 'Nguchi N.',
     role: 'IT Engineer',
-    info: 'Supports digital systems, infrastructure, and technical innovation.',
+    description: 'Supports the group’s digital systems, infrastructure and technical work.',
     image: '/nguchi.jpg',
-    socialLinks: {
-      linkedin: '#',
-      instagram: '#',
-      facebook: '#',
-    },
+    imagePosition: 'object-center',
   },
   {
     name: 'Miss Blandine',
     role: 'Secretary',
-    info: 'Handles communication flow, scheduling, and office coordination.',
+    description: 'Supports communication, scheduling and office coordination.',
     image: '/Blandine.jpg',
-    socialLinks: {
-      facebook: '#',
-      instagram: '#',
-      linkedin: '#',
-    },
+    imagePosition: 'object-top',
   },
 ];
 
-const companyStats = [
-  { value: '7+', label: 'Business Divisions' },
-  { value: '03', label: 'Featured Projects' },
-  { value: '100%', label: 'Commitment To Quality' },
-  { value: '24/7', label: 'Support Mindset' },
+const operatingPrinciples = [
+  {
+    title: 'Start with a real need',
+    description: 'We look for practical opportunities and build around a clear purpose, market and customer.',
+  },
+  {
+    title: 'Build the operation',
+    description: 'Ideas move forward when the right people, systems and partnerships are in place.',
+  },
+  {
+    title: 'Stay close to the work',
+    description: 'Group leadership remains involved as each business develops and takes on new responsibilities.',
+  },
 ];
-
-const faqs = [
-  { question: 'Where are we located?', answer: `We are located in ${companyContact.address}.`, defaultOpen: true },
-  { question: 'What services does GiGOC provide?', answer: 'GiGOC brings together creative, commercial, and operational businesses across modelling, real estate, manufacturing, logistics, entertainment, general commerce, and tech-driven innovation.' },
-  { question: 'Do you support partnerships and collaborations?', answer: 'Yes. We welcome conversations around partnerships, investments, strategic collaborations, and project opportunities across our business divisions.' },
-  { question: 'How can I contact your team?', answer: `You can reach us through the contact section on the home page, by email at ${companyContact.email}, or by phone on ${companyContact.phoneDisplay}.` },
-  { question: 'Do you handle custom project requests?', answer: 'Yes. Depending on the division, our team can review tailored requests and recommend the best structure, service, or collaboration path.' },
-];
-
-const primaryNewsImage = newsSectionData.slides[0]?.image ?? newsSectionData.imageCard.image;
-const newsDate = newsSectionData.article.details.find((detail) => detail.icon === 'calendar')?.info;
-const newsLocation = newsSectionData.article.details.find((detail) => detail.icon === 'location')?.info;
-
-function SocialIconRow({ links }: { links: TeamSocialLinks }) {
-  const socialItems = [
-    { key: 'facebook' as const, label: 'Facebook', icon: FaFacebookF },
-    { key: 'instagram' as const, label: 'Instagram', icon: FaInstagram },
-    { key: 'linkedin' as const, label: 'LinkedIn', icon: FaLinkedinIn },
-  ].filter((item) => Boolean(links[item.key]));
-
-  return (
-    <div className="flex items-center gap-2">
-      {socialItems.map((item) => {
-        const Icon = item.icon;
-        const href = links[item.key] ?? '#';
-
-        return (
-          <Link
-            key={item.label}
-            href={href}
-            aria-label={item.label}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/55 bg-white/92 text-[#1e4a95] shadow-sm transition hover:-translate-y-0.5"
-          >
-            <Icon className="h-4 w-4" />
-          </Link>
-        );
-      })}
-    </div>
-  );
-}
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-white" style={{ overflow: 'hidden' }}>
+    <main className="min-h-screen overflow-hidden bg-white">
       <Navbar />
 
-      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #0f172a 0%, #101827 100%)' }}>
-        <div className="absolute inset-0">
-          <Image src="/hero-00.png" alt="About GiGOC hero background" fill priority className="object-cover object-center" />
-          <div className="absolute inset-0 bg-black/58" />
-        </div>
+      <section className="relative min-h-[720px] overflow-hidden bg-[#07172b] sm:min-h-[760px]">
+        <Image
+          src="/hero-00.png"
+          alt="GiGOC corporate office overlooking a city"
+          fill
+          priority
+          className="object-cover object-center"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(3,15,30,0.94)_0%,rgba(4,19,38,0.78)_48%,rgba(4,18,35,0.38)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,13,27,0.35)_0%,rgba(3,14,29,0.18)_55%,rgba(3,15,30,0.72)_100%)]" />
 
-        <div className="relative mx-auto flex min-h-[72vh] max-w-7xl items-center px-5 pb-16 pt-32 text-center sm:px-6 lg:px-10 lg:pt-36">
-          <div className="mx-auto max-w-3xl">
-            <div
-              className="inline-flex items-center rounded-full border px-4 py-2 text-xs font-semibold tracking-[0.22em] uppercase text-white/80"
-              style={{ backgroundColor: 'rgba(255, 255, 255, 0.06)', borderColor: 'rgba(255, 255, 255, 0.12)' }}
-            >
-              About GiGOC
+        <div className="relative mx-auto flex min-h-[720px] max-w-7xl items-center px-5 pb-24 pt-32 sm:min-h-[760px] sm:px-6 lg:px-10 lg:pt-36">
+          <div className="max-w-4xl">
+            <div className="flex items-center gap-4 text-sm font-semibold text-[#8abbff]">
+              <span>About GiGOC</span>
+              <span className="h-px w-16 bg-[#8abbff]/55" aria-hidden="true" />
             </div>
-            <h1 className="mt-6 text-4xl font-semibold leading-tight text-white sm:text-5xl lg:text-6xl">About Us</h1>
-            <p className="mt-5 text-base leading-8 text-white/75 sm:text-lg">
-              We are building a multi-sector group rooted in vision, structure, and long-term impact — bringing creativity, enterprise, and execution together under one brand.
+            <h1 className="mt-6 max-w-4xl text-5xl font-semibold leading-[1.03] tracking-[-0.04em] text-white sm:text-6xl lg:text-[5rem]">
+              One group. Seven sectors. Built from Cameroon.
+            </h1>
+            <p className="mt-7 max-w-2xl text-base leading-8 text-white/70 sm:text-lg">
+              Gebah Investment Group of Companies develops and operates businesses in manufacturing, mobility, technology, entertainment and talent, logistics, real estate and commerce.
             </p>
-          </div>
-        </div>
-      </section>
 
-      <section className="bg-white px-5 py-18 sm:px-6 lg:px-10 lg:py-24">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1fr_1.04fr] lg:gap-16">
-          <div className="max-w-2xl">
-            <p className="text-sm font-semibold tracking-[0.22em] uppercase" style={{ color: 'var(--primary)' }}>
-              -- Company Background --
-            </p>
-            <h2 className="mt-3 text-3xl font-semibold leading-tight sm:text-4xl" style={{ color: 'var(--text-main)' }}>
-              A company built to connect ideas, industries, and opportunity
-            </h2>
-            <p className="mt-6 text-base leading-8" style={{ color: 'var(--text-soft)' }}>
-              At Gebah Investment Group of Companies, we bring together innovation, creativity, and enterprise under one unified vision. Our presence across multiple industries enables us to build synergies that support sustainable growth and lasting value.
-            </p>
-            <p className="mt-5 text-base leading-8" style={{ color: 'var(--text-soft)' }}>
-              From infrastructure and logistics to entertainment and technology, we remain focused on excellence, meaningful partnerships, and solutions that create impact for businesses and communities alike.
-            </p>
-          </div>
-
-          <div className="relative mx-auto w-full max-w-[34rem]">
-            <div className="absolute -left-3 top-8 h-30 w-16 rounded-l-[2rem] rounded-r-[0.5rem] bg-[#2563eb] sm:-left-5 sm:h-40 sm:w-20" />
-            <div className="absolute -right-3 bottom-8 h-30 w-16 rounded-r-[2rem] rounded-l-[0.5rem] bg-[#2563eb] sm:-right-5 sm:h-40 sm:w-20" />
-            <div className="relative overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white p-3 shadow-[0_24px_70px_rgba(15,23,42,0.12)]">
-              <div className="relative aspect-[16/10] overflow-hidden rounded-[1.25rem]">
-                <Image src="/unnamed.jpg" alt="GiGOC company background" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 40vw" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-[var(--bg-main)] px-5 py-18 sm:px-6 lg:px-10 lg:py-22">
-        <div className="mx-auto max-w-7xl">
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="text-sm font-semibold tracking-[0.22em] uppercase" style={{ color: 'var(--primary)' }}>
-              -- Our Team --
-            </p>
-            <h2 className="mt-3 text-3xl font-semibold sm:text-4xl" style={{ color: 'var(--text-main)' }}>
-              Meet Our Expert Team
-            </h2>
-            <p className="mt-4 text-base leading-7" style={{ color: 'var(--text-soft)' }}>
-              The people behind GiGOC combine leadership, coordination, and creativity to move ideas into action across our businesses.
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {teamMembers.map((member) => (
-              <article
-                key={member.name}
-                className="group overflow-hidden rounded-[1.5rem] border bg-white shadow-[0_18px_40px_rgba(15,23,42,0.06)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_28px_56px_rgba(15,23,42,0.12)]"
-                style={{ borderColor: 'rgba(148, 163, 184, 0.16)' }}
+            <div className="mt-9 flex flex-col items-start gap-5 sm:flex-row sm:items-center">
+              <Link
+                href="/#our-businesses"
+                className="group inline-flex min-h-12 items-center justify-center gap-3 rounded-md bg-[#2166d1] px-6 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(10,55,130,0.28)] transition hover:bg-[#2b73df]"
               >
-                <div className="relative h-90 rounded-2xl overflow-hidden">
-                  <Image src={member.image} alt={member.name} fill className="object-cover   transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 33vw" />
-                  <div className="absolute  inset-0 bg-gradient-to-t from-slate-950/35 via-transparent to-transparent" />
-                  <div className="absolute bottom-4 left-4">
-                    <SocialIconRow links={member.socialLinks} />
-                  </div>
+                Explore our businesses
+                <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={1.9} />
+              </Link>
+              <Link
+                href="#leadership"
+                className="group inline-flex items-center gap-3 border-b border-white/45 pb-1 text-sm font-semibold text-white transition hover:border-white"
+              >
+                Meet our team
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" strokeWidth={1.9} />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white px-5 py-20 sm:px-6 lg:px-10 lg:py-24">
+        <div className="mx-auto max-w-7xl border-t border-slate-300 pt-8 sm:pt-10">
+          <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
+            <div className="lg:col-span-6">
+              <div className="flex items-center gap-4 text-sm font-semibold text-[#2166d1]">
+                <span>Who we are</span>
+                <span className="h-px w-16 bg-[#2166d1]/45" aria-hidden="true" />
+              </div>
+              <h2 className="mt-5 max-w-2xl text-4xl font-semibold leading-[1.08] tracking-[-0.03em] text-[#17365f] sm:text-5xl lg:text-[3.5rem]">
+                We build businesses, not just ideas.
+              </h2>
+            </div>
+
+            <div className="lg:col-span-5 lg:col-start-8 lg:pt-10">
+              <p className="text-xl leading-8 text-[#273f60] sm:text-2xl sm:leading-9">
+                GiGOC brings several businesses under one group. Each serves a different market, but all share the same leadership and long-term outlook.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-14 grid border-y border-slate-300 py-8 lg:mt-16 lg:grid-cols-12 lg:gap-8 lg:py-10">
+            <p className="max-w-sm text-sm font-semibold text-[#2166d1] lg:col-span-3">
+              Gebah Investment Group of Companies
+            </p>
+            <div className="mt-6 space-y-5 text-base leading-8 text-slate-600 lg:col-span-7 lg:col-start-6 lg:mt-0">
+              <p>
+                Our businesses cover property development, executive mobility, biomass manufacturing, entertainment and talent, commerce, technology and logistics.
+              </p>
+              <p>
+                The group gives each company a common foundation while allowing its team to stay focused on the realities of its sector. We support the work through planning, operations, partnerships and shared standards.
+              </p>
+              <p>
+                GiGOC is based in Limbe, Cameroon. We are building carefully, one business at a time.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="relative overflow-hidden bg-[#071a31] px-5 py-20 text-white sm:px-6 lg:px-10 lg:py-24">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-40 [background-image:linear-gradient(to_right,rgba(255,255,255,0.045)_1px,transparent_1px)] [background-size:12.5%_100%]"
+          aria-hidden="true"
+        />
+        <div className="relative mx-auto max-w-7xl border-t border-white/20 pt-8 sm:pt-10">
+          <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-6">
+              <div className="flex items-center gap-4 text-sm font-semibold text-[#8abbff]">
+                <span>How we work</span>
+                <span className="h-px w-16 bg-[#8abbff]/45" aria-hidden="true" />
+              </div>
+              <h2 className="mt-5 max-w-2xl text-4xl font-semibold leading-[1.08] tracking-[-0.03em] sm:text-5xl lg:text-[3.5rem]">
+                A practical approach to building companies.
+              </h2>
+            </div>
+            <p className="max-w-xl text-base leading-7 text-white/65 sm:text-lg lg:col-span-4 lg:col-start-9">
+              Different sectors require different expertise. Our approach stays consistent.
+            </p>
+          </div>
+
+          <div className="mt-14 border-t border-white/15 lg:mt-16">
+            {operatingPrinciples.map((principle, index) => (
+              <div
+                key={principle.title}
+                className="grid gap-4 border-b border-white/15 py-7 transition hover:bg-white/[0.025] sm:grid-cols-[3rem_1fr] lg:grid-cols-12 lg:items-center lg:gap-8 lg:py-8"
+              >
+                <span className="text-sm font-medium text-[#5ea0ff] lg:col-span-1">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <h3 className="text-xl font-semibold sm:text-2xl lg:col-span-4">{principle.title}</h3>
+                <p className="max-w-2xl text-sm leading-7 text-white/60 sm:col-start-2 sm:text-base lg:col-span-6 lg:col-start-7">
+                  {principle.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="leadership" className="scroll-mt-24 bg-[#f4f7fb] px-5 py-20 sm:px-6 lg:px-10 lg:py-24">
+        <div className="mx-auto max-w-7xl border-t border-slate-300 pt-8 sm:pt-10">
+          <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-7">
+              <div className="flex items-center gap-4 text-sm font-semibold text-[#2166d1]">
+                <span>Leadership</span>
+                <span className="h-px w-16 bg-[#2166d1]/45" aria-hidden="true" />
+              </div>
+              <h2 className="mt-5 max-w-3xl text-4xl font-semibold leading-[1.08] tracking-[-0.03em] text-[#17365f] sm:text-5xl lg:text-[3.5rem]">
+                The people responsible for the work.
+              </h2>
+            </div>
+            <p className="max-w-xl text-base leading-7 text-slate-600 sm:text-lg lg:col-span-4 lg:col-start-9">
+              GiGOC’s leadership team oversees the group and supports the work within each business.
+            </p>
+          </div>
+
+          <article className="mt-14 grid border-y border-slate-300 py-7 lg:mt-16 lg:grid-cols-12 lg:items-stretch lg:gap-10 lg:py-8">
+            <div className="relative min-h-[440px] overflow-hidden rounded-md bg-slate-200 sm:min-h-[560px] lg:col-span-6">
+              <Image
+                src={chiefExecutive.image}
+                alt={chiefExecutive.name}
+                fill
+                className={`object-cover ${chiefExecutive.imagePosition}`}
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
+            </div>
+            <div className="flex flex-col justify-end py-8 lg:col-span-5 lg:col-start-8 lg:py-10">
+              <p className="text-sm font-semibold text-[#2166d1]">Group leadership</p>
+              <h3 className="mt-4 text-3xl font-semibold text-[#17365f] sm:text-4xl">{chiefExecutive.name}</h3>
+              <p className="mt-2 text-base font-medium text-slate-500">{chiefExecutive.role}</p>
+              <p className="mt-7 max-w-lg text-base leading-8 text-slate-600">{chiefExecutive.description}</p>
+              <p className="mt-5 max-w-lg text-base leading-8 text-slate-600">
+                He works with the management team to keep the group focused, organised and ready for its next stage of growth.
+              </p>
+            </div>
+          </article>
+
+          <div className="mt-10 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+            {leadershipTeam.map((member, index) => (
+              <article key={member.name} className="group border-b border-slate-300 pb-6">
+                <div className="relative aspect-[4/5] overflow-hidden rounded-md bg-slate-200">
+                  {member.image ? (
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      className={`object-cover transition-transform duration-700 ease-out group-hover:scale-[1.025] ${member.imagePosition}`}
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    />
+                  ) : null}
+                  <span className="absolute left-4 top-4 bg-[#071a31]/80 px-2.5 py-1.5 text-[10px] font-medium text-white backdrop-blur-sm">
+                    {String(index + 2).padStart(2, '0')}
+                  </span>
                 </div>
-                <div className="px-5 py-5">
-                  <h3 className="text-lg font-semibold" style={{ color: 'var(--text-main)' }}>
-                    {member.name}
-                  </h3>
-                  <p className="mt-1 text-sm" style={{ color: 'var(--text-soft)' }}>
-                    {member.role}
-                  </p>
-                  <p className="mt-3 text-sm leading-6" style={{ color: 'var(--text-soft)' }}>
-                    {member.info}
-                  </p>
-                </div>
+                <h3 className="mt-5 text-xl font-semibold text-[#17365f]">{member.name}</h3>
+                <p className="mt-1 text-sm font-medium text-[#2166d1]">{member.role}</p>
+                <p className="mt-4 text-sm leading-7 text-slate-600">{member.description}</p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="relative overflow-hidden px-5 py-12 sm:px-6 lg:px-10 lg:py-14">
-        <div className="absolute inset-0">
-          <Image src="/hero-00.png" alt="GiGOC impact statistics background" fill className="object-cover" sizes="100vw" />
-          <div className="absolute inset-0 bg-[rgba(8,18,36,0.86)]" />
-        </div>
-
-        <div className="relative mx-auto max-w-7xl">
-          <div className="grid gap-8 rounded-[1.75rem] border border-white/10 bg-white/5 px-6 py-8 text-center backdrop-blur-sm sm:grid-cols-2 lg:grid-cols-4 lg:px-10 lg:py-10">
-            {companyStats.map((stat) => (
-              <div key={stat.label}>
-                <p className="text-3xl font-semibold text-white sm:text-4xl">{stat.value}</p>
-                <p className="mt-2 text-sm text-white/70">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="about-news" className="bg-white px-5 py-18 sm:px-6 lg:px-10 lg:py-22">
-        <div className="mx-auto max-w-7xl">
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="text-sm font-semibold tracking-[0.22em] uppercase" style={{ color: 'var(--primary)' }}>
-              -- Latest News --
-            </p>
-            <h2 className="mt-3 text-3xl font-semibold sm:text-4xl" style={{ color: 'var(--text-main)' }}>
-              Our Latest News & Updates
-            </h2>
-            <p className="mt-4 text-base leading-7" style={{ color: 'var(--text-soft)' }}>
-              A quick look at featured news and event highlights from across GiGOC.
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            <article
-              className="group overflow-hidden rounded-[1.5rem] border bg-white shadow-[0_18px_40px_rgba(15,23,42,0.07)] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_24px_48px_rgba(15,23,42,0.11)]"
-              style={{ borderColor: 'rgba(148, 163, 184, 0.16)' }}
-            >
-              <div className="relative h-64 overflow-hidden">
-                <Image src={primaryNewsImage} alt={newsSectionData.article.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 420px" />
-              </div>
-              <div className="px-5 py-5">
-                <span className="inline-flex rounded-full px-3 py-1 text-xs font-semibold uppercase" style={{ backgroundColor: 'var(--primary-soft)', color: 'var(--primary)' }}>
-                  {newsSectionData.article.label}
-                </span>
-                <div className="mt-4 flex flex-wrap gap-4 text-xs" style={{ color: 'var(--text-soft)' }}>
-                  {newsDate ? (
-                    <span className="inline-flex items-center gap-1.5">
-                      <CalendarDays className="h-3.5 w-3.5" />
-                      {newsDate}
-                    </span>
-                  ) : null}
-                  {newsLocation ? (
-                    <span className="inline-flex items-center gap-1.5">
-                      <MapPin className="h-3.5 w-3.5" />
-                      {newsLocation}
-                    </span>
-                  ) : null}
-                </div>
-                <h3 className="mt-4 text-xl font-semibold leading-snug" style={{ color: 'var(--text-main)' }}>
-                  {newsSectionData.article.title}
-                </h3>
-                <p className="mt-3 text-sm leading-7" style={{ color: 'var(--text-soft)' }}>
-                  {newsSectionData.article.excerpt}
-                </p>
-                <Link
-                  href={newsSectionData.article.href}
-                  className="mt-5 inline-flex items-center gap-2 text-sm font-semibold"
-                  style={{ color: 'var(--primary)' }}
-                >
-                  Read More
-                  <ArrowRight className="h-4 w-4" strokeWidth={2.2} />
-                </Link>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-[var(--bg-main)] px-5 py-18 sm:px-6 lg:px-10 lg:py-22">
-        <div className="mx-auto max-w-7xl">
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="text-sm font-semibold tracking-[0.22em] uppercase" style={{ color: 'var(--primary)' }}>
-              -- FAQs --
-            </p>
-            <h2 className="mt-3 text-3xl font-semibold sm:text-4xl" style={{ color: 'var(--text-main)' }}>
-              Questions? Look here.
-            </h2>
-            <p className="mt-4 text-base leading-7" style={{ color: 'var(--text-soft)' }}>
-              Quick answers to common questions about who we are, what we do, and how to reach us.
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
-            <div className="space-y-4">
-              {faqs.map((faq) => (
-                <details
-                  key={faq.question}
-                  open={faq.defaultOpen}
-                  className="group overflow-hidden rounded-[1rem] border bg-white shadow-[0_12px_28px_rgba(15,23,42,0.05)]"
-                  style={{ borderColor: 'rgba(148, 163, 184, 0.16)' }}
-                >
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-sm font-semibold sm:text-base" style={{ color: 'var(--text-main)' }}>
-                    <span>{faq.question}</span>
-                    <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-700">
-                      <Plus className="h-4 w-4 group-open:hidden" strokeWidth={2.3} />
-                      <Minus className="hidden h-4 w-4 group-open:block" strokeWidth={2.3} />
-                    </span>
-                  </summary>
-                  <p className="border-t px-5 pb-5 pt-4 text-sm leading-7 sm:text-[15px]" style={{ borderColor: 'rgba(148, 163, 184, 0.14)', color: 'var(--text-soft)' }}>
-                    {faq.answer}
-                  </p>
-                </details>
-              ))}
+      <section className="bg-white px-5 py-20 sm:px-6 lg:px-10 lg:py-24">
+        <div className="mx-auto grid max-w-7xl gap-10 border-y border-slate-300 py-10 lg:grid-cols-12 lg:items-center lg:py-14">
+          <div className="lg:col-span-7">
+            <div className="flex items-center gap-4 text-sm font-semibold text-[#2166d1]">
+              <span>Work with GiGOC</span>
+              <span className="h-px w-16 bg-[#2166d1]/45" aria-hidden="true" />
             </div>
+            <h2 className="mt-5 max-w-3xl text-4xl font-semibold leading-[1.08] tracking-[-0.03em] text-[#17365f] sm:text-5xl">
+              Have a project or partnership in mind?
+            </h2>
+          </div>
 
-            <div className="space-y-5">
-              <div className="rounded-[1.5rem] bg-[#0d1d3c] p-6 text-center text-white shadow-[0_20px_60px_rgba(8,18,36,0.26)]">
-                <div className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full bg-white/10">
-                  <Mail className="h-6 w-6" strokeWidth={2.1} />
-                </div>
-                <h3 className="mt-4 text-xl font-semibold">Need a direct answer?</h3>
-                <p className="mt-3 text-sm leading-7 text-white/75">
-                  Our team is available to answer questions, discuss partnerships, and guide you to the right division.
-                </p>
-                <Link
-                  href="/contact"
-                  className="mt-5 inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold text-white"
-                  style={{ background: 'linear-gradient(135deg, #1e4a95 0%, #2563eb 100%)' }}
-                >
-                  Contact Us
-                </Link>
-              </div>
-
-              <div className="rounded-[1.25rem] border bg-white px-5 py-5 shadow-[0_12px_30px_rgba(15,23,42,0.05)]" style={{ borderColor: 'rgba(148, 163, 184, 0.16)' }}>
-                <div className="flex items-center gap-3">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--primary-soft)] text-[var(--primary)]">
-                    <PhoneCall className="h-5 w-5" strokeWidth={2.2} />
-                  </span>
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.2em]" style={{ color: 'var(--text-soft)' }}>
-                      Your comfort, our priority
-                    </p>
-                    <p className="mt-1 text-lg font-semibold" style={{ color: 'var(--text-main)' }}>
-                      24/7 Service
-                    </p>
-                    <p className="text-sm" style={{ color: 'var(--text-soft)' }}>
-                      {companyContact.phoneDisplay}
-                    </p>
-                  </div>
-                </div>
-              </div>
+          <div className="lg:col-span-4 lg:col-start-9">
+            <p className="text-base leading-7 text-slate-600">
+              Tell us what you are working on. We will connect you with the right part of the group.
+            </p>
+            <div className="mt-7 flex flex-col items-start gap-5 sm:flex-row sm:items-center">
+              <Link
+                href="/contact"
+                className="group inline-flex items-center gap-3 rounded-md bg-[#2166d1] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#2b73df]"
+              >
+                Contact GiGOC
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" strokeWidth={1.9} />
+              </Link>
+              <Link
+                href={`mailto:${companyContact.email}`}
+                className="group inline-flex items-center gap-2 border-b border-[#17365f]/35 pb-1 text-sm font-semibold text-[#17365f] transition hover:border-[#2166d1] hover:text-[#2166d1]"
+              >
+                <Mail className="h-4 w-4" strokeWidth={1.8} />
+                {companyContact.email}
+              </Link>
             </div>
           </div>
         </div>

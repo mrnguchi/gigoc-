@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Gebah Investment Group Of Companies",
   description:
-    "Gebah Investment Group Of Companies (GiGOC) builds modern businesses across mobility, entertainment, technology, logistics, and commerce.",
+    "Gebah Investment Group Of Companies (GiGOC) builds modern businesses across mobility, entertainment and talent, technology, logistics, and commerce.",
 };
 
 export default function RootLayout({

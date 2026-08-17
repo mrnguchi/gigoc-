@@ -56,7 +56,7 @@ export default function FooterNewsletterButton() {
       type="button"
       onClick={handleClick}
       aria-controls="footer-newsletter"
-      className="inline-flex min-h-11 items-center justify-center gap-2.5 rounded-full border border-[#b9cbea] bg-[#f3f7fd] px-6 py-3 text-sm font-semibold text-[var(--primary)] transition hover:border-[#91add8] hover:bg-[#eaf2ff] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+      className="inline-flex min-h-11 items-center justify-center gap-2.5 rounded-md border border-[#b9cbea] bg-[#f3f7fd] px-6 py-3 text-sm font-semibold text-[var(--primary)] transition hover:border-[#91add8] hover:bg-[#eaf2ff] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
     >
       <Image
         src="/subscribe.png"

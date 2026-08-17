@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { ArrowRight, Check, ChevronDown } from 'lucide-react';
+import { useEffect, useId, useRef, useState } from 'react';
 
 type ContactFormVariant = 'homepage' | 'contact-page';
 
@@ -14,13 +15,181 @@ type FormState = {
 };
 
 const fieldClassName =
-  'w-full rounded-2xl border px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:shadow-[0_0_0_4px_rgba(59,130,246,0.08)]';
+  'w-full rounded-md border border-slate-300 bg-white px-4 py-3.5 text-sm text-[#17365f] outline-none transition placeholder:text-slate-400 focus:border-[#2166d1] focus:ring-4 focus:ring-[#2166d1]/10 disabled:cursor-not-allowed disabled:bg-slate-50';
+
+const serviceOptions = [
+  { value: 'real-estate', label: 'Real Estate' },
+  { value: 'logistics', label: 'Logistics' },
+  { value: 'manufacturing', label: 'Manufacturing' },
+  { value: 'entertainment', label: 'Entertainment & Talent' },
+  { value: 'technology', label: 'Tech & Innovation' },
+  { value: 'general', label: 'General Enquiry' },
+];
+
+type CustomSelectProps = {
+  label: string;
+  name: string;
+  value: string;
+  placeholder: string;
+  required?: boolean;
+  disabled?: boolean;
+  onChange: (value: string) => void;
+};
+
+function CustomSelect({ label, name, value, placeholder, required, disabled, onChange }: CustomSelectProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const listboxId = useId();
+  const selectedIndex = serviceOptions.findIndex((option) => option.value === value);
+  const selectedOption = selectedIndex >= 0 ? serviceOptions[selectedIndex] : undefined;
+
+  useEffect(() => {
+    function closeOnOutsideClick(event: PointerEvent) {
+      if (!containerRef.current?.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener('pointerdown', closeOnOutsideClick);
+    return () => document.removeEventListener('pointerdown', closeOnOutsideClick);
+  }, []);
+
+  function openDropdown() {
+    setIsOpen(true);
+    setActiveIndex(selectedIndex >= 0 ? selectedIndex : 0);
+  }
+
+  function selectOption(index: number) {
+    const option = serviceOptions[index];
+
+    if (!option) {
+      return;
+    }
+
+    onChange(option.value);
+    setActiveIndex(index);
+    setIsOpen(false);
+  }
+
+  function handleKeyDown(event: React.KeyboardEvent<HTMLButtonElement>) {
+    if (disabled) {
+      return;
+    }
+
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      event.preventDefault();
+
+      if (!isOpen) {
+        openDropdown();
+        return;
+      }
+
+      const direction = event.key === 'ArrowDown' ? 1 : -1;
+      setActiveIndex((current) => (current + direction + serviceOptions.length) % serviceOptions.length);
+      return;
+    }
+
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+
+      if (isOpen && activeIndex >= 0) {
+        selectOption(activeIndex);
+      } else {
+        openDropdown();
+      }
+      return;
+    }
+
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      setIsOpen(false);
+      return;
+    }
+
+    if (event.key === 'Home' || event.key === 'End') {
+      event.preventDefault();
+      setIsOpen(true);
+      setActiveIndex(event.key === 'Home' ? 0 : serviceOptions.length - 1);
+    }
+  }
+
+  return (
+    <div ref={containerRef} className="relative">
+      <input type="hidden" name={name} value={value} />
+      <button
+        type="button"
+        role="combobox"
+        aria-label={label}
+        aria-controls={listboxId}
+        aria-expanded={isOpen}
+        aria-haspopup="listbox"
+        aria-required={required}
+        aria-activedescendant={isOpen && activeIndex >= 0 ? `${listboxId}-option-${activeIndex}` : undefined}
+        disabled={disabled}
+        onClick={() => (isOpen ? setIsOpen(false) : openDropdown())}
+        onKeyDown={handleKeyDown}
+        className={`${fieldClassName} flex items-center justify-between gap-4 text-left ${
+          isOpen ? 'border-[#2166d1] ring-4 ring-[#2166d1]/10' : ''
+        }`}
+      >
+        <span className={selectedOption ? 'text-[#17365f]' : 'text-slate-400'}>
+          {selectedOption?.label ?? placeholder}
+        </span>
+        <ChevronDown
+          className={`h-4 w-4 shrink-0 text-[#2166d1] transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+          strokeWidth={1.9}
+        />
+      </button>
+
+      {isOpen ? (
+        <div
+          id={listboxId}
+          role="listbox"
+          aria-label={label}
+          className="absolute z-30 mt-2 w-full overflow-hidden rounded-md border border-slate-200 bg-white p-1.5 shadow-[0_18px_45px_rgba(15,23,42,0.16)]"
+        >
+          {serviceOptions.map((option, index) => {
+            const isSelected = option.value === value;
+            const isActive = index === activeIndex;
+
+            return (
+              <button
+                key={option.value}
+                id={`${listboxId}-option-${index}`}
+                type="button"
+                role="option"
+                aria-selected={isSelected}
+                tabIndex={-1}
+                onPointerMove={() => setActiveIndex(index)}
+                onClick={() => selectOption(index)}
+                className={`flex w-full items-center justify-between gap-4 rounded-[3px] px-3 py-2.5 text-left text-sm transition ${
+                  isActive ? 'bg-[#edf4ff] text-[#17365f]' : 'text-slate-600 hover:bg-slate-50'
+                }`}
+              >
+                <span>{option.label}</span>
+                {isSelected ? <Check className="h-4 w-4 text-[#2166d1]" strokeWidth={2.1} /> : null}
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
+    </div>
+  );
+}
 
 export default function ContactForm({ variant }: ContactFormProps) {
   const [formState, setFormState] = useState<FormState>({ status: 'idle' });
+  const [serviceValue, setServiceValue] = useState('');
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (variant === 'contact-page' && !serviceValue) {
+      setFormState({ status: 'error', message: 'Please select a service.' });
+      return;
+    }
+
     setFormState({ status: 'submitting' });
 
     const form = event.currentTarget;
@@ -46,6 +215,7 @@ export default function ContactForm({ variant }: ContactFormProps) {
       }
 
       form.reset();
+      setServiceValue('');
       setFormState({
         status: 'success',
         message: result.message || 'Your message has been sent successfully.',
@@ -59,8 +229,8 @@ export default function ContactForm({ variant }: ContactFormProps) {
   }
 
   return (
-    <form className={variant === 'homepage' ? 'space-y-5' : 'mt-8 space-y-5'} onSubmit={handleSubmit}>
-      <div className="grid gap-5 sm:grid-cols-2">
+    <form className={variant === 'homepage' ? 'space-y-6' : 'mt-8 space-y-6'} onSubmit={handleSubmit}>
+      <div className="grid gap-6 sm:grid-cols-2">
         <label className="block">
           <span className="mb-2 block text-sm font-medium" style={{ color: 'var(--text-main)' }}>
             {variant === 'contact-page' ? 'Your Name *' : 'Name'}
@@ -72,7 +242,6 @@ export default function ContactForm({ variant }: ContactFormProps) {
             required
             disabled={formState.status === 'submitting'}
             className={fieldClassName}
-            style={{ borderColor: 'rgba(148, 163, 184, 0.22)', color: 'var(--text-main)' }}
           />
         </label>
 
@@ -87,12 +256,11 @@ export default function ContactForm({ variant }: ContactFormProps) {
             required
             disabled={formState.status === 'submitting'}
             className={fieldClassName}
-            style={{ borderColor: 'rgba(148, 163, 184, 0.22)', color: 'var(--text-main)' }}
           />
         </label>
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid gap-6 sm:grid-cols-2">
         <label className="block">
           <span className="mb-2 block text-sm font-medium" style={{ color: 'var(--text-main)' }}>
             {variant === 'contact-page' ? 'Phone *' : 'Phone Number'}
@@ -104,49 +272,28 @@ export default function ContactForm({ variant }: ContactFormProps) {
             required={variant === 'contact-page'}
             disabled={formState.status === 'submitting'}
             className={fieldClassName}
-            style={{ borderColor: 'rgba(148, 163, 184, 0.22)', color: 'var(--text-main)' }}
           />
         </label>
 
-        {variant === 'homepage' ? (
-          <label className="block">
-            <span className="mb-2 block text-sm font-medium" style={{ color: 'var(--text-main)' }}>
-              Address
-            </span>
-            <input
-              type="text"
-              name="address"
-              placeholder="Your address"
-              disabled={formState.status === 'submitting'}
-              className={fieldClassName}
-              style={{ borderColor: 'rgba(148, 163, 184, 0.22)', color: 'var(--text-main)' }}
-            />
-          </label>
-        ) : (
-          <label className="block">
-            <span className="mb-2 block text-sm font-medium" style={{ color: 'var(--text-main)' }}>
-              Service *
-            </span>
-            <select
-              name="service"
-              defaultValue=""
-              required
-              disabled={formState.status === 'submitting'}
-              className={`${fieldClassName} bg-white`}
-              style={{ borderColor: 'rgba(148, 163, 184, 0.22)', color: 'var(--text-main)' }}
-            >
-              <option value="" disabled>
-                Select Services
-              </option>
-              <option value="real-estate">Real Estate</option>
-              <option value="logistics">Logistics</option>
-              <option value="manufacturing">Manufacturing</option>
-              <option value="entertainment">Music & Entertainment</option>
-              <option value="technology">Tech & Innovation</option>
-              <option value="general">General Enquiry</option>
-            </select>
-          </label>
-        )}
+        <div className="block">
+          <span className="mb-2 block text-sm font-medium" style={{ color: 'var(--text-main)' }}>
+            {variant === 'homepage' ? 'Area of interest' : 'Service *'}
+          </span>
+          <CustomSelect
+            label={variant === 'homepage' ? 'Area of interest' : 'Service'}
+            name="service"
+            value={serviceValue}
+            placeholder={variant === 'homepage' ? 'Select an area' : 'Select a service'}
+            required={variant === 'contact-page'}
+            disabled={formState.status === 'submitting'}
+            onChange={(nextValue) => {
+              setServiceValue(nextValue);
+              if (formState.status === 'error' && formState.message === 'Please select a service.') {
+                setFormState({ status: 'idle' });
+              }
+            }}
+          />
+        </div>
       </div>
 
       <label className="block">
@@ -159,8 +306,7 @@ export default function ContactForm({ variant }: ContactFormProps) {
           placeholder={variant === 'contact-page' ? 'Enter here...' : 'Tell us a bit about your project'}
           required
           disabled={formState.status === 'submitting'}
-          className="w-full rounded-[1.5rem] border px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:shadow-[0_0_0_4px_rgba(59,130,246,0.08)]"
-          style={{ borderColor: 'rgba(148, 163, 184, 0.22)', color: 'var(--text-main)' }}
+          className={`${fieldClassName} min-h-36 resize-y`}
         />
       </label>
 
@@ -168,12 +314,12 @@ export default function ContactForm({ variant }: ContactFormProps) {
         <button
           type="submit"
           disabled={formState.status === 'submitting'}
-          className={`inline-flex rounded-full px-7 py-3 text-sm font-semibold text-white shadow-[0_18px_35px_rgba(37,99,235,0.22)] transition ${
-            formState.status === 'submitting' ? 'cursor-not-allowed opacity-70' : 'hover:-translate-y-0.5'
+          className={`group inline-flex items-center gap-3 rounded-md bg-[#2166d1] px-7 py-3 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(33,102,209,0.2)] transition ${
+            formState.status === 'submitting' ? 'cursor-not-allowed opacity-70' : 'hover:bg-[#2b73df]'
           }`}
-          style={{ background: 'linear-gradient(135deg, #1e4a95 0%, #2563eb 100%)' }}
         >
           {formState.status === 'submitting' ? 'Sending...' : 'Send Message'}
+          <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" strokeWidth={1.9} />
         </button>
 
         {formState.message ? (
